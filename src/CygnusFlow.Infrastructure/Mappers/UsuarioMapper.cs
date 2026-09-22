@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static Usuario ToDomain(UsuarioModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new Usuario
             {
@@ -25,7 +25,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static UsuarioModel ToModel(Usuario domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new UsuarioModel
             {

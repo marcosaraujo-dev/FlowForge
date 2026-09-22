@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static ProjetoComentario ToDomain(ProjetoComentarioModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new ProjetoComentario
             {
@@ -21,7 +21,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static ProjetoComentarioModel ToModel(ProjetoComentario domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new ProjetoComentarioModel
             {

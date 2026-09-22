@@ -32,7 +32,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
                 return Result<ProjetoResponseDto>.Failure(codigoResult.Notifications);
 
             // 3.Verificar se código já existe
-            var existeCodigoResult = await _projetoRepository.ExisteCodigoAsync(codigoResult.Data.Value);
+            var existeCodigoResult = await _projetoRepository.ExisteCodigoAsync(codigoResult.Data!.Value);
             if (!existeCodigoResult.IsSuccess)
                 return Result<ProjetoResponseDto>.Failure(existeCodigoResult.Notifications);
 
@@ -43,7 +43,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
                 return Result<ProjetoResponseDto>.Failure(notification);
             }
 
-            projeto.AlterarCodigo(codigoResult.Data.Value);
+            projeto.AlterarCodigo(codigoResult.Data!.Value);
 
             // 4. Validar entidade
             var validationResult = projeto.Validate();
@@ -60,7 +60,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
                 return Result<ProjetoResponseDto>.Failure(saveResult.Notifications);
 
             // 6. Retornar DTO de resposta
-            var responseDto = ProjetoDtoMapper.ToResponseDto(saveResult.Data);
+            var responseDto = ProjetoDtoMapper.ToResponseDto(saveResult.Data!);
             return Result<ProjetoResponseDto>.Success(responseDto);
         }
     }

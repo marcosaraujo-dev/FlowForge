@@ -9,7 +9,7 @@ namespace CygnusFlow.Infrastructure.Mappers
         
         public static Projeto ToDomain(ProjetoModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             var projeto = new Projeto(
                 codigo: model.Codigo,
@@ -55,7 +55,7 @@ namespace CygnusFlow.Infrastructure.Mappers
         // Converter Entidade de Domínio para Model EF
         public static ProjetoModel ToModel(Projeto domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new ProjetoModel
             {

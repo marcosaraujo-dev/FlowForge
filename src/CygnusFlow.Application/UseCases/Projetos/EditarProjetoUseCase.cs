@@ -22,7 +22,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
             if (!projetoExistenteResult.IsSuccess)
                 return Result<ProjetoResponseDto>.Failure(projetoExistenteResult.Notifications);
 
-            var projetoExistente = projetoExistenteResult.Data;
+            var projetoExistente = projetoExistenteResult.Data!;
 
             // Atualizar propriedades a partir do DTO
             projetoExistente.DefinirNome(dto.Nome);
@@ -55,7 +55,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
                 return Result<ProjetoResponseDto>.Failure(saveResult.Notifications);
 
             // Mapear para DTO de resposta
-            var responseDto = ProjetoDtoMapper.ToResponseDto(saveResult.Data);
+            var responseDto = ProjetoDtoMapper.ToResponseDto(saveResult.Data!);
 
             return Result<ProjetoResponseDto>.Success(responseDto);
         }

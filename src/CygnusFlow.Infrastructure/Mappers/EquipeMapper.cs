@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static Equipe ToDomain(EquipeModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new Equipe
             {
@@ -18,7 +18,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static EquipeModel ToModel(Equipe domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new EquipeModel
             {

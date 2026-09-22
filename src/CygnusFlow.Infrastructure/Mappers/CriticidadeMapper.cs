@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static Criticidade ToDomain(CriticidadeModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new Criticidade
             {
@@ -22,7 +22,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static CriticidadeModel ToModel(Criticidade domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new CriticidadeModel
             {

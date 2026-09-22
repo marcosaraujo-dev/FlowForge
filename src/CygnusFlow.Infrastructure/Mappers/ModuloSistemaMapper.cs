@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static ModuloSistema ToDomain(ModuloSistemaModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new ModuloSistema
             {
@@ -18,7 +18,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static ModuloSistemaModel ToModel(ModuloSistema domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new ModuloSistemaModel
             {

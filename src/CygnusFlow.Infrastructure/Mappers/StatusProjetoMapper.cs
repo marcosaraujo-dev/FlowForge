@@ -7,7 +7,7 @@ namespace CygnusFlow.Infrastructure.Mappers
     {
         public static StatusProjeto ToDomain(StatusProjetoModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             return new StatusProjeto
             {
@@ -20,7 +20,7 @@ namespace CygnusFlow.Infrastructure.Mappers
 
         public static StatusProjetoModel ToModel(StatusProjeto domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new StatusProjetoModel
             {

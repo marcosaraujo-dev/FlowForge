@@ -9,7 +9,7 @@ namespace CygnusFlow.Infrastructure.Mappers
         // Converter Model EF para Entidade de Domínio
         public static Atividade ToDomain(AtividadeModel model)
         {
-            if (model == null) return null;
+            if (model == null) return null!;
 
             var atividade = new Atividade(
                 codigo: model.Codigo,
@@ -50,7 +50,7 @@ namespace CygnusFlow.Infrastructure.Mappers
         // Converter Entidade de Domínio para Model EF
         public static AtividadeModel ToModel(Atividade domain)
         {
-            if (domain == null) return null;
+            if (domain == null) return null!;
 
             return new AtividadeModel
             {

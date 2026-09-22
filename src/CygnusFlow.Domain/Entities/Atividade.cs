@@ -360,15 +360,14 @@ namespace CygnusFlow.Domain.Entities
                 var dataReferencia = DateTime.Now.Date;
                 var dataLimite = DataFimPlanejada ?? DataFimReal;
 
-                if (dataReferencia > dataLimite?.Date)
-                    return (dataReferencia - dataLimite.Value.Date).Days; 
-                    return (dataReferencia - dataLimite.Value.Date).Days; 
+                if (dataLimite.HasValue && dataReferencia > dataLimite.Value.Date)
+                    return (dataReferencia - dataLimite.Value.Date).Days;
             }
             else
             {
                 var dataLimite = DataFimPlanejada ?? DataFimReal;
-                if (DataFimReal.Value.Date > dataLimite?.Date)
-                    return (DataFimReal.Value.Date - dataLimite.Value.Date).Days; 
+                if (dataLimite.HasValue && DataFimReal.Value.Date > dataLimite.Value.Date)
+                    return (DataFimReal.Value.Date - dataLimite.Value.Date).Days;
             }
 
             return 0;
