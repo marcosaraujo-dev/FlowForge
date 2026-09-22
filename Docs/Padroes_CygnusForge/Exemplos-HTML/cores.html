@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cores — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .color-card { border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); background: white; }
+  .color-swatch { height: 72px; }
+  .color-info { padding: 10px 12px; }
+  .color-name { font-size: 12px; font-weight: 600; color: #495057; margin-bottom: 2px; }
+  .color-hex { font-size: 11px; font-family: 'Consolas', monospace; color: #6c757d; }
+  .color-use { font-size: 10px; color: #adb5bd; margin-top: 4px; line-height: 1.4; }
+  .combo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .combo-card { border-radius: 8px; padding: 16px 20px; border: 1px solid #dee2e6; }
+  .combo-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; margin-bottom: 6px; }
+  .combo-sample { font-size: 15px; font-weight: 500; }
+  .semantic-group { margin-bottom: 28px; }
+  .semantic-title { font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .semantic-title::after { content: ''; flex: 1; height: 1px; background: #e9ecef; }
+  .badge-preview { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .alert-preview { padding: 12px 16px; border-radius: 6px; border-width: 1px; border-style: solid; font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Sistema de Cores</h1>
+  <p>Paleta completa do Design System da Empresa — tokens, swatches e combinacoes</p>
+</div>
+
+<div class="container">
+
+  <!-- CORES PRIMARIAS -->
+  <div class="section">
+    <div class="section-title">Cores Primarias</div>
+    <p class="section-desc">Identidade visual da marca Empresa. Usada nos elementos de maior destaque.</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#184194;"></div>
+        <div class="color-info">
+          <div class="color-name">Primary</div>
+          <div class="color-hex">#184194</div>
+          <div class="color-use">Botao principal, links, headers</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#0F2D6B;"></div>
+        <div class="color-info">
+          <div class="color-name">Primary Hover / Dark</div>
+          <div class="color-hex">#0F2D6B</div>
+          <div class="color-use">Hover, variacao escura</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORES SEMANTICAS -->
+  <div class="section">
+    <div class="section-title">Cores Semanticas</div>
+    <p class="section-desc">Comunicam estados e resultados. Cada cor tem um significado especifico — nao troque.</p>
+
+    <div class="semantic-group">
+      <div class="semantic-title">Success — Verde</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#28A745;"></div>
+          <div class="color-info"><div class="color-name">Success</div><div class="color-hex">#28A745</div><div class="color-use">Botao confirmar, status ativo</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#218838;"></div>
+          <div class="color-info"><div class="color-name">Success Hover</div><div class="color-hex">#218838</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#D4EDDA; border: 1px solid #dee2e6;"></div>
+          <div class="color-info"><div class="color-name">Badge Success Bg</div><div class="color-hex">#D4EDDA</div><div class="color-use">Fundo de badge de sucesso</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <span class="badge-preview" style="background:#D4EDDA; color:#155724;">Ativo</span>
+        <div class="alert-preview" style="background:#D4EDDA; border-color:#28A745; color:#155724;">Operacao realizada com sucesso.</div>
+      </div>
+    </div>
+
+    <div class="semantic-group">
+      <div class="semantic-title">Danger — Vermelho</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#DC3545;"></div>
+          <div class="color-info"><div class="color-name">Danger</div><div class="color-hex">#DC3545</div><div class="color-use">Excluir, erros, status inativo</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#C82333;"></div>
+          <div class="color-info"><div class="color-name">Danger Hover</div><div class="color-hex">#C82333</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#F8D7DA; border: 1px solid #dee2e6;"></div>
+          <div class="color-info"><div class="color-name">Badge Error Bg</div><div class="color-hex">#F8D7DA</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <span class="badge-preview" style="background:#F8D7DA; color:#721C24;">Inativo</span>
+        <div class="alert-preview" style="background:#F8D7DA; border-color:#DC3545; color:#721C24;">CPF invalido. Verifique o valor informado.</div>
+      </div>
+    </div>
+
+    <div class="semantic-group">
+      <div class="semantic-title">Warning — Amarelo</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#FFC107;"></div>
+          <div class="color-info"><div class="color-name">Warning</div><div class="color-hex">#FFC107</div><div class="color-use">Avisos, pendencias</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#FFF3CD; border: 1px solid #dee2e6;"></div>
+          <div class="color-info"><div class="color-name">Badge Warning Bg</div><div class="color-hex">#FFF3CD</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <span class="badge-preview" style="background:#FFF3CD; color:#856404;">Pendente</span>
+        <div class="alert-preview" style="background:#FFF3CD; border-color:#FFC107; color:#856404;">Existem itens pendentes de revisao.</div>
+      </div>
+    </div>
+
+    <div class="semantic-group">
+      <div class="semantic-title">Info — Azul Claro</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#17A2B8;"></div>
+          <div class="color-info"><div class="color-name">Info</div><div class="color-hex">#17A2B8</div><div class="color-use">Informacoes complementares</div></div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#D1ECF1; border: 1px solid #dee2e6;"></div>
+          <div class="color-info"><div class="color-name">Badge Info Bg</div><div class="color-hex">#D1ECF1</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <span class="badge-preview" style="background:#D1ECF1; color:#0C5460;">Em analise</span>
+        <div class="alert-preview" style="background:#D1ECF1; border-color:#17A2B8; color:#0C5460;">Os dados serao processados em ate 2 horas.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORES DE FUNDO -->
+  <div class="section">
+    <div class="section-title">Cores de Fundo</div>
+    <p class="section-desc">Usadas para diferenciar areas e criar profundidade na interface.</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F5F5F5; border-bottom:1px solid #dee2e6;"></div>
+        <div class="color-info"><div class="color-name">Background</div><div class="color-hex">#F5F5F5</div><div class="color-use">Fundo da pagina</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F8F9FA; border-bottom:1px solid #dee2e6;"></div>
+        <div class="color-info"><div class="color-name">Sidebar Background</div><div class="color-hex">#F8F9FA</div><div class="color-use">Menu lateral, areas secundarias</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#FFFFFF; border-bottom:1px solid #dee2e6;"></div>
+        <div class="color-info"><div class="color-name">Surface / White</div><div class="color-hex">#FFFFFF</div><div class="color-use">Cards, inputs, modais</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#E9ECEF; border-bottom:1px solid #dee2e6;"></div>
+        <div class="color-info"><div class="color-name">Hover Background</div><div class="color-hex">#E9ECEF</div><div class="color-use">Hover em itens de lista</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORES DE TEXTO -->
+  <div class="section">
+    <div class="section-title">Cores de Texto</div>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#495057;"></div>
+        <div class="color-info"><div class="color-name">Text Primary</div><div class="color-hex">#495057</div><div class="color-use">Texto principal</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#6C757D;"></div>
+        <div class="color-info"><div class="color-name">Text Secondary</div><div class="color-hex">#6C757D</div><div class="color-use">Texto auxiliar, legendas</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#ADB5BD;"></div>
+        <div class="color-info"><div class="color-name">Text Light</div><div class="color-hex">#ADB5BD</div><div class="color-use">Placeholder, ajuda</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#0066CC;"></div>
+        <div class="color-info"><div class="color-name">Link</div><div class="color-hex">#0066CC</div><div class="color-use">Links e textos clicaveis</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA RESUMO DOS ESTADOS DO DATAGRID -->
+  <div class="section">
+    <div class="section-title">Estados de Tabela (DataGrid)</div>
+    <p class="section-desc">Cores para os tres estados de linha em tabelas de dados.</p>
+    <div style="border-radius:8px; overflow:hidden; border:1px solid #dee2e6;">
+      <table style="width:100%; border-collapse:collapse; font-size:13px;">
+        <thead>
+          <tr style="background:#f8f9fa; height:40px;">
+            <th style="padding:0 16px; text-align:left; font-weight:600; color:#495057; border-bottom:1px solid #dee2e6;">Estado</th>
+            <th style="padding:0 16px; text-align:left; font-weight:600; color:#495057; border-bottom:1px solid #dee2e6;">Cor de fundo</th>
+            <th style="padding:0 16px; text-align:left; font-weight:600; color:#495057; border-bottom:1px solid #dee2e6;">Hex</th>
+            <th style="padding:0 16px; text-align:left; font-weight:600; color:#495057; border-bottom:1px solid #dee2e6;">Exemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="height:48px; background:#ffffff;">
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Normal</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Branco</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef; font-family:monospace;">#FFFFFF</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Esta linha esta normal</td>
+          </tr>
+          <tr style="height:48px; background:#F5F8FF;">
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Hover (mouse em cima)</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Azul muito claro</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef; font-family:monospace;">#F5F8FF</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Esta linha tem hover</td>
+          </tr>
+          <tr style="height:48px; background:#E3EFFF;">
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Selecionada</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Azul claro</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef; font-family:monospace;">#E3EFFF</td>
+            <td style="padding:0 16px; border-bottom:1px solid #e9ecef;">Esta linha esta selecionada</td>
+          </tr>
+          <tr style="height:48px; background:#D6E8FF;">
+            <td style="padding:0 16px;">Hover + Selecionada</td>
+            <td style="padding:0 16px;">Azul medio</td>
+            <td style="padding:0 16px; font-family:monospace;">#D6E8FF</td>
+            <td style="padding:0 16px;">Selecionada com hover</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

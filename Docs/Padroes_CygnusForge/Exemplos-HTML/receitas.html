@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receitas de Tela — Design System da Empresa</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+
+  /* ===== PAGINA EXTERNA ===== */
+  .page-header { background: linear-gradient(135deg, #184194 0%, #0f2d6b 100%); color: white; padding: 32px 40px 0; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p  { font-size: 14px; opacity: 0.85; margin-bottom: 20px; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+
+  /* ===== TABS DE RECEITA ===== */
+  .recipe-tabs { display: flex; gap: 2px; padding: 0 40px; }
+  .recipe-tab {
+    padding: 10px 18px; font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,0.6); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.15s; user-select: none;
+    background: transparent; border-top: none; border-left: none; border-right: none;
+    font-family: inherit;
+  }
+  .recipe-tab:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.08); }
+  .recipe-tab.active { color: white; border-bottom-color: white; background: rgba(255,255,255,0.1); }
+
+  /* ===== CONTAINER EXTERNO ===== */
+  .outer { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
+
+  /* ===== DESCRICAO DA RECEITA ===== */
+  .recipe-desc {
+    background: white; border: 1px solid #dee2e6; border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 20px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .recipe-desc-icon { font-family: 'Segoe MDL2 Assets'; font-size: 24px; color: #184194; flex-shrink: 0; margin-top: 2px; }
+  .recipe-desc h3 { font-size: 15px; font-weight: 600; color: #184194; margin-bottom: 4px; }
+  .recipe-desc p  { font-size: 13px; color: #6c757d; line-height: 1.5; }
+  .recipe-desc .examples { font-size: 12px; color: #adb5bd; margin-top: 4px; }
+
+  /* ===== PANES ===== */
+  .recipe-pane { display: none; }
+  .recipe-pane.active { display: block; }
+
+  /* ===== SIMULADOR DE APP ===== */
+  .app-shell {
+    border: 1px solid #dee2e6; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    display: flex; height: 620px;
+  }
+
+  /* Barra de titulo tipo janela */
+  .app-chrome {
+    border: 1px solid #dee2e6; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  .chrome-bar {
+    background: #e9ecef; padding: 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  .chrome-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .chrome-title { flex: 1; text-align: center; font-size: 12px; color: #6c757d; }
+  .chrome-inner { display: flex; height: 600px; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 195px; flex-shrink: 0;
+    background: linear-gradient(180deg, #1a2a5e 0%, #0f1e45 100%);
+    display: flex; flex-direction: column;
+    padding: 16px 0;
+  }
+  .sidebar-logo {
+    padding: 0 16px 16px;
+    font-size: 14px; font-weight: 700; color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-logo-icon { font-family: 'Segoe MDL2 Assets'; font-size: 18px; color: #6b9fff; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    cursor: default; transition: all 0.1s;
+    border-left: 2px solid transparent;
+  }
+  .sidebar-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white; font-weight: 500;
+    border-left-color: #4d8bff;
+  }
+  .sidebar-item-icon { font-family: 'Segoe MDL2 Assets'; font-size: 14px; }
+  .sidebar-section { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.25); padding: 12px 16px 4px; }
+  .sidebar-spacer { flex: 1; }
+  .sidebar-user {
+    padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.5);
+  }
+  .sidebar-avatar { width: 28px; height: 28px; border-radius: 50%; background: #184194; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+
+  /* Area de conteudo principal */
+  .content-area {
+    flex: 1; background: #f5f5f5; overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+
+  /* ===== TOKENS DO DS ===== */
+  /* Page header interno */
+  .pg-header {
+    background: white; padding: 20px 28px 16px;
+    border-bottom: 2px solid #e9ecef;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .pg-title { font-size: 22px; font-weight: 600; color: #495057; }
+  .pg-subtitle { font-size: 13px; color: #6c757d; margin-top: 2px; }
+
+  /* Area rolavel */
+  .content-scroll { flex: 1; padding: 24px 28px; overflow-y: auto; }
+
+  /* Footer fixo */
+  .pg-footer {
+    background: white; padding: 12px 28px;
+    border-top: 1px solid #dee2e6;
+    display: flex; justify-content: flex-end; gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ===== CARDS / SECTIONS ===== */
+  .card { background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 16px; }
+  .card-body { padding: 18px 20px; }
+  .card-header { padding: 12px 20px; border-bottom: 1px solid #e9ecef; display: flex; align-items: center; justify-content: space-between; }
+  .card-header-title { font-size: 14px; font-weight: 600; color: #495057; }
+
+  /* ===== SECTION DIVIDER ===== */
+  .form-section { margin-bottom: 0; }
+  .form-section + .form-section { margin-top: 24px; padding-top: 24px; border-top: 1px solid #e9ecef; }
+  .form-section-title { font-size: 13px; font-weight: 600; color: #495057; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .form-section-title-icon { font-family: 'Segoe MDL2 Assets'; font-size: 13px; color: #6c757d; }
+
+  /* ===== FORM GRIDS ===== */
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .form-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+
+  /* ===== FIELDS ===== */
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 12px; font-weight: 600; color: #495057; }
+  .field-label .req { color: #dc3545; }
+  .field-input {
+    height: 32px; border: 1px solid #dee2e6; border-radius: 6px;
+    padding: 0 10px; font-size: 13px; color: #333; font-family: inherit;
+    background: white;
+  }
+  .field-input:focus { outline: none; border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(147,197,253,0.2); }
+  .field-input.disabled { background: #f8f9fa; color: #94a3b8; border-color: #e9ecef; }
+  .field-select {
+    height: 32px; border: 1px solid #dee2e6; border-radius: 6px;
+    padding: 0 10px; font-size: 13px; color: #333; font-family: inherit;
+    background: white;
+  }
+  .field-help { font-size: 11px; color: #adb5bd; }
+
+  /* ===== BOTOES ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0 16px; height: 32px; border: none; border-radius: 6px;
+    font-size: 13px; font-family: inherit; cursor: pointer;
+    font-weight: 500; transition: all 0.12s;
+  }
+  .btn-primary { background: #184194; color: white; }
+  .btn-primary:hover { background: #0f2d6b; }
+  .btn-secondary { background: transparent; color: #495057; border: 1px solid #dee2e6; }
+  .btn-secondary:hover { background: #f5f5f5; }
+  .btn-danger { background: #dc3545; color: white; }
+  .btn-danger:hover { background: #c82333; }
+  .btn-sm { height: 28px; font-size: 12px; padding: 0 12px; }
+  .btn-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border: none; border-radius: 6px;
+    background: transparent; cursor: pointer; font-family: 'Segoe MDL2 Assets'; font-size: 13px;
+    transition: background 0.1s;
+  }
+  .btn-icon.edit  { color: #184194; }
+  .btn-icon.edit:hover { background: #e8effc; }
+  .btn-icon.del   { color: #dc3545; }
+  .btn-icon.del:hover { background: #fde8ea; }
+  .btn-icon.view  { color: #17a2b8; }
+  .btn-icon.view:hover { background: #e0f7fa; }
+
+  /* ===== BADGES ===== */
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-danger  { background: #f8d7da; color: #721c24; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-info    { background: #d1ecf1; color: #0c5460; }
+  .badge-secondary { background: #e2e3e5; color: #383d41; }
+  .badge-primary { background: #cce0ff; color: #184194; }
+
+  /* ===== TOOLBAR ===== */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .search-wrap { position: relative; flex: 1; }
+  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-family: 'Segoe MDL2 Assets'; font-size: 13px; color: #adb5bd; pointer-events: none; }
+  .search-input {
+    width: 100%; height: 32px; border: 1px solid #dee2e6; border-radius: 6px;
+    padding: 0 10px 0 32px; font-size: 13px; font-family: inherit;
+    background: white;
+  }
+  .search-input:focus { outline: none; border-color: #93c5fd; }
+
+  /* ===== TABELA ===== */
+  .table-wrap { border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table thead tr { background: #f8f9fa; height: 38px; }
+  .data-table thead th {
+    padding: 0 14px; text-align: left;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: #6c757d; border-bottom: 2px solid #dee2e6; white-space: nowrap;
+  }
+  .data-table thead th.center { text-align: center; }
+  .data-table thead th.right  { text-align: right; }
+  .data-table tbody tr { height: 44px; transition: background 0.1s; }
+  .data-table tbody tr:hover td { background: #f5f8ff; }
+  .data-table tbody tr.selected td { background: #e3efff; }
+  .data-table tbody tr.selected:hover td { background: #d6e8ff; }
+  .data-table tbody td {
+    padding: 0 14px; font-size: 13px;
+    border-bottom: 1px solid #e9ecef; vertical-align: middle;
+    background: white;
+  }
+  .data-table tbody td.center { text-align: center; }
+  .data-table tbody td.right  { text-align: right; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ===== ESTADO VAZIO ===== */
+  .empty-state { text-align: center; padding: 50px 20px; }
+  .empty-icon { font-family: 'Segoe MDL2 Assets'; font-size: 44px; color: #dee2e6; display: block; margin-bottom: 14px; }
+  .empty-title { font-size: 15px; font-weight: 600; color: #495057; margin-bottom: 6px; }
+  .empty-desc { font-size: 13px; color: #6c757d; margin-bottom: 18px; }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+  .stat-card {
+    background: white; border: 1px solid #dee2e6; border-radius: 8px;
+    padding: 16px; border-left: 4px solid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: all 0.15s;
+  }
+  .stat-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-1px); }
+  .stat-card.primary { border-left-color: #184194; }
+  .stat-card.success { border-left-color: #28a745; }
+  .stat-card.info    { border-left-color: #17a2b8; }
+  .stat-card.warning { border-left-color: #ffc107; }
+  .stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; margin-bottom: 8px; }
+  .stat-value { font-size: 26px; font-weight: 700; color: #184194; margin-bottom: 2px; }
+  .stat-value.green { color: #28a745; }
+  .stat-value.teal  { color: #17a2b8; }
+  .stat-value.gold  { color: #e0a800; }
+  .stat-sub { font-size: 11px; color: #adb5bd; display: flex; align-items: center; gap: 4px; }
+  .stat-icon-sm { font-family: 'Segoe MDL2 Assets'; font-size: 11px; }
+
+  /* ===== WIZARD STEPPER ===== */
+  .stepper { display: flex; align-items: center; padding: 20px 28px; background: white; border-bottom: 1px solid #e9ecef; flex-shrink: 0; }
+  .step { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .step-circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .step-circle.done { background: #28a745; color: white; }
+  .step-circle.active { background: #184194; color: white; }
+  .step-circle.pending { background: #e9ecef; color: #adb5bd; }
+  .step-info { display: flex; flex-direction: column; }
+  .step-name { font-size: 12px; font-weight: 600; color: #495057; }
+  .step-name.done { color: #28a745; }
+  .step-name.active { color: #184194; }
+  .step-name.pending { color: #adb5bd; }
+  .step-desc { font-size: 10px; color: #adb5bd; }
+  .step-connector { flex: 1; height: 1px; background: #dee2e6; margin: 0 8px; min-width: 20px; }
+  .step-connector.done { background: #28a745; }
+
+  /* ===== SPLIT VIEW ===== */
+  .split-layout { display: flex; flex: 1; overflow: hidden; }
+  .split-list { width: 42%; flex-shrink: 0; border-right: 1px solid #dee2e6; overflow-y: auto; display: flex; flex-direction: column; }
+  .split-detail { flex: 1; background: #f8f9fa; overflow-y: auto; padding: 20px; }
+  .split-toolbar { padding: 12px 16px; border-bottom: 1px solid #e9ecef; background: white; }
+  .list-item {
+    padding: 12px 16px; border-bottom: 1px solid #e9ecef;
+    cursor: pointer; transition: background 0.1s;
+    display: flex; flex-direction: column; gap: 3px;
+    background: white;
+  }
+  .list-item:hover { background: #f5f8ff; }
+  .list-item.active { background: #e3efff; border-left: 2px solid #184194; }
+  .list-item-title { font-size: 13px; font-weight: 600; color: #495057; }
+  .list-item-sub { font-size: 11px; color: #6c757d; }
+  .list-item-date { font-size: 10px; color: #adb5bd; }
+
+  /* ===== DETALHE (somente leitura) ===== */
+  .read-field { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+  .read-label { font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+  .read-value { font-size: 13px; color: #495057; }
+
+  /* ===== DIALOG OVERLAY ===== */
+  .dialog-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+  .dialog {
+    background: white; border-radius: 10px; width: 380px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .dialog-header { padding: 16px 20px; border-bottom: 1px solid #e9ecef; display: flex; align-items: center; justify-content: space-between; }
+  .dialog-title { font-size: 15px; font-weight: 600; color: #495057; }
+  .dialog-body { padding: 20px; font-size: 13px; color: #6c757d; line-height: 1.6; }
+  .dialog-footer { padding: 14px 20px; border-top: 1px solid #e9ecef; display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* ===== ALERT ===== */
+  .alert { padding: 10px 14px; border-radius: 6px; border-left: 4px solid; font-size: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .alert-success { background: #d4edda; border-color: #28a745; color: #155724; }
+  .alert-danger  { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+  .alert-warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+  .alert-icon { font-family: 'Segoe MDL2 Assets'; font-size: 14px; }
+
+  /* ===== ACTIVITY LIST ===== */
+  .activity-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; background: #184194; flex-shrink: 0; margin-top: 5px; }
+  .activity-content { flex: 1; }
+  .activity-text { font-size: 13px; color: #495057; }
+  .activity-time { font-size: 11px; color: #adb5bd; margin-top: 2px; }
+
+  /* ===== QUICK ACTIONS ===== */
+  .quick-action {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 6px;
+    border: 1px solid #dee2e6; background: white;
+    margin-bottom: 8px; cursor: pointer;
+    transition: all 0.12s; font-size: 13px; color: #184194; font-weight: 500;
+  }
+  .quick-action:hover { background: #f0f5ff; border-color: #184194; }
+  .quick-action-icon { font-family: 'Segoe MDL2 Assets'; font-size: 16px; width: 32px; height: 32px; background: #eef2fc; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #184194; }
+
+  /* ===== PAGINACAO ===== */
+  .pagination { display: flex; align-items: center; gap: 6px; justify-content: flex-end; padding: 14px 0 0; }
+  .pag-info { font-size: 12px; color: #6c757d; margin-right: auto; }
+  .pag-btn { width: 28px; height: 28px; border-radius: 5px; border: 1px solid #dee2e6; background: white; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; color: #495057; font-family: 'Segoe MDL2 Assets'; }
+  .pag-btn.active { background: #184194; color: white; border-color: #184194; font-family: inherit; font-size: 12px; font-weight: 600; }
+  .pag-btn:hover:not(.active) { background: #f5f5f5; }
+
+  /* ===== CHECKLIST DE COMPONENTES ===== */
+  .checklist { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px 20px; margin-top: 20px; }
+  .checklist h4 { font-size: 13px; font-weight: 600; color: #495057; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .checklist h4::before { content: ''; display: block; width: 3px; height: 14px; background: #184194; border-radius: 2px; }
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6c757d; }
+  .check-icon { font-family: 'Segoe MDL2 Assets'; font-size: 12px; color: #28a745; flex-shrink: 0; }
+  .check-link { font-size: 11px; color: #184194; margin-left: auto; text-decoration: none; }
+
+  /* ===== SPLIT VIEW NAV ===== */
+  .detail-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #adb5bd; gap: 12px; }
+  .detail-empty-icon { font-family: 'Segoe MDL2 Assets'; font-size: 36px; }
+  .detail-empty-text { font-size: 13px; }
+  .detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .detail-actions { display: flex; gap: 8px; }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar { height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #184194; border-radius: 2px; }
+
+  @media (max-width: 900px) {
+    .outer { padding: 20px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .form-grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Receitas de Tela</h1>
+  <p>Blueprints completos — identicos em WPF e React. Clique em cada receita para ver o layout renderizado.</p>
+
+  <div class="recipe-tabs">
+    <button class="recipe-tab active" onclick="showRecipe(0)">1. Lista + CRUD</button>
+    <button class="recipe-tab" onclick="showRecipe(1)">2. Cadastro / Edicao</button>
+    <button class="recipe-tab" onclick="showRecipe(2)">3. Detalhe</button>
+    <button class="recipe-tab" onclick="showRecipe(3)">4. Dashboard</button>
+    <button class="recipe-tab" onclick="showRecipe(4)">5. Wizard</button>
+    <button class="recipe-tab" onclick="showRecipe(5)">6. Split View</button>
+  </div>
+</div>
+
+<div class="outer">
+
+<!-- ==================== RECEITA 1: LISTA + CRUD ==================== -->
+<div class="recipe-pane active" id="pane-0">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE8A9;</span>
+    <div>
+      <h3>Lista + CRUD — O padrao mais comum</h3>
+      <p>Exibe registros em tabela com busca, filtros e acoes de criar, editar e excluir por linha. O botao "Novo" fica no header. Estado vazio aparece quando a lista esta vazia.</p>
+      <p class="examples">Exemplos: Funcionarios, Templates, Empresas, Documentos Gerados</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Central de Documentos — Funcionarios</span>
+    </div>
+    <div class="chrome-inner">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE8A5;</span> Historico</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div>
+            <div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div>
+            <div style="font-size:10px; color:rgba(255,255,255,0.4);">Administrador</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteudo -->
+      <div class="content-area">
+        <!-- Header da pagina -->
+        <div class="pg-header">
+          <div>
+            <div class="pg-title">Funcionarios</div>
+            <div class="pg-subtitle">62 funcionarios cadastrados</div>
+          </div>
+          <button class="btn btn-primary">
+            <span style="font-family:'Segoe MDL2 Assets'">&#xE710;</span> Novo Funcionario
+          </button>
+        </div>
+
+        <!-- Conteudo principal -->
+        <div class="content-scroll">
+
+          <!-- Toolbar de filtros -->
+          <div class="card card-body" style="margin-bottom:14px; padding:14px 18px;">
+            <div class="toolbar" style="margin-bottom:0;">
+              <div class="search-wrap">
+                <span class="search-icon">&#xE721;</span>
+                <input class="search-input" type="text" placeholder="Buscar por nome ou CPF...">
+              </div>
+              <select class="field-select" style="width:160px;">
+                <option>Todas as empresas</option>
+                <option>Alfa SA</option>
+                <option>Beta Ltda</option>
+              </select>
+              <select class="field-select" style="width:120px;">
+                <option>Todos os status</option>
+                <option>Ativo</option>
+                <option>Inativo</option>
+              </select>
+              <button class="btn btn-secondary btn-sm">
+                <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE72C;</span> Exportar
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabela -->
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th>Empresa</th>
+                  <th>Cargo</th>
+                  <th class="center">Status</th>
+                  <th class="right">Admissao</th>
+                  <th class="center">Acoes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Ana Clara Lima</strong></td>
+                  <td style="font-family:monospace; font-size:12px; color:#6c757d;">123.456.789-00</td>
+                  <td>Alfa SA</td>
+                  <td>Analista RH</td>
+                  <td class="center"><span class="badge badge-success">Ativo</span></td>
+                  <td class="right" style="color:#6c757d; font-size:12px;">01/06/2019</td>
+                  <td class="center">
+                    <button class="btn-icon view" title="Visualizar">&#xE890;</button>
+                    <button class="btn-icon edit" title="Editar">&#xE70F;</button>
+                    <button class="btn-icon del"  title="Excluir">&#xE74D;</button>
+                  </td>
+                </tr>
+                <tr class="selected">
+                  <td><strong>Carlos Eduardo Mota</strong></td>
+                  <td style="font-family:monospace; font-size:12px; color:#6c757d;">987.654.321-00</td>
+                  <td>Beta Ltda</td>
+                  <td>Desenvolvedor</td>
+                  <td class="center"><span class="badge badge-success">Ativo</span></td>
+                  <td class="right" style="color:#6c757d; font-size:12px;">15/03/2021</td>
+                  <td class="center">
+                    <button class="btn-icon view" title="Visualizar">&#xE890;</button>
+                    <button class="btn-icon edit" title="Editar">&#xE70F;</button>
+                    <button class="btn-icon del"  title="Excluir">&#xE74D;</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Julia Santos Pereira</strong></td>
+                  <td style="font-family:monospace; font-size:12px; color:#6c757d;">111.222.333-00</td>
+                  <td>Alfa SA</td>
+                  <td>Designer</td>
+                  <td class="center"><span class="badge badge-danger">Inativo</span></td>
+                  <td class="right" style="color:#6c757d; font-size:12px;">10/01/2018</td>
+                  <td class="center">
+                    <button class="btn-icon view" title="Visualizar">&#xE890;</button>
+                    <button class="btn-icon edit" title="Editar">&#xE70F;</button>
+                    <button class="btn-icon del"  title="Excluir">&#xE74D;</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Marcos Vinicius Reis</strong></td>
+                  <td style="font-family:monospace; font-size:12px; color:#6c757d;">444.555.666-00</td>
+                  <td>Gama ME</td>
+                  <td>Gerente TI</td>
+                  <td class="center"><span class="badge badge-warning">Pendente</span></td>
+                  <td class="right" style="color:#6c757d; font-size:12px;">20/08/2022</td>
+                  <td class="center">
+                    <button class="btn-icon view" title="Visualizar">&#xE890;</button>
+                    <button class="btn-icon edit" title="Editar">&#xE70F;</button>
+                    <button class="btn-icon del"  title="Excluir">&#xE74D;</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Patricia Oliveira Cruz</strong></td>
+                  <td style="font-family:monospace; font-size:12px; color:#6c757d;">777.888.999-00</td>
+                  <td>Beta Ltda</td>
+                  <td>Analista Fiscal</td>
+                  <td class="center"><span class="badge badge-info">Em Analise</span></td>
+                  <td class="right" style="color:#6c757d; font-size:12px;">03/11/2023</td>
+                  <td class="center">
+                    <button class="btn-icon view" title="Visualizar">&#xE890;</button>
+                    <button class="btn-icon edit" title="Editar">&#xE70F;</button>
+                    <button class="btn-icon del"  title="Excluir">&#xE74D;</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginacao -->
+          <div class="pagination">
+            <span class="pag-info">Mostrando 1–5 de 62 funcionarios</span>
+            <button class="pag-btn">&#xE76B;</button>
+            <button class="pag-btn active">1</button>
+            <button class="pag-btn">2</button>
+            <button class="pag-btn">3</button>
+            <span style="font-size:12px; color:#adb5bd;">...</span>
+            <button class="pag-btn">13</button>
+            <button class="pag-btn">&#xE76C;</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Botao "Novo" no header, alinhado a direita</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Toolbar separada com busca e filtros</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> DataGrid com estados hover (#F5F8FF) e selected (#E3EFFF)</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Badges de status na coluna correta</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Acoes por linha: ver / editar / excluir</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Paginacao com contador de registros</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Estado vazio (DataNotFound) quando lista vazia</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Loading ao carregar ou filtrar</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEITA 2: CADASTRO / EDICAO ==================== -->
+<div class="recipe-pane" id="pane-1">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE70F;</span>
+    <div>
+      <h3>Cadastro e Edicao — Formulario com secoes</h3>
+      <p>Formulario dividido em grupos logicos de campos. Header com titulo e subtitulo. Footer fixo com acoes alinhadas a direita. A area de campos rola independentemente.</p>
+      <p class="examples">Exemplos: Novo Template, Editar Funcionario, Configuracoes de Empresa</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Editar Funcionario — Central de Documentos</span>
+    </div>
+    <div class="chrome-inner">
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div><div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div></div>
+        </div>
+      </div>
+
+      <!-- Layout de formulario: header + scroll + footer fixo -->
+      <div class="content-area">
+        <!-- Header -->
+        <div class="pg-header">
+          <div>
+            <div class="pg-title">Editar Funcionario</div>
+            <div class="pg-subtitle">Carlos Eduardo Mota — Matricula 042 — Beta Ltda</div>
+          </div>
+          <span class="badge badge-success" style="font-size:12px; padding:4px 10px;">Ativo</span>
+        </div>
+
+        <!-- Alerta de contexto (opcional) -->
+        <div style="padding:14px 28px 0;">
+          <div class="alert alert-warning">
+            <span class="alert-icon">&#xE7BA;</span>
+            Existem campos obrigatorios nao preenchidos. Revise antes de salvar.
+          </div>
+        </div>
+
+        <!-- Area rolavel com formulario -->
+        <div class="content-scroll" style="padding-bottom:0;">
+
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Secao: Dados Pessoais -->
+              <div class="form-section">
+                <div class="form-section-title">
+                  <span class="form-section-title-icon">&#xE77B;</span>
+                  Dados Pessoais
+                </div>
+                <div class="form-grid-2">
+                  <div class="field col-span-2">
+                    <label class="field-label">Nome Completo <span class="req">*</span></label>
+                    <input class="field-input" type="text" value="Carlos Eduardo Mota">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">CPF <span class="req">*</span></label>
+                    <input class="field-input" type="text" value="987.654.321-00">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Data de Nascimento</label>
+                    <input class="field-input" type="text" value="12/04/1990">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">RG</label>
+                    <input class="field-input" type="text" value="12.345.678-9">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Email</label>
+                    <input class="field-input" type="text" value="carlos.mota@beta.com.br">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Secao: Dados Contratuais -->
+              <div class="form-section">
+                <div class="form-section-title">
+                  <span class="form-section-title-icon">&#xE821;</span>
+                  Dados Contratuais
+                </div>
+                <div class="form-grid-3">
+                  <div class="field">
+                    <label class="field-label">Empresa <span class="req">*</span></label>
+                    <select class="field-select">
+                      <option selected>Beta Ltda</option>
+                      <option>Alfa SA</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Matricula</label>
+                    <input class="field-input" type="text" value="042" class="disabled" disabled>
+                    <span class="field-help">Gerado automaticamente</span>
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Data de Admissao <span class="req">*</span></label>
+                    <input class="field-input" type="text" value="15/03/2021">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Cargo</label>
+                    <input class="field-input" type="text" value="Desenvolvedor Senior">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Salario Base</label>
+                    <input class="field-input" type="text" value="R$ 6.200,00">
+                  </div>
+                  <div class="field">
+                    <label class="field-label">Jornada</label>
+                    <select class="field-select"><option selected>8h CLT (44h/sem)</option></select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <p style="font-size:11px; color:#adb5bd; margin-bottom:14px;">
+            <span style="color:#dc3545;">*</span> Campos obrigatorios
+          </p>
+        </div>
+
+        <!-- Footer fixo -->
+        <div class="pg-footer">
+          <button class="btn btn-secondary">Cancelar</button>
+          <button class="btn btn-primary">Salvar Alteracoes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Header com titulo, subtitulo e badge de status</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Alerta contextual entre header e formulario</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Secoes com separador + titulo + icone</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Grid 2 ou 3 colunas por secao</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Campos obrigatorios com * em vermelho</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Legenda "* Campos obrigatorios" no rodape do form</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Area de campos rola, footer fixo nao rola</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Cancelar esq. / Salvar dir. no footer</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEITA 3: DETALHE ==================== -->
+<div class="recipe-pane" id="pane-2">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE890;</span>
+    <div>
+      <h3>Detalhe (Somente Leitura) — Exibir informacoes de um registro</h3>
+      <p>Campos em modo de leitura com labels menores acima dos valores. Acoes (Editar, Excluir) ficam no header. Informacoes secundarias e historico em Tabs abaixo.</p>
+      <p class="examples">Exemplos: Detalhe do Funcionario, Visualizar Template, Documento Gerado</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Carlos Eduardo Mota — Central de Documentos</span>
+    </div>
+    <div class="chrome-inner">
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div><div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div></div>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <!-- Header com acoes -->
+        <div class="pg-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="pg-title">Carlos Eduardo Mota</div>
+              <span class="badge badge-success" style="font-size:12px; padding:4px 10px;">Ativo</span>
+            </div>
+            <div class="pg-subtitle">Matricula 042 · Beta Ltda · Desenvolvedor Senior</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE70F;</span> Editar
+            </button>
+            <button class="btn btn-danger">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE74D;</span> Excluir
+            </button>
+          </div>
+        </div>
+
+        <div class="content-scroll">
+
+          <!-- Card dados pessoais -->
+          <div class="card" style="margin-bottom:14px;">
+            <div class="card-header">
+              <span class="card-header-title">Dados Pessoais</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid-4">
+                <div class="read-field">
+                  <div class="read-label">Nome Completo</div>
+                  <div class="read-value">Carlos Eduardo Mota</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">CPF</div>
+                  <div class="read-value" style="font-family:monospace;">987.654.321-00</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Data de Nascimento</div>
+                  <div class="read-value">12/04/1990</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">RG</div>
+                  <div class="read-value">12.345.678-9</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Email</div>
+                  <div class="read-value">carlos.mota@beta.com.br</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Telefone</div>
+                  <div class="read-value">(11) 98765-4321</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card dados contratuais -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-header-title">Dados Contratuais</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid-4">
+                <div class="read-field">
+                  <div class="read-label">Empresa</div>
+                  <div class="read-value">Beta Ltda</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Matricula</div>
+                  <div class="read-value">042</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Data de Admissao</div>
+                  <div class="read-value">15/03/2021</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Cargo</div>
+                  <div class="read-value">Desenvolvedor Senior</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Salario Base</div>
+                  <div class="read-value">R$ 6.200,00</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">Jornada</div>
+                  <div class="read-value">8h CLT (44h/sem)</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">CTPS</div>
+                  <div class="read-value" style="font-family:monospace;">12345 / 042-0</div>
+                </div>
+                <div class="read-field">
+                  <div class="read-label">PIS/PASEP</div>
+                  <div class="read-value" style="font-family:monospace;">123.45678.90-1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs de historico -->
+          <div class="card" style="margin-top:14px;">
+            <div style="display:flex; border-bottom:2px solid #dee2e6; padding:0 4px;">
+              <div style="padding:12px 16px; font-size:13px; color:#184194; font-weight:600; border-bottom:2px solid #184194; margin-bottom:-2px; cursor:pointer;">Ferias</div>
+              <div style="padding:12px 16px; font-size:13px; color:#adb5bd; cursor:pointer;">Holerites</div>
+              <div style="padding:12px 16px; font-size:13px; color:#adb5bd; cursor:pointer;">Documentos Gerados</div>
+              <div style="padding:12px 16px; font-size:13px; color:#adb5bd; cursor:pointer;">Historico Salarial</div>
+            </div>
+            <div class="card-body" style="padding:14px 20px;">
+              <p style="font-size:12px; color:#6c757d;">Proximo periodo aquisitivo: 15/03/2026 a 14/03/2027</p>
+              <div class="table-wrap" style="margin-top:10px;">
+                <table class="data-table">
+                  <thead><tr><th>Periodo</th><th>Inicio Gozo</th><th>Dias</th><th class="center">Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>2022/2023</td><td>10/01/2024</td><td>30</td><td class="center"><span class="badge badge-success">Gozada</span></td></tr>
+                    <tr><td>2023/2024</td><td>—</td><td>30</td><td class="center"><span class="badge badge-warning">A vencer</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Acoes (Editar/Excluir) no header, nao no footer</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Badge de status visivel no header</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Labels menores (uppercase) acima dos valores</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Grade 4 colunas para dados compactos</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Tabs para conteudo historico/secundario</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Botao excluir sempre com dialog de confirmacao</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEITA 4: DASHBOARD ==================== -->
+<div class="recipe-pane" id="pane-3">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE80F;</span>
+    <div>
+      <h3>Dashboard — Visao geral e metricas</h3>
+      <p>Cards de totalizadores em linha, seguidos de conteudo em duas colunas: lista de atividades (70%) e acoes rapidas (30%). Competencia visivel no header.</p>
+      <p class="examples">Exemplos: Painel Principal, Resumo da Folha, Painel de Controle</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Painel — Folha de Pagamento — Central de Documentos</span>
+    </div>
+    <div class="chrome-inner">
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div><div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div></div>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <!-- Header -->
+        <div class="pg-header">
+          <div>
+            <div class="pg-title">Painel — Folha de Pagamento</div>
+            <div class="pg-subtitle">Competencia: 03/2026</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <select class="field-select" style="width:130px; font-size:12px;">
+              <option>03/2026</option>
+              <option>02/2026</option>
+            </select>
+            <button class="btn btn-secondary btn-sm">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE72C;</span> Exportar
+            </button>
+          </div>
+        </div>
+
+        <div class="content-scroll">
+
+          <!-- Stat cards -->
+          <div class="stat-grid">
+            <div class="stat-card primary">
+              <div class="stat-label">Total Funcionarios</div>
+              <div class="stat-value">62</div>
+              <div class="stat-sub">
+                <span class="stat-icon-sm">&#xE8D6;</span> 15 empresas ativas
+              </div>
+            </div>
+            <div class="stat-card success">
+              <div class="stat-label">Funcionarios Ativos</div>
+              <div class="stat-value green">58</div>
+              <div class="stat-sub">
+                <span class="stat-icon-sm" style="color:#28a745;">&#xE73E;</span> 93,5% da forca
+              </div>
+            </div>
+            <div class="stat-card info">
+              <div class="stat-label">Em Ferias</div>
+              <div class="stat-value teal">4</div>
+              <div class="stat-sub">
+                <span class="stat-icon-sm" style="color:#17a2b8;">&#xE8AA;</span> Retorno em 18/03
+              </div>
+            </div>
+            <div class="stat-card warning">
+              <div class="stat-label">Total Folha</div>
+              <div class="stat-value gold">312k</div>
+              <div class="stat-sub">
+                <span class="stat-icon-sm" style="color:#e0a800;">&#xE8D0;</span> R$ 312.450,90
+              </div>
+            </div>
+          </div>
+
+          <!-- Linha de progresso do mes -->
+          <div class="card" style="margin-bottom:14px;">
+            <div class="card-body" style="padding:14px 20px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:600; color:#495057;">Progresso da Competencia 03/2026</span>
+                <span style="font-size:12px; color:#6c757d;">14 de 31 dias · 45%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:45%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conteudo 2 colunas -->
+          <div style="display:grid; grid-template-columns:2fr 1fr; gap:14px;">
+
+            <!-- Atividades recentes -->
+            <div class="card">
+              <div class="card-header">
+                <span class="card-header-title">Atividades Recentes</span>
+                <a href="#" style="font-size:12px; color:#184194; text-decoration:none;">Ver todas</a>
+              </div>
+              <div class="card-body">
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#28a745;"></div>
+                  <div class="activity-content">
+                    <div class="activity-text">Documento gerado: <strong>Holerite Mar/2026</strong> — Ana Clara Lima</div>
+                    <div class="activity-time">hoje, 14:32</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#184194;"></div>
+                  <div class="activity-content">
+                    <div class="activity-text">Template editado: <strong>Acordo de Compensacao</strong></div>
+                    <div class="activity-time">ontem, 09:15</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#28a745;"></div>
+                  <div class="activity-content">
+                    <div class="activity-text">Novo funcionario: <strong>Patricia Oliveira Cruz</strong> — Beta Ltda</div>
+                    <div class="activity-time">3 dias atras</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#ffc107;"></div>
+                  <div class="activity-content">
+                    <div class="activity-text">Aviso: <strong>4 funcionarios</strong> com ferias vencendo em 30 dias</div>
+                    <div class="activity-time">05/03/2026</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#184194;"></div>
+                  <div class="activity-content">
+                    <div class="activity-text">Relatorio exportado: <strong>Folha Fevereiro 2026</strong></div>
+                    <div class="activity-time">28/02/2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Acoes rapidas -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <span class="card-header-title">Acoes Rapidas</span>
+                </div>
+                <div class="card-body">
+                  <div class="quick-action">
+                    <div class="quick-action-icon">&#xE8A5;</div>
+                    Gerar Holerites
+                  </div>
+                  <div class="quick-action">
+                    <div class="quick-action-icon">&#xE72C;</div>
+                    Exportar Folha
+                  </div>
+                  <div class="quick-action">
+                    <div class="quick-action-icon">&#xE8D6;</div>
+                    Novo Funcionario
+                  </div>
+                  <div class="quick-action">
+                    <div class="quick-action-icon">&#xE896;</div>
+                    Novo Template
+                  </div>
+                </div>
+              </div>
+
+              <!-- Alertas resumo -->
+              <div class="card" style="margin-top:12px;">
+                <div class="card-header"><span class="card-header-title">Pendencias</span></div>
+                <div class="card-body">
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:12px;">
+                    <span style="color:#495057;">Ferias vencendo</span>
+                    <span class="badge badge-warning">4</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #f0f0f0; font-size:12px;">
+                    <span style="color:#495057;">Docs sem template</span>
+                    <span class="badge badge-danger">2</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:12px;">
+                    <span style="color:#495057;">Templates sem uso</span>
+                    <span class="badge badge-secondary">7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> 4 stat cards com largura igual, border-left colorida</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Icone + numero grande + label descritivo em cada card</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Progresso da competencia (opcional)</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Conteudo principal em grade 2/3 + 1/3</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Lista de atividades com ponto colorido por tipo</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Acoes rapidas na sidebar direita</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Resumo de pendencias com badges</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Loading ate todos os dados estarem prontos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEITA 5: WIZARD ==================== -->
+<div class="recipe-pane" id="pane-4">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE8B1;</span>
+    <div>
+      <h3>Wizard — Fluxo guiado passo a passo</h3>
+      <p>Indicador de etapas sempre visivel. "Proximo" so habilitado quando etapa esta valida. Ultimo passo tem resumo antes de confirmar. Footer com navegacao anterior/proximo.</p>
+      <p class="examples">Exemplos: Gerar Documentos, Importar Funcionarios, Configuracao Inicial</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Gerar Documentos — Central de Documentos</span>
+    </div>
+    <div class="chrome-inner">
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div><div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div></div>
+        </div>
+      </div>
+
+      <!-- Wizard layout: header + stepper + conteudo + footer nav -->
+      <div class="content-area">
+        <!-- Header -->
+        <div class="pg-header">
+          <div>
+            <div class="pg-title">Gerar Documentos</div>
+            <div class="pg-subtitle">Selecione empresa, template e funcionarios para gerar os documentos.</div>
+          </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="stepper">
+          <div class="step">
+            <div class="step-circle done">&#xE73E;</div>
+            <div class="step-info">
+              <div class="step-name done">Empresa</div>
+              <div class="step-desc">Alfa SA · 03/2026</div>
+            </div>
+          </div>
+          <div class="step-connector done"></div>
+          <div class="step">
+            <div class="step-circle active">2</div>
+            <div class="step-info">
+              <div class="step-name active">Template</div>
+              <div class="step-desc">Selecionar modelo</div>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <div class="step-circle pending">3</div>
+            <div class="step-info">
+              <div class="step-name pending">Funcionarios</div>
+              <div class="step-desc">Quem vai receber</div>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <div class="step-circle pending">4</div>
+            <div class="step-info">
+              <div class="step-name pending">Confirmar</div>
+              <div class="step-desc">Revisar e gerar</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conteudo da etapa ativa (etapa 2: Template) -->
+        <div class="content-scroll">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-header-title">Selecione o template</span>
+            </div>
+            <div class="card-body">
+              <p style="font-size:13px; color:#6c757d; margin-bottom:16px;">Escolha o modelo de documento que sera gerado para os funcionarios selecionados.</p>
+
+              <div class="field" style="margin-bottom:16px;">
+                <label class="field-label">Template <span class="req">*</span></label>
+                <select class="field-select" style="width:100%; height:34px;">
+                  <option>Selecione um template...</option>
+                  <option selected>Acordo de Compensacao de Horas eSocial</option>
+                  <option>Holerite Mensal</option>
+                  <option>Carta de Rescisao</option>
+                  <option>Aviso de Ferias</option>
+                </select>
+              </div>
+
+              <!-- Preview do template selecionado -->
+              <div style="border:1px solid #dee2e6; border-radius:8px; overflow:hidden;">
+                <div style="background:#f8f9fa; padding:10px 14px; border-bottom:1px solid #dee2e6; display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:12px; font-weight:600; color:#495057;">Preview — Acordo de Compensacao de Horas eSocial</span>
+                  <div style="display:flex; gap:6px;">
+                    <span class="badge badge-primary">Word</span>
+                    <span class="badge badge-success">12 coringas</span>
+                  </div>
+                </div>
+                <div style="padding:16px; background:white; min-height:120px; font-size:12px; color:#6c757d; line-height:1.8;">
+                  <p>Pelo presente instrumento, a empresa <strong style="color:#184194;">$$09EP001</strong> (<strong style="color:#184194;">$$09EP019</strong>), com sede em <strong style="color:#184194;">$$09EP011</strong>, contrata o(a) funcionario(a) <strong style="color:#184194;">$$09FN006</strong>, CPF <strong style="color:#184194;">$$09FN011</strong>, matricula <strong style="color:#184194;">$$09FN004</strong>, para prestacao de servicos na modalidade de compensacao de horas...</p>
+                </div>
+              </div>
+
+              <p style="font-size:11px; color:#adb5bd; margin-top:10px;">Os campos em azul sao coringas que serao substituidos pelos dados do funcionario ao gerar.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer de navegacao do wizard -->
+        <div class="pg-footer" style="justify-content:space-between;">
+          <button class="btn btn-secondary">
+            <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE76B;</span> Anterior
+          </button>
+          <button class="btn btn-primary">
+            Proximo <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE76C;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Stepper com estados: concluido / ativo / pendente</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Conectores coloridos entre etapas concluidas</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> "Proximo" desabilitado ate etapa estar valida</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> "Anterior" sempre disponivel (exceto etapa 1)</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Ultima etapa tem resumo do que sera feito</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Footer wizard separado do footer de acoes padrao</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Loading ao confirmar/gerar na ultima etapa</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Navegar para resultado apos conclusao</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEITA 6: SPLIT VIEW ==================== -->
+<div class="recipe-pane" id="pane-5">
+  <div class="recipe-desc">
+    <span class="recipe-desc-icon">&#xE7C4;</span>
+    <div>
+      <h3>Split View — Lista com painel de detalhe</h3>
+      <p>Lista de itens (40%) ao lado do painel de detalhe (60%). Clicar em um item atualiza o painel sem navegar. Item selecionado tem destaque azul com borda esquerda.</p>
+      <p class="examples">Exemplos: Historico de Documentos, Templates com preview, Caixa de Mensagens</p>
+    </div>
+  </div>
+
+  <div class="app-chrome">
+    <div class="chrome-bar">
+      <div class="chrome-dot" style="background:#ff5f56;"></div>
+      <div class="chrome-dot" style="background:#ffbd2e;"></div>
+      <div class="chrome-dot" style="background:#27c93f;"></div>
+      <span class="chrome-title">Documentos Gerados — Central de Documentos</span>
+    </div>
+    <div class="chrome-inner">
+      <div class="sidebar">
+        <div class="sidebar-logo"><span class="sidebar-logo-icon">&#xE8A5;</span> Empresa</div>
+        <div class="sidebar-section">Principal</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE80F;</span> Painel</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE8D6;</span> Funcionarios</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE7C3;</span> Empresas</div>
+        <div class="sidebar-section">Documentos</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE896;</span> Templates</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#xE74E;</span> Gerar Docs</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#xE8A5;</span> Historico</div>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">MA</div>
+          <div><div style="font-size:11px; color:rgba(255,255,255,0.7);">Marcos Araujo</div></div>
+        </div>
+      </div>
+
+      <div class="content-area" style="overflow:hidden;">
+        <!-- Header da pagina -->
+        <div class="pg-header">
+          <div>
+            <div class="pg-title">Documentos Gerados</div>
+            <div class="pg-subtitle">14 documentos em marco/2026</div>
+          </div>
+          <button class="btn btn-primary">
+            <span style="font-family:'Segoe MDL2 Assets'">&#xE74E;</span> Gerar Novo
+          </button>
+        </div>
+
+        <!-- Split layout -->
+        <div class="split-layout">
+
+          <!-- Lista -->
+          <div class="split-list">
+            <div class="split-toolbar">
+              <div class="search-wrap">
+                <span class="search-icon">&#xE721;</span>
+                <input class="search-input" type="text" placeholder="Buscar documento...">
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-title">Holerite Mar/2026 — Ana Clara Lima</div>
+              <div class="list-item-sub">Alfa SA · Word · 245 KB</div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="list-item-date">hoje, 14:32</div>
+                <span class="badge badge-success" style="font-size:10px;">Gerado</span>
+              </div>
+            </div>
+
+            <div class="list-item active">
+              <div class="list-item-title">Acordo de Compensacao — Carlos Mota</div>
+              <div class="list-item-sub">Beta Ltda · Word · 128 KB</div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="list-item-date">ontem, 09:15</div>
+                <span class="badge badge-success" style="font-size:10px;">Gerado</span>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-title">Aviso de Ferias — Julia Santos</div>
+              <div class="list-item-sub">Alfa SA · Word · 98 KB</div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="list-item-date">3 dias, 16:44</div>
+                <span class="badge badge-warning" style="font-size:10px;">Processando</span>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-title">Holerite Fev/2026 — Marcos Reis</div>
+              <div class="list-item-sub">Gama ME · Word · 231 KB</div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="list-item-date">28/02/2026</div>
+                <span class="badge badge-success" style="font-size:10px;">Gerado</span>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-title">Carta de Rescisao — Pedro Alves</div>
+              <div class="list-item-sub">Beta Ltda · Word · 176 KB</div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="list-item-date">25/02/2026</div>
+                <span class="badge badge-danger" style="font-size:10px;">Erro</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Painel de detalhe -->
+          <div class="split-detail">
+            <div class="detail-header">
+              <div>
+                <div style="font-size:15px; font-weight:600; color:#495057; margin-bottom:4px;">Acordo de Compensacao de Horas eSocial</div>
+                <div style="font-size:12px; color:#6c757d; display:flex; gap:12px; align-items:center;">
+                  <span>Carlos Eduardo Mota</span>
+                  <span>·</span>
+                  <span>Beta Ltda</span>
+                  <span>·</span>
+                  <span class="badge badge-success">Gerado</span>
+                </div>
+              </div>
+              <div class="detail-actions">
+                <button class="btn btn-primary btn-sm">
+                  <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE8A7;</span> Abrir
+                </button>
+                <button class="btn btn-secondary btn-sm">
+                  <span style="font-family:'Segoe MDL2 Assets'; font-size:12px;">&#xE896;</span> Baixar
+                </button>
+                <button class="btn-icon del" title="Excluir" style="border:1px solid #dee2e6;">&#xE74D;</button>
+              </div>
+            </div>
+
+            <!-- Metadados -->
+            <div class="card" style="margin-bottom:12px;">
+              <div class="card-body" style="padding:12px 16px;">
+                <div class="form-grid-4" style="gap:10px;">
+                  <div class="read-field">
+                    <div class="read-label">Gerado em</div>
+                    <div class="read-value" style="font-size:12px;">12/03/2026 09:15</div>
+                  </div>
+                  <div class="read-field">
+                    <div class="read-label">Template</div>
+                    <div class="read-value" style="font-size:12px;">Acordo Comp. eSocial</div>
+                  </div>
+                  <div class="read-field">
+                    <div class="read-label">Formato</div>
+                    <div class="read-value" style="font-size:12px;">Word (.docx)</div>
+                  </div>
+                  <div class="read-field">
+                    <div class="read-label">Tamanho</div>
+                    <div class="read-value" style="font-size:12px;">128 KB</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview do documento -->
+            <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:20px; min-height:240px;">
+              <div style="max-width:420px; margin:0 auto; font-size:11px; color:#495057; line-height:2;">
+                <p style="text-align:center; font-weight:600; margin-bottom:16px; font-size:12px;">ACORDO DE COMPENSACAO DE HORAS</p>
+                <p>Pelo presente instrumento, a empresa <strong>Beta Ltda</strong> (CNPJ: 12.345.678/0001-90), com sede em Sao Paulo/SP, e o(a) funcionario(a) <strong>Carlos Eduardo Mota</strong>, CPF 987.654.321-00, matricula 042, admitido(a) em 15/03/2021, celebram o presente Acordo de Compensacao de Horas, nos termos do artigo 59 da CLT e da legislacao vigente...</p>
+                <div style="margin-top:20px; color:#adb5bd; text-align:center; font-size:10px;">[ ... conteudo do documento ... ]</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h4>Componentes desta receita</h4>
+    <div class="check-grid">
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Lista: 40% | Painel: 60% da largura</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Item ativo com background #E3EFFF e border-left azul</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Painel atualiza ao clicar (sem navegar)</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Acoes do item no painel, nao na lista</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Estado vazio no painel quando nada selecionado</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Busca na toolbar da lista filtra em tempo real</div>
+      <div class="check-item"><span class="check-icon">&#xE73E;</span> Badge de status visivel em cada item da lista</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /outer -->
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:0;">
+  Design System da Empresa · Receitas de Tela — v1.0 · Marco 2026 ·
+  <a href="../03-Layout/03-Receitas-Tela.md" style="color:rgba(255,255,255,0.5);">Ver documentacao completa</a>
+</div>
+
+<script>
+  function showRecipe(index) {
+    // Desativar todas as tabs e panes
+    document.querySelectorAll('.recipe-tab').forEach(function(tab, i) {
+      tab.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.recipe-pane').forEach(function(pane, i) {
+      pane.classList.toggle('active', i === index);
+    });
+    // Scroll ao topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

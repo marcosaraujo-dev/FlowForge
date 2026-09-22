@@ -8,6 +8,7 @@ namespace CygnusFlow.Application.DTOs.Projeto
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
         public int ModuloId { get; set; }
+        public string Descricao { get; set; } = string.Empty;
         public Criticidade CriticidadeId { get; set; }
         public DateTime DataInicioPO { get; set; }
         public DateTime DataFimPO { get; set; }

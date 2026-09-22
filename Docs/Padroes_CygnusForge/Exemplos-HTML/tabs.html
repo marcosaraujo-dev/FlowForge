@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabs — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  .spec-tag { display: inline-block; background: #e9ecef; border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #495057; margin: 2px; }
+  .spec-tags { margin-top: 12px; }
+
+  /* ─── UNDERLINE TABS ─────────────────────────────── */
+  .tabs-underline { border-bottom: 2px solid #dee2e6; display: flex; gap: 0; }
+  .tabs-underline .tab-item { padding: 10px 20px; font-size: 14px; color: #6c757d; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; user-select: none; }
+  .tabs-underline .tab-item:hover { color: #184194; }
+  .tabs-underline .tab-item.active { color: #184194; font-weight: 600; border-bottom-color: #184194; }
+  .tabs-underline .tab-item.disabled { color: #adb5bd; cursor: not-allowed; }
+  .tab-content { padding: 20px 4px; font-size: 14px; color: #495057; line-height: 1.6; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── BOXED TABS ─────────────────────────────────── */
+  .tabs-boxed-wrapper { background: #f0f2f5; border-radius: 8px 8px 0 0; padding: 8px 8px 0 8px; display: flex; gap: 4px; }
+  .tabs-boxed-wrapper .tab-item { padding: 9px 18px; font-size: 14px; color: #6c757d; cursor: pointer; border-radius: 6px 6px 0 0; background: transparent; user-select: none; transition: background 0.15s, color 0.15s; }
+  .tabs-boxed-wrapper .tab-item:hover { background: rgba(255,255,255,0.6); color: #495057; }
+  .tabs-boxed-wrapper .tab-item.active { background: white; color: #184194; font-weight: 600; box-shadow: 0 -1px 0 0 #dee2e6 inset; }
+  .tabs-boxed-content { background: white; border: 1px solid #dee2e6; border-top: none; border-radius: 0 0 8px 8px; padding: 20px; font-size: 14px; color: #495057; line-height: 1.6; min-height: 80px; }
+
+  /* ─── PILLS TABS ─────────────────────────────────── */
+  .tabs-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tabs-pills .tab-item { padding: 7px 18px; font-size: 13px; color: #6c757d; cursor: pointer; border-radius: 20px; background: #f0f2f5; user-select: none; transition: background 0.15s, color 0.15s; }
+  .tabs-pills .tab-item:hover { background: #e3efff; color: #184194; }
+  .tabs-pills .tab-item.active { background: #184194; color: white; font-weight: 600; }
+  .tabs-pills .tab-item.active-green { background: #28a745; color: white; font-weight: 600; }
+  .tabs-pills .tab-item.active-gray { background: #6c757d; color: white; font-weight: 600; }
+
+  /* ─── TABS COM BADGE ─────────────────────────────── */
+  .tab-badge { display: inline-flex; align-items: center; justify-content: center;
+    background: #dc3545; color: white; font-size: 10px; font-weight: 700;
+    border-radius: 10px; min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px; line-height: 1; }
+  .tab-badge.primary { background: #184194; }
+
+  /* ─── TABS COM ÍCONE ─────────────────────────────── */
+  .tab-icon { font-family: 'Segoe MDL2 Assets', 'Segoe UI Symbol', sans-serif; font-size: 14px; margin-right: 6px; }
+
+  /* ─── EXEMPLO REAL ───────────────────────────────── */
+  .demo-card { border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .demo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .demo-table th { background: #f8f9fa; padding: 10px 14px; text-align: left; font-weight: 600; color: #6c757d; font-size: 12px; border-bottom: 1px solid #dee2e6; }
+  .demo-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; color: #495057; }
+  .demo-table tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-danger { background: #f8d7da; color: #721c24; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-secondary { background: #e9ecef; color: #495057; }
+
+  /* ─── ESTADOS ────────────────────────────────────── */
+  .states-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 4px; }
+  .state-item { text-align: center; }
+  .state-item .label { font-size: 11px; color: #6c757d; margin-top: 6px; }
+  .state-demo { display: inline-flex; padding: 8px 16px; border-radius: 4px; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+  .state-active { color: #184194; font-weight: 600; border-bottom-color: #184194; }
+  .state-inactive { color: #6c757d; }
+  .state-hover { color: #184194; }
+  .state-disabled { color: #adb5bd; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Tabs — Abas de Navegação</h1>
+  <p>Três variantes para organizar conteúdo em categorias alternáveis</p>
+</div>
+
+<div class="container">
+
+  <!-- UNDERLINE TABS -->
+  <div class="section">
+    <div class="section-title">Underline Tabs — Padrão</div>
+    <p class="section-desc">Variante padrão. Tab ativa tem underline na cor PrimaryColor. Usar em páginas principais e telas de detalhe.</p>
+
+    <div class="tabs-underline" id="tabs-ul">
+      <div class="tab-item active" onclick="switchTab('ul',0,this)">Dados Gerais</div>
+      <div class="tab-item" onclick="switchTab('ul',1,this)">Documentos</div>
+      <div class="tab-item" onclick="switchTab('ul',2,this)">Histórico</div>
+      <div class="tab-item disabled">Relatórios</div>
+    </div>
+    <div class="tab-content">
+      <div class="tab-panel active" id="ul-0">
+        <strong>Aba Dados Gerais</strong> — conteúdo principal do registro. Campos de nome, empresa, cargo, data de admissão, etc.
+      </div>
+      <div class="tab-panel" id="ul-1">
+        <strong>Aba Documentos</strong> — lista de documentos vinculados ao trabalhador. RG, CPF, CTPS, contratos, etc.
+      </div>
+      <div class="tab-panel" id="ul-2">
+        <strong>Aba Histórico</strong> — log de alterações, movimentações salariais e eventos do trabalhador.
+      </div>
+    </div>
+
+    <div class="spec-tags">
+      <span class="spec-tag">Altura do header: 40px</span>
+      <span class="spec-tag">Padding: 10px 20px</span>
+      <span class="spec-tag">Underline: 2px solid PrimaryColor</span>
+      <span class="spec-tag">Ativo: PrimaryColor + SemiBold</span>
+      <span class="spec-tag">Inativo: TextSecondaryColor</span>
+    </div>
+  </div>
+
+  <!-- UNDERLINE COM BADGE E ÍCONE -->
+  <div class="section">
+    <div class="section-title">Underline Tabs com Badge e Ícone</div>
+    <p class="section-desc">Use badges para indicar contagem de itens pendentes. Use ícones para reforçar o significado da aba.</p>
+
+    <div class="tabs-underline" id="tabs-badge">
+      <div class="tab-item active" onclick="switchTab('badge',0,this)">
+        <span class="tab-icon">&#xE71D;</span> Pendentes
+        <span class="tab-badge">5</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('badge',1,this)">
+        <span class="tab-icon">&#xE930;</span> Gerados
+        <span class="tab-badge primary">12</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('badge',2,this)">
+        <span class="tab-icon">&#xE72D;</span> Enviados
+      </div>
+      <div class="tab-item" onclick="switchTab('badge',3,this)">
+        <span class="tab-icon">&#xE90E;</span> Com Erro
+        <span class="tab-badge">2</span>
+      </div>
+    </div>
+    <div class="tab-content">
+      <div class="tab-panel active" id="badge-0">Documentos aguardando geração (5 pendentes).</div>
+      <div class="tab-panel" id="badge-1">Documentos já gerados com sucesso (12 itens).</div>
+      <div class="tab-panel" id="badge-2">Documentos enviados ao destinatário final.</div>
+      <div class="tab-panel" id="badge-3">Documentos com falha no processamento (2 erros).</div>
+    </div>
+  </div>
+
+  <!-- BOXED TABS -->
+  <div class="section">
+    <div class="section-title">Boxed Tabs</div>
+    <p class="section-desc">Abas com fundo preenchido. A ativa tem fundo branco sobre o header cinza. Ideal dentro de cards e grupos de configuração.</p>
+
+    <div class="tabs-boxed-wrapper" id="tabs-box">
+      <div class="tab-item active" onclick="switchBoxTab(0,this)">Configuração</div>
+      <div class="tab-item" onclick="switchBoxTab(1,this)">Permissões</div>
+      <div class="tab-item" onclick="switchBoxTab(2,this)">Auditoria</div>
+    </div>
+    <div class="tabs-boxed-content">
+      <div class="tab-panel active" id="box-0">Configurações gerais do módulo: parâmetros, integrações, preferências de exibição.</div>
+      <div class="tab-panel" id="box-1">Controle de acesso por perfil e usuário. Definição de permissões de leitura, escrita e exclusão.</div>
+      <div class="tab-panel" id="box-2">Registro de ações realizadas: quem fez, o quê, quando.</div>
+    </div>
+
+    <div class="spec-tags" style="margin-top:12px">
+      <span class="spec-tag">Header fundo: BackgroundColor (#F0F2F5)</span>
+      <span class="spec-tag">Tab ativa: fundo branco</span>
+      <span class="spec-tag">Border radius: 6px 6px 0 0</span>
+    </div>
+  </div>
+
+  <!-- PILLS TABS -->
+  <div class="section">
+    <div class="section-title">Pills Tabs</div>
+    <p class="section-desc">Abas em formato de pílula. Ideal para filtros de listagem e segmentação de dados.</p>
+
+    <div class="tabs-pills" id="tabs-pill" style="margin-bottom:16px">
+      <div class="tab-item active" onclick="switchPillTab(0,this)">Todos</div>
+      <div class="tab-item" onclick="switchPillTab(1,this)">Ativos</div>
+      <div class="tab-item" onclick="switchPillTab(2,this)">Inativos</div>
+      <div class="tab-item" onclick="switchPillTab(3,this)">Pendentes</div>
+    </div>
+
+    <div style="font-size:13px; color:#6c757d; padding:12px 0;">
+      <div class="tab-panel active" id="pill-0">Exibindo todos os 62 trabalhadores cadastrados.</div>
+      <div class="tab-panel" id="pill-1">Exibindo 58 trabalhadores ativos.</div>
+      <div class="tab-panel" id="pill-2">Exibindo 4 trabalhadores inativos.</div>
+      <div class="tab-panel" id="pill-3">Exibindo 3 trabalhadores com pendências documentais.</div>
+    </div>
+
+    <div class="spec-tags">
+      <span class="spec-tag">Border radius: 20px (pílula)</span>
+      <span class="spec-tag">Ativo: fundo PrimaryColor + texto branco</span>
+      <span class="spec-tag">Inativo: fundo BackgroundColor</span>
+    </div>
+  </div>
+
+  <!-- ESTADOS -->
+  <div class="section">
+    <div class="section-title">Estados das Abas (Underline)</div>
+    <div class="states-grid">
+      <div class="state-item">
+        <div style="border-bottom: 2px solid #dee2e6; display:flex; justify-content:center;">
+          <div class="state-demo state-active">Ativo</div>
+        </div>
+        <div class="label">Ativo</div>
+      </div>
+      <div class="state-item">
+        <div style="border-bottom: 2px solid #dee2e6; display:flex; justify-content:center;">
+          <div class="state-demo state-inactive">Inativo</div>
+        </div>
+        <div class="label">Inativo</div>
+      </div>
+      <div class="state-item">
+        <div style="border-bottom: 2px solid #dee2e6; display:flex; justify-content:center;">
+          <div class="state-demo state-hover">Hover</div>
+        </div>
+        <div class="label">Hover</div>
+      </div>
+      <div class="state-item">
+        <div style="border-bottom: 2px solid #dee2e6; display:flex; justify-content:center;">
+          <div class="state-demo state-disabled">Desabilitado</div>
+        </div>
+        <div class="label">Desabilitado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXEMPLO REAL -->
+  <div class="section">
+    <div class="section-title">Exemplo Real — Detalhe do Trabalhador</div>
+    <p class="section-desc">Tabs em contexto de uma tela de detalhe com conteúdo real.</p>
+
+    <div class="demo-card">
+      <div style="padding: 16px 20px; border-bottom: 1px solid #dee2e6; background: white;">
+        <div style="font-size:16px; font-weight:600; color:#212529;">João Carlos da Silva</div>
+        <div style="font-size:12px; color:#6c757d;">CPF: 123.456.789-00 · Empresa: 001 - Transportes Nordeste Ltda</div>
+      </div>
+      <div style="padding: 0 20px; background:white;">
+        <div class="tabs-underline" id="tabs-detail" style="border-bottom-color: #dee2e6;">
+          <div class="tab-item active" onclick="switchTab('detail',0,this)">Dados Cadastrais</div>
+          <div class="tab-item" onclick="switchTab('detail',1,this)">Jornada</div>
+          <div class="tab-item" onclick="switchTab('detail',2,this)">Documentos <span class="tab-badge">3</span></div>
+        </div>
+      </div>
+      <div style="padding: 20px; background: white;">
+        <div class="tab-panel active" id="detail-0">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:13px;">
+            <div><span style="color:#6c757d;display:block;font-size:11px;font-weight:600;margin-bottom:2px;">NOME</span>João Carlos da Silva</div>
+            <div><span style="color:#6c757d;display:block;font-size:11px;font-weight:600;margin-bottom:2px;">DATA DE ADMISSÃO</span>01/03/2018</div>
+            <div><span style="color:#6c757d;display:block;font-size:11px;font-weight:600;margin-bottom:2px;">CARGO</span>Motorista</div>
+            <div><span style="color:#6c757d;display:block;font-size:11px;font-weight:600;margin-bottom:2px;">SALÁRIO</span>R$ 3.200,00</div>
+          </div>
+        </div>
+        <div class="tab-panel" id="detail-1">
+          <div style="font-size:13px;">Jornada: 8h CLT · Segunda a Sexta · 08:00 às 17:00 · Intervalo: 1h</div>
+        </div>
+        <div class="tab-panel" id="detail-2">
+          <table class="demo-table">
+            <thead><tr><th>Documento</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody>
+              <tr><td>RG</td><td><span class="badge badge-success">OK</span></td><td>12/01/2018</td></tr>
+              <tr><td>CTPS</td><td><span class="badge badge-success">OK</span></td><td>12/01/2018</td></tr>
+              <tr><td>Exame Admissional</td><td><span class="badge badge-warning">Vencendo</span></td><td>05/02/2024</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(prefix, idx, el) {
+  const container = el.closest('[id^="tabs-"]');
+  container.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // find panels
+  for(let i=0; i<10; i++) {
+    const panel = document.getElementById(prefix+'-'+i);
+    if(panel) panel.classList.toggle('active', i===idx);
+  }
+}
+function switchBoxTab(idx, el) {
+  document.querySelectorAll('.tabs-boxed-wrapper .tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  for(let i=0; i<5; i++) {
+    const p = document.getElementById('box-'+i);
+    if(p) p.classList.toggle('active', i===idx);
+  }
+}
+function switchPillTab(idx, el) {
+  document.querySelectorAll('#tabs-pill .tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  for(let i=0; i<5; i++) {
+    const p = document.getElementById('pill-'+i);
+    if(p) p.classList.toggle('active', i===idx);
+  }
+}
+</script>
+</body>
+</html>

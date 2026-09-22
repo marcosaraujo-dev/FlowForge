@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Icones — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .icon-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 16px 10px; text-align: center; background: white; cursor: default; transition: all 0.15s; }
+  .icon-card:hover { border-color: #184194; box-shadow: 0 2px 8px rgba(24,65,148,0.12); transform: translateY(-1px); }
+  .icon-symbol { font-family: 'Segoe MDL2 Assets'; font-size: 28px; color: #184194; display: block; margin-bottom: 8px; line-height: 1; }
+  .icon-symbol.danger { color: #dc3545; }
+  .icon-symbol.success { color: #28a745; }
+  .icon-symbol.warning { color: #ffc107; }
+  .icon-symbol.info { color: #17a2b8; }
+  .icon-symbol.secondary { color: #6c757d; }
+  .icon-name { font-size: 11px; font-weight: 600; color: #495057; margin-bottom: 3px; }
+  .icon-code { font-size: 10px; font-family: 'Consolas', monospace; color: #adb5bd; background: #f8f9fa; padding: 2px 5px; border-radius: 3px; display: inline-block; }
+  .quick-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; border: 1px solid #dee2e6; }
+  .quick-table th { background: #f8f9fa; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; border-bottom: 2px solid #dee2e6; }
+  .quick-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: middle; }
+  .quick-table tr:last-child td { border-bottom: none; }
+  .quick-table .icon-col { font-family: 'Segoe MDL2 Assets'; font-size: 20px; text-align: center; width: 50px; }
+  code { font-family: 'Consolas', monospace; font-size: 12px; background: #f0f0f0; padding: 2px 6px; border-radius: 3px; color: #495057; }
+  .color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .usage-note { font-size: 11px; color: #adb5bd; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Catalogo de Icones</h1>
+  <p>Segoe MDL2 Assets — icones nativos do Windows usados nos sistemas da empresa</p>
+</div>
+
+<div class="container">
+
+  <!-- TABELA RAPIDA -->
+  <div class="section">
+    <div class="section-title">Acoes Comuns — Referencia Rapida</div>
+    <p class="section-desc">Os icones mais usados na interface. Sempre use estes para manter consistencia.</p>
+    <table class="quick-table">
+      <thead>
+        <tr>
+          <th style="width:60px; text-align:center;">Icone</th>
+          <th>Acao</th>
+          <th>Codigo</th>
+          <th>Cor Recomendada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE710;</td>
+          <td><strong>Adicionar / Novo</strong></td>
+          <td><code>&amp;#xE710;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary #184194</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE70F;</td>
+          <td><strong>Editar</strong></td>
+          <td><code>&amp;#xE70F;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary #184194</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#dc3545;">&#xE74D;</td>
+          <td><strong>Excluir / Remover</strong></td>
+          <td><code>&amp;#xE74D;</code></td>
+          <td><span class="color-dot" style="background:#dc3545;"></span>Danger #DC3545</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE74E;</td>
+          <td><strong>Salvar</strong></td>
+          <td><code>&amp;#xE74E;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary #184194</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#6c757d;">&#xE711;</td>
+          <td><strong>Cancelar / Fechar</strong></td>
+          <td><code>&amp;#xE711;</code></td>
+          <td><span class="color-dot" style="background:#6c757d;"></span>Secondary #6C757D</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#28a745;">&#xE8FB;</td>
+          <td><strong>Confirmar / Aprovar</strong></td>
+          <td><code>&amp;#xE8FB;</code></td>
+          <td><span class="color-dot" style="background:#28a745;"></span>Success #28A745</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#6c757d;">&#xE721;</td>
+          <td><strong>Buscar / Pesquisar</strong></td>
+          <td><code>&amp;#xE721;</code></td>
+          <td><span class="color-dot" style="background:#6c757d;"></span>Secondary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE72E;</td>
+          <td><strong>Atualizar / Recarregar</strong></td>
+          <td><code>&amp;#xE72E;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE724;</td>
+          <td><strong>Enviar</strong></td>
+          <td><code>&amp;#xE724;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE72C;</td>
+          <td><strong>Download / Exportar</strong></td>
+          <td><code>&amp;#xE72C;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE74A;</td>
+          <td><strong>Upload / Importar</strong></td>
+          <td><code>&amp;#xE74A;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#6c757d;">&#xE8E5;</td>
+          <td><strong>Copiar</strong></td>
+          <td><code>&amp;#xE8E5;</code></td>
+          <td><span class="color-dot" style="background:#6c757d;"></span>Secondary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE768;</td>
+          <td><strong>Imprimir</strong></td>
+          <td><code>&amp;#xE768;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#17a2b8;">&#xE8A5;</td>
+          <td><strong>Informacao</strong></td>
+          <td><code>&amp;#xE8A5;</code></td>
+          <td><span class="color-dot" style="background:#17a2b8;"></span>Info #17A2B8</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#6c757d;">&#xE713;</td>
+          <td><strong>Configuracoes</strong></td>
+          <td><code>&amp;#xE713;</code></td>
+          <td><span class="color-dot" style="background:#6c757d;"></span>Secondary</td>
+        </tr>
+        <tr>
+          <td class="icon-col" style="color:#184194;">&#xE787;</td>
+          <td><strong>Calendario / Data</strong></td>
+          <td><code>&amp;#xE787;</code></td>
+          <td><span class="color-dot" style="background:#184194;"></span>Primary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GALERIA COMPLETA -->
+  <div class="section">
+    <div class="section-title">Galeria — Navegacao e Interface</div>
+    <div class="icon-grid">
+      <div class="icon-card"><span class="icon-symbol">&#xE72A;</span><div class="icon-name">Home</div><div class="icon-code">#xE72A</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE76B;</span><div class="icon-name">Voltar</div><div class="icon-code">#xE76B</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE76C;</span><div class="icon-name">Avancar</div><div class="icon-code">#xE76C</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE70D;</span><div class="icon-name">Expandir</div><div class="icon-code">#xE70D</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE70E;</span><div class="icon-name">Recolher</div><div class="icon-code">#xE70E</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE700;</span><div class="icon-name">Menu</div><div class="icon-code">#xE700</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE8BB;</span><div class="icon-name">Fechar (X)</div><div class="icon-code">#xE8BB</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE71C;</span><div class="icon-name">Filtrar</div><div class="icon-code">#xE71C</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE8A3;</span><div class="icon-name">Zoom In</div><div class="icon-code">#xE8A3</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE890;</span><div class="icon-name">Visualizar</div><div class="icon-code">#xE890</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE77B;</span><div class="icon-name">Usuario</div><div class="icon-code">#xE77B</div></div>
+      <div class="icon-card"><span class="icon-symbol">&#xE8B7;</span><div class="icon-name">Pasta</div><div class="icon-code">#xE8B7</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Galeria — Status e Feedback</div>
+    <div class="icon-grid">
+      <div class="icon-card"><span class="icon-symbol success">&#xE73E;</span><div class="icon-name">Sucesso / OK</div><div class="icon-code">#xE73E</div></div>
+      <div class="icon-card"><span class="icon-symbol danger">&#xE783;</span><div class="icon-name">Erro</div><div class="icon-code">#xE783</div></div>
+      <div class="icon-card"><span class="icon-symbol warning">&#xE7BA;</span><div class="icon-name">Aviso</div><div class="icon-code">#xE7BA</div></div>
+      <div class="icon-card"><span class="icon-symbol info">&#xE8A5;</span><div class="icon-name">Info</div><div class="icon-code">#xE8A5</div></div>
+      <div class="icon-card"><span class="icon-symbol secondary">&#xE8A7;</span><div class="icon-name">Carregando</div><div class="icon-code">#xE8A7</div></div>
+      <div class="icon-card"><span class="icon-symbol warning">&#xE734;</span><div class="icon-name">Favorito</div><div class="icon-code">#xE734</div></div>
+    </div>
+  </div>
+
+  <!-- NOTA DE USO WPF -->
+  <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:20px 24px; border-left:4px solid #17a2b8; margin-bottom:16px;">
+    <div style="font-size:14px; font-weight:600; color:#0c5460; margin-bottom:8px;">Como usar em WPF (XAML)</div>
+    <pre style="font-size:12px; color:#495057; font-family:Consolas,monospace; background:#f8f9fa; padding:12px; border-radius:4px; overflow:auto;">&lt;TextBlock FontFamily="Segoe MDL2 Assets"
+           Text="&amp;#xE70F;"
+           FontSize="14"
+           Foreground="{StaticResource PrimaryColor}"/&gt;
+
+&lt;!-- Em botao com icone + texto --&gt;
+&lt;Button&gt;
+    &lt;StackPanel Orientation="Horizontal" &gt;
+        &lt;TextBlock FontFamily="Segoe MDL2 Assets" Text="&amp;#xE710;" Margin="0,0,6,0"/&gt;
+        &lt;TextBlock Text="Novo Funcionario"/&gt;
+    &lt;/StackPanel&gt;
+&lt;/Button&gt;</pre>
+  </div>
+
+  <!-- NOTA DE USO WEB -->
+  <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:20px 24px; border-left:4px solid #184194; margin-bottom:16px;">
+    <div style="font-size:14px; font-weight:600; color:#184194; margin-bottom:4px;">Como usar em aplicacoes Web (HTML/CSS)</div>
+    <p style="font-size:13px; color:#6c757d; margin-bottom:12px;">
+      A fonte Segoe MDL2 Assets esta instalada por padrao em todo Windows (8.1+).
+      Em sistemas internos — como portais web corporativos, Electron, WebView2 — ela funciona diretamente no browser <strong>sem necessidade de hospedar o arquivo de fonte</strong>.
+    </p>
+    <pre style="font-size:12px; color:#495057; font-family:Consolas,monospace; background:#f8f9fa; padding:12px; border-radius:4px; overflow:auto; margin-bottom:12px;">/* CSS — aplicar a fonte */
+.icon {
+  font-family: "Segoe MDL2 Assets";
+  font-size: 20px;
+  color: #184194;
+}
+
+/* Exemplo com variavel CSS para consistencia */
+:root { --icon-font: "Segoe MDL2 Assets"; }
+.icon { font-family: var(--icon-font); }</pre>
+
+    <pre style="font-size:12px; color:#495057; font-family:Consolas,monospace; background:#f8f9fa; padding:12px; border-radius:4px; overflow:auto; margin-bottom:12px;">&lt;!-- HTML — uso basico --&gt;
+&lt;span class="icon"&gt;&amp;#xE710;&lt;/span&gt;
+&lt;span class="icon" style="color:#dc3545;"&gt;&amp;#xE74D;&lt;/span&gt;
+
+&lt;!-- Botao com icone + texto --&gt;
+&lt;button style="display:flex; align-items:center; gap:8px;"&gt;
+  &lt;span style="font-family:'Segoe MDL2 Assets';"&gt;&amp;#xE710;&lt;/span&gt;
+  &lt;span&gt;Novo&lt;/span&gt;
+&lt;/button&gt;</pre>
+
+    <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:6px; padding:12px 16px; font-size:12px; color:#856404;">
+      <strong>Limitacao:</strong> Segoe MDL2 Assets e uma fonte do sistema Windows. Em Mac ou Linux o icone nao sera exibido a menos que o arquivo de fonte seja hospedado no servidor.
+      Para sistemas internos Windows (ERP, portais corporativos) isso nao e problema. Para apps publicos na internet, prefira alternativas como <strong>Fluent UI Icons</strong> (SVG) ou <strong>Material Icons</strong>.
+    </div>
+  </div>
+
+  <!-- COMO DESCOBRIR NOVOS ICONES -->
+  <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:20px 24px; border-left:4px solid #6c757d; margin-bottom:16px;">
+    <div style="font-size:14px; font-weight:600; color:#495057; margin-bottom:8px;">Como descobrir novos icones</div>
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="background:#f8f9fa;">
+          <th style="padding:8px 12px; text-align:left; border-bottom:2px solid #dee2e6;">Metodo</th>
+          <th style="padding:8px 12px; text-align:left; border-bottom:2px solid #dee2e6;">Como usar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid #f0f0f0;"><strong>Docs Microsoft</strong></td>
+          <td style="padding:8px 12px; border-bottom:1px solid #f0f0f0;">Grid visual completo: <code>learn.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font</code></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid #f0f0f0;"><strong>charmap.exe</strong></td>
+          <td style="padding:8px 12px; border-bottom:1px solid #f0f0f0;">Win+R → <code>charmap</code> → Fonte: "Segoe MDL2 Assets" → clicar no icone → codigo no rodape</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;"><strong>Esta pagina</strong></td>
+          <td style="padding:8px 12px;">Ja exibe o visual de cada icone — confira aqui como o icone fica antes de usar no WPF ou no HTML do projeto</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px; color:#6c757d; margin-top:10px;">
+      Converter codigo: <code>U+E710</code> (Microsoft) → <code>&amp;#xE710;</code> (HTML/XAML) → <code>\uE710</code> (C#/JS)
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

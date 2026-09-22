@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabelas — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; overflow: hidden; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 16px; margin-top: -12px; }
+  /* Table */
+  .table-wrap { border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table thead tr { background: #f8f9fa; height: 40px; }
+  .data-table thead th { padding: 0 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; border-bottom: 2px solid #dee2e6; white-space: nowrap; }
+  .data-table thead th.right { text-align: right; }
+  .data-table thead th.center { text-align: center; }
+  .data-table tbody tr { height: 48px; transition: background 0.1s; }
+  .data-table tbody tr:hover { background: #f5f8ff; }
+  .data-table tbody tr.selected { background: #e3efff; }
+  .data-table tbody tr.selected:hover { background: #d6e8ff; }
+  .data-table tbody td { padding: 0 16px; font-size: 13px; border-bottom: 1px solid #e9ecef; vertical-align: middle; }
+  .data-table tbody td.right { text-align: right; }
+  .data-table tbody td.center { text-align: center; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  /* Badge */
+  .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-danger { background: #f8d7da; color: #721c24; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+  /* Icon buttons */
+  .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: none; border-radius: 6px; background: transparent; cursor: pointer; font-family: 'Segoe MDL2 Assets'; font-size: 14px; transition: background 0.1s; }
+  .icon-btn:hover { background: #f5f7ff; }
+  .icon-btn.edit { color: #184194; }
+  .icon-btn.view { color: #17a2b8; }
+  .icon-btn.del { color: #dc3545; }
+  /* Empty state */
+  .empty-state { text-align: center; padding: 60px 20px; color: #6c757d; }
+  .empty-icon { font-family: 'Segoe MDL2 Assets'; font-size: 48px; color: #dee2e6; display: block; margin-bottom: 16px; }
+  .empty-title { font-size: 16px; font-weight: 600; color: #495057; margin-bottom: 6px; }
+  .empty-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; height: 34px; border: none; border-radius: 6px; font-size: 13px; font-family: inherit; cursor: pointer; }
+  .btn-primary { background: #184194; color: white; }
+  /* State color legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; margin-bottom: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-box { width: 20px; height: 14px; border-radius: 3px; border: 1px solid #dee2e6; }
+  /* Toolbar */
+  .toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 0; margin-bottom: 12px; }
+  .search-input { height: 32px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 10px 0 32px; font-size: 13px; font-family: inherit; width: 220px; background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cpath d='m21 21-4.35-4.35'%3E%3C/path%3E%3C/svg%3E") no-repeat 8px center; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Tabelas de Dados</h1>
+  <p>Estados de linha, colunas, acoes e estado vazio</p>
+</div>
+
+<div class="container">
+
+  <!-- ESTADOS DAS LINHAS -->
+  <div class="section">
+    <div class="section-title">Estados de Linha</div>
+    <p class="section-desc">Passe o mouse sobre as linhas para ver os estados. A linha 3 esta selecionada.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-box" style="background:#ffffff;"></div> Normal (#FFFFFF)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#f5f8ff;"></div> Hover (#F5F8FF)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#e3efff;"></div> Selecionada (#E3EFFF)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#d6e8ff;"></div> Hover+Selected (#D6E8FF)</div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Cargo</th>
+            <th>Empresa</th>
+            <th class="center">Status</th>
+            <th class="right">Salario</th>
+            <th class="center">Acoes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ana Lima</strong></td>
+            <td>Analista RH</td>
+            <td>Empresa</td>
+            <td class="center"><span class="badge badge-success">Ativo</span></td>
+            <td class="right">R$ 4.500,00</td>
+            <td class="center">
+              <button class="icon-btn view" title="Visualizar">&#xE890;</button>
+              <button class="icon-btn edit" title="Editar">&#xE70F;</button>
+              <button class="icon-btn del" title="Excluir">&#xE74D;</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Carlos Mota</strong></td>
+            <td>Desenvolvedor</td>
+            <td>Empresa</td>
+            <td class="center"><span class="badge badge-warning">Pendente</span></td>
+            <td class="right">R$ 6.200,00</td>
+            <td class="center">
+              <button class="icon-btn view" title="Visualizar">&#xE890;</button>
+              <button class="icon-btn edit" title="Editar">&#xE70F;</button>
+              <button class="icon-btn del" title="Excluir">&#xE74D;</button>
+            </td>
+          </tr>
+          <tr class="selected">
+            <td><strong>Marcos Pereira</strong></td>
+            <td>Gerente TI</td>
+            <td>Empresa</td>
+            <td class="center"><span class="badge badge-success">Ativo</span></td>
+            <td class="right">R$ 9.800,00</td>
+            <td class="center">
+              <button class="icon-btn view" title="Visualizar">&#xE890;</button>
+              <button class="icon-btn edit" title="Editar">&#xE70F;</button>
+              <button class="icon-btn del" title="Excluir">&#xE74D;</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Julia Santos</strong></td>
+            <td>Designer</td>
+            <td>Empresa</td>
+            <td class="center"><span class="badge badge-danger">Inativo</span></td>
+            <td class="right">R$ 3.800,00</td>
+            <td class="center">
+              <button class="icon-btn view" title="Visualizar">&#xE890;</button>
+              <button class="icon-btn edit" title="Editar">&#xE70F;</button>
+              <button class="icon-btn del" title="Excluir">&#xE74D;</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Pedro Oliveira</strong></td>
+            <td>Analista Fiscal</td>
+            <td>Empresa</td>
+            <td class="center"><span class="badge badge-info">Em Analise</span></td>
+            <td class="right">R$ 5.100,00</td>
+            <td class="center">
+              <button class="icon-btn view" title="Visualizar">&#xE890;</button>
+              <button class="icon-btn edit" title="Editar">&#xE70F;</button>
+              <button class="icon-btn del" title="Excluir">&#xE74D;</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABELA COM TOOLBAR -->
+  <div class="section">
+    <div class="section-title">Tabela com Toolbar</div>
+    <div class="toolbar">
+      <button class="btn btn-primary" style="height:32px; font-size:13px;"><span style="font-family:'Segoe MDL2 Assets'">&#xE710;</span> Novo</button>
+      <input class="search-input" type="text" placeholder="Buscar...">
+      <div style="flex:1;"></div>
+      <button class="btn" style="background:transparent; border:1px solid #dee2e6; height:32px; font-size:13px;"><span style="font-family:'Segoe MDL2 Assets'">&#xE72C;</span> Exportar</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Codigo</th>
+            <th>Descricao</th>
+            <th>Tipo</th>
+            <th class="right">Valor</th>
+            <th class="center">Data</th>
+            <th class="center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:monospace; color:#6c757d;">001</td>
+            <td>Salario Base — Referencia Mensal</td>
+            <td>Folha</td>
+            <td class="right">R$ 4.500,00</td>
+            <td class="center">01/03/2026</td>
+            <td class="center"><span class="badge badge-success">Pago</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:monospace; color:#6c757d;">002</td>
+            <td>Adiantamento Quinzenal</td>
+            <td>Adiantamento</td>
+            <td class="right">R$ 1.200,00</td>
+            <td class="center">15/02/2026</td>
+            <td class="center"><span class="badge badge-success">Pago</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:monospace; color:#6c757d;">003</td>
+            <td>Ferias — Periodo 2025/2026</td>
+            <td>Ferias</td>
+            <td class="right">R$ 6.750,00</td>
+            <td class="center">10/03/2026</td>
+            <td class="center"><span class="badge badge-warning">Pendente</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ESTADO VAZIO -->
+  <div class="section">
+    <div class="section-title">Estado Vazio</div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th><th>Cargo</th><th>Status</th><th class="center">Acoes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" style="padding:0; border:none;">
+              <div class="empty-state">
+                <span class="empty-icon">&#xE8A0;</span>
+                <div class="empty-title">Nenhum registro encontrado</div>
+                <div class="empty-desc">Ajuste os filtros de busca ou adicione um novo registro.</div>
+                <button class="btn btn-primary"><span style="font-family:'Segoe MDL2 Assets'">&#xE710;</span> Adicionar Novo</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

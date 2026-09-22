@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alertas — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  /* Alerts */
+  .alert { padding: 12px 16px; border-radius: 6px; border: 1px solid; font-size: 13px; margin-bottom: 10px; }
+  .alert-success { background: #d4edda; border-color: #28a745; color: #155724; }
+  .alert-danger { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+  .alert-warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+  .alert-info { background: #d1ecf1; border-color: #17a2b8; color: #0c5460; }
+  .alert-primary { background: #f8f9fa; border-color: #184194; color: #495057; }
+  /* Alert with icon */
+  .alert-with-icon { display: flex; align-items: flex-start; gap: 10px; }
+  .alert-icon { font-family: 'Segoe MDL2 Assets'; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  /* Alert with title */
+  .alert-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .alert-text { font-size: 13px; }
+  /* Dismissible */
+  .alert-dismissible { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .close-btn { background: none; border: none; cursor: pointer; font-family: 'Segoe MDL2 Assets'; font-size: 12px; opacity: 0.5; padding: 0; flex-shrink: 0; }
+  .close-btn:hover { opacity: 1; }
+  /* Toast */
+  .toast-container { position: relative; height: 200px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .toast-content-area { padding: 20px; font-size: 13px; color: #6c757d; }
+  .toast { position: absolute; bottom: 16px; right: 16px; background: #1a1a1a; color: white; padding: 10px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); min-width: 250px; }
+  .toast.success { background: #155724; }
+  .toast.danger { background: #721c24; }
+  .toast-icon { font-family: 'Segoe MDL2 Assets'; font-size: 14px; }
+  /* Alert Grid */
+  .alert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  /* Spec row */
+  .spec-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: #6c757d; margin-bottom: 6px; }
+  .spec-swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Alertas e Mensagens</h1>
+  <p>Feedback visual para acoes e estados da interface</p>
+</div>
+
+<div class="container">
+
+  <!-- VARIANTES SIMPLES -->
+  <div class="section">
+    <div class="section-title">Variantes</div>
+    <div class="alert alert-success">Cadastro salvo com sucesso.</div>
+    <div class="alert alert-danger">Nao foi possivel processar o calculo. Verifique os dados e tente novamente.</div>
+    <div class="alert alert-warning">Atencao: existem 3 registros com divergencia. Verifique antes de continuar.</div>
+    <div class="alert alert-info">Os dados exibidos sao atualizados automaticamente a cada 30 minutos.</div>
+    <div class="alert alert-primary" style="margin-bottom:0;">Preencha os campos abaixo para gerar o relatorio de competencia.</div>
+  </div>
+
+  <!-- COM ICONE -->
+  <div class="section">
+    <div class="section-title">Com Icone</div>
+    <div class="alert alert-success alert-with-icon">
+      <span class="alert-icon">&#xE73E;</span>
+      <span>Relatorio gerado e enviado por e-mail com sucesso.</span>
+    </div>
+    <div class="alert alert-danger alert-with-icon">
+      <span class="alert-icon">&#xE783;</span>
+      <span>Erro ao conectar ao servidor. Verifique sua conexao e tente novamente.</span>
+    </div>
+    <div class="alert alert-warning alert-with-icon">
+      <span class="alert-icon">&#xE7BA;</span>
+      <span>Esta acao ira alterar dados retroativamente. Deseja continuar?</span>
+    </div>
+    <div class="alert alert-info alert-with-icon" style="margin-bottom:0;">
+      <span class="alert-icon">&#xE8A5;</span>
+      <span>Este modulo requer permissao de gestor para concluir operacoes de exclusao.</span>
+    </div>
+  </div>
+
+  <!-- COM TITULO -->
+  <div class="section">
+    <div class="section-title">Com Titulo e Descricao</div>
+    <div class="alert alert-success alert-with-icon">
+      <span class="alert-icon">&#xE73E;</span>
+      <div>
+        <div class="alert-title">Folha de Pagamento Processada</div>
+        <div class="alert-text">247 funcionarios calculados com sucesso. Competencia 03/2026.</div>
+      </div>
+    </div>
+    <div class="alert alert-danger alert-with-icon">
+      <span class="alert-icon">&#xE783;</span>
+      <div>
+        <div class="alert-title">Falha no Processamento</div>
+        <div class="alert-text">12 registros nao puderam ser calculados por divergencia no cadastro. Clique em "Ver Detalhes" para identificar os itens com erro.</div>
+      </div>
+    </div>
+    <div class="alert alert-warning alert-with-icon" style="margin-bottom:0;">
+      <span class="alert-icon">&#xE7BA;</span>
+      <div>
+        <div class="alert-title">Dados do Mes Anterior</div>
+        <div class="alert-text">Voce esta visualizando dados de fevereiro de 2026. Navegue para o mes atual clicando no seletor acima.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISMISSIVEL -->
+  <div class="section">
+    <div class="section-title">Fechavel (Dismissivel)</div>
+    <div class="alert alert-info alert-dismissible" id="alert-dismiss">
+      <span>Novidade: o modulo de ferias agora suporta fracionamento em ate 3 periodos.</span>
+      <button class="close-btn" onclick="document.getElementById('alert-dismiss').style.display='none'">&#xE711;</button>
+    </div>
+    <div class="alert alert-success alert-dismissible" id="alert-dismiss2" style="margin-bottom:0;">
+      <span>Backup automatico realizado em 14:30.</span>
+      <button class="close-btn" onclick="document.getElementById('alert-dismiss2').style.display='none'">&#xE711;</button>
+    </div>
+  </div>
+
+  <!-- TOAST / NOTIFICACAO FLUTUANTE -->
+  <div class="section">
+    <div class="section-title">Toast / Notificacao Flutuante</div>
+    <p class="section-desc">Some automaticamente em 3-5 segundos. Aparece sobre o conteudo, no canto da tela.</p>
+    <div class="toast-container">
+      <div class="toast-content-area">Conteudo da pagina (nao afetado pelo toast)</div>
+      <div class="toast success">
+        <span class="toast-icon">&#xE73E;</span>
+        Cadastro salvo com sucesso!
+      </div>
+    </div>
+    <div class="toast-container" style="margin-top:12px;">
+      <div class="toast-content-area">Conteudo da pagina</div>
+      <div class="toast danger">
+        <span class="toast-icon">&#xE783;</span>
+        Erro ao salvar. Tente novamente.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

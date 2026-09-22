@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badges — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-danger { background: #f8d7da; color: #721c24; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+  .badge-secondary { background: #e2e3e5; color: #383d41; }
+  .badge-primary { background: #184194; color: white; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; width: 90px; flex-shrink: 0; }
+  .spec { font-size: 11px; color: #adb5bd; font-family: monospace; }
+  /* Table demo */
+  .demo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .demo-table th { background: #f8f9fa; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; border-bottom: 2px solid #dee2e6; }
+  .demo-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  .demo-table tr:hover td { background: #f5f8ff; }
+  .demo-table tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Badges e Status</h1>
+  <p>Indicadores visuais de estado e categoria para registros</p>
+</div>
+
+<div class="container">
+
+  <!-- STATUS BADGES -->
+  <div class="section">
+    <div class="section-title">Status Badge — Estado do Registro</div>
+
+    <div class="badge-row">
+      <span class="badge-label">Success</span>
+      <span class="badge badge-success">Ativo</span>
+      <span class="badge badge-success">Concluido</span>
+      <span class="badge badge-success">Aprovado</span>
+      <span class="badge badge-success">Enviado</span>
+      <span class="spec">bg:#D4EDDA / text:#155724</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Danger</span>
+      <span class="badge badge-danger">Inativo</span>
+      <span class="badge badge-danger">Erro</span>
+      <span class="badge badge-danger">Reprovado</span>
+      <span class="badge badge-danger">Divergencia</span>
+      <span class="spec">bg:#F8D7DA / text:#721C24</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Warning</span>
+      <span class="badge badge-warning">Pendente</span>
+      <span class="badge badge-warning">Atencao</span>
+      <span class="badge badge-warning">Aguardando</span>
+      <span class="spec">bg:#FFF3CD / text:#856404</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Info</span>
+      <span class="badge badge-info">Em Analise</span>
+      <span class="badge badge-info">Processando</span>
+      <span class="badge badge-info">Importado</span>
+      <span class="spec">bg:#D1ECF1 / text:#0C5460</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Secondary</span>
+      <span class="badge badge-secondary">Rascunho</span>
+      <span class="badge badge-secondary">Arquivado</span>
+      <span class="badge badge-secondary">Desativado</span>
+      <span class="spec">bg:#E2E3E5 / text:#383D41</span>
+    </div>
+  </div>
+
+  <!-- TYPE BADGES -->
+  <div class="section">
+    <div class="section-title">Type Badge — Categoria ou Tipo</div>
+    <div class="badge-row">
+      <span class="badge-label">Primary</span>
+      <span class="badge badge-primary">Folha</span>
+      <span class="badge badge-primary">Mensal</span>
+      <span class="badge badge-primary">Template</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Info</span>
+      <span class="badge badge-info">Ferias</span>
+      <span class="badge badge-info">Adiantamento</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Danger</span>
+      <span class="badge badge-danger">Rescisao</span>
+      <span class="badge badge-danger">Critico</span>
+    </div>
+    <div class="badge-row">
+      <span class="badge-label">Secondary</span>
+      <span class="badge badge-secondary">Complementar</span>
+      <span class="badge badge-secondary">Auxiliar</span>
+    </div>
+  </div>
+
+  <!-- ANATOMIA -->
+  <div class="section">
+    <div class="section-title">Anatomia e Especificacoes</div>
+    <div style="display:flex; gap:40px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:12px; font-weight:600; color:#6c757d; margin-bottom:8px;">Anatomia</div>
+        <div style="position:relative; display:inline-block;">
+          <span class="badge badge-success" style="position:relative;">
+            Ativo
+          </span>
+          <div style="font-size:10px; color:#adb5bd; margin-top:8px; font-family:monospace;">
+            border-radius: 10px (pill)<br>
+            padding: 3px 8px<br>
+            font-size: 12px · font-weight: 600
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px; font-weight:600; color:#6c757d; margin-bottom:8px;">Variantes de tamanho</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span class="badge badge-success">Padrao</span>
+          <span style="font-size:10px; color:#adb5bd;">3px / 8px</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USO EM TABELA -->
+  <div class="section">
+    <div class="section-title">Uso em Tabela</div>
+    <table class="demo-table">
+      <thead>
+        <tr>
+          <th>Funcionario</th>
+          <th>Cargo</th>
+          <th>Tipo</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ana Lima</strong></td>
+          <td>Analista RH</td>
+          <td><span class="badge badge-primary">CLT</span></td>
+          <td><span class="badge badge-success">Ativo</span></td>
+        </tr>
+        <tr>
+          <td><strong>Carlos Mota</strong></td>
+          <td>Desenvolvedor</td>
+          <td><span class="badge badge-info">PJ</span></td>
+          <td><span class="badge badge-warning">Pendente</span></td>
+        </tr>
+        <tr>
+          <td><strong>Marcos Pereira</strong></td>
+          <td>Gerente</td>
+          <td><span class="badge badge-primary">CLT</span></td>
+          <td><span class="badge badge-danger">Inativo</span></td>
+        </tr>
+        <tr>
+          <td><strong>Julia Santos</strong></td>
+          <td>Designer</td>
+          <td><span class="badge badge-secondary">Estagio</span></td>
+          <td><span class="badge badge-info">Em Analise</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

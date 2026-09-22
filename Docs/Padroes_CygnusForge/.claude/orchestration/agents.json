@@ -1,0 +1,42 @@
+[
+    {
+        "id":  "ce95274aa9324e798b063e02eb1b6459",
+        "agent":  "fork",
+        "description":  "Batch 1: tasks T1-T5 (funda├º├úo + Produtos)",
+        "started_at":  "2026-09-14T17:35:31.7636767Z",
+        "ended_at":  "2026-09-14T17:36:03.2743892Z",
+        "duration_seconds":  31.5
+    },
+    {
+        "id":  "e7ea431af6ba4b61a2150e9264d9709b",
+        "agent":  "fork",
+        "description":  "Batch 2: tasks T6-T10 (Artigos + documenta├º├úo)",
+        "started_at":  "2026-09-14T17:44:16.3429513Z",
+        "ended_at":  "2026-09-14T17:44:47.8501292Z",
+        "duration_seconds":  31.5
+    },
+    {
+        "id":  "6720ef83a45d492fbabd635661e94a9f",
+        "agent":  "general-purpose",
+        "description":  "Verificador independente da feature card-catalogo-agrupamento",
+        "started_at":  "2026-09-14T17:52:23.3009525Z",
+        "ended_at":  "2026-09-14T17:52:55.3539643Z",
+        "duration_seconds":  32.1
+    },
+    {
+        "id":  "7d4531ddd57f4f798ff88c4e8936a31c",
+        "agent":  "general-purpose",
+        "description":  "Re-verifica├º├úo da feature card-catalogo-agrupamento ap├│s fixes",
+        "started_at":  "2026-09-14T18:04:29.4615839Z",
+        "ended_at":  "2026-09-14T18:05:01.0436084Z",
+        "duration_seconds":  31.6
+    },
+    {
+        "id":  "251e8ff87cd548c5b769ecb7972d99de",
+        "agent":  "general-purpose",
+        "description":  "Re-verifica├º├úo final (itera├º├úo 3) da feature card-catalogo-agrupamento",
+        "started_at":  "2026-09-14T18:10:51.2115430Z",
+        "ended_at":  "2026-09-14T18:12:16.5707317Z",
+        "duration_seconds":  85.4
+    }
+]

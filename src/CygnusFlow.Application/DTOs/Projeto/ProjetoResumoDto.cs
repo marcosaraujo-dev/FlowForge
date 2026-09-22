@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CygnusFlow.Application.DTOs.Dashboard
+namespace CygnusFlow.Application.DTOs.Projeto
 {
     public class ProjetoResumoDto
     {

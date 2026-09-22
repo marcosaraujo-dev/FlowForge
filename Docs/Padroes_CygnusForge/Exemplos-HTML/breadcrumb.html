@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breadcrumb — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p  { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; overflow: hidden; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 8px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 22px; }
+
+  /* ===== BREADCRUMB BASE ===== */
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 12px;
+  }
+  .breadcrumb-item { display: flex; align-items: center; }
+  .breadcrumb-item + .breadcrumb-item::before {
+    font-family: 'Segoe MDL2 Assets';
+    content: '\E76C';
+    font-size: 10px;
+    margin: 0 8px;
+    opacity: 0.5;
+    display: inline-block;
+    color: currentColor;
+  }
+  .breadcrumb-link {
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+    cursor: pointer;
+  }
+  .breadcrumb-link:hover { opacity: 1; text-decoration: underline; }
+  .breadcrumb-current { font-weight: 600; opacity: 1; }
+
+  /* ===== VARIANTE: FUNDO ESCURO (header da aplicacao) ===== */
+  .demo-dark {
+    background: linear-gradient(135deg, #1a2a5e 0%, #0f1e45 100%);
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .demo-dark .breadcrumb-list { color: #adb5bd; }
+  .demo-dark .breadcrumb-link { color: #adb5bd; }
+  .demo-dark .breadcrumb-current { color: #adb5bd; }
+  .demo-dark .logo-area { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; }
+  .demo-dark .logo-icon { font-family: 'Segoe MDL2 Assets'; font-size: 18px; color: #6b9fff; }
+  .demo-dark .right-area { font-size: 12px; color: rgba(255,255,255,0.5); display: flex; gap: 16px; }
+
+  /* ===== VARIANTE: FUNDO CLARO (dentro de pagina) ===== */
+  .demo-light {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .demo-light .breadcrumb-list { color: #6c757d; }
+  .demo-light .breadcrumb-link { color: #184194; }
+  .demo-light .breadcrumb-current { color: #495057; }
+  .demo-light-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #adb5bd; margin-bottom: 8px;
+  }
+
+  /* ===== LEGENDA DE ESTADOS ===== */
+  .state-legend { display: flex; flex-wrap: wrap; gap: 20px; font-size: 12px; color: #6c757d; margin-bottom: 20px; }
+  .state-item { display: flex; align-items: center; gap: 6px; }
+  .state-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ===== SIMULADOR DE NAVEGACAO ===== */
+  .nav-sim { display: flex; flex-direction: column; gap: 8px; }
+  .nav-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border: 1px solid #dee2e6; border-radius: 6px;
+    background: white; font-size: 12px; color: #184194; cursor: pointer;
+    transition: all 0.12s; font-family: inherit;
+  }
+  .nav-btn:hover { background: #f0f5ff; border-color: #184194; }
+  .nav-btn-icon { font-family: 'Segoe MDL2 Assets'; font-size: 12px; }
+  .nav-sim-breadcrumb {
+    background: #1a2a5e; border-radius: 8px; padding: 14px 20px;
+    font-size: 12px; color: #adb5bd;
+    display: flex; align-items: center; gap: 0;
+  }
+  .nav-sim-breadcrumb .bc-link { color: #adb5bd; cursor: pointer; opacity: 0.7; transition: opacity 0.1s; text-decoration: none; }
+  .nav-sim-breadcrumb .bc-link:hover { opacity: 1; text-decoration: underline; }
+  .nav-sim-breadcrumb .bc-sep { font-family: 'Segoe MDL2 Assets'; font-size: 10px; margin: 0 8px; opacity: 0.4; }
+  .nav-sim-breadcrumb .bc-current { font-weight: 600; }
+
+  /* ===== ANATOMIA ===== */
+  .anatomy-box {
+    background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;
+    padding: 24px; position: relative;
+  }
+  .anatomy-label {
+    position: absolute; font-size: 11px; color: #184194; font-weight: 600;
+    background: white; padding: 2px 6px; border: 1px solid #184194; border-radius: 4px;
+  }
+  .anatomy-arrow {
+    position: absolute; width: 1px; background: #184194; opacity: 0.4;
+  }
+
+  /* ===== HIERARQUIA ===== */
+  .hierarchy { font-size: 13px; line-height: 2; }
+  .h-level-1 { font-weight: 700; color: #184194; }
+  .h-level-2 { padding-left: 24px; color: #495057; }
+  .h-level-3 { padding-left: 48px; color: #6c757d; font-size: 12px; }
+  .h-level-4 { padding-left: 72px; color: #adb5bd; font-size: 11px; }
+  .h-icon { font-family: 'Segoe MDL2 Assets'; font-size: 11px; margin-right: 6px; }
+
+  /* ===== SPEC TABLE ===== */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .spec-table th { text-align: left; padding: 8px 12px; background: #f8f9fa; border-bottom: 2px solid #dee2e6; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #6c757d; }
+  .spec-table td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; vertical-align: top; }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table code { background: #f0f4ff; color: #184194; padding: 1px 5px; border-radius: 3px; font-size: 12px; font-family: monospace; }
+
+  /* ===== DO/DONT ===== */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .do-box   { background: #d4edda; border: 1px solid #28a745; border-radius: 8px; padding: 16px; }
+  .dont-box { background: #f8d7da; border: 1px solid #dc3545; border-radius: 8px; padding: 16px; }
+  .do-title   { font-size: 12px; font-weight: 700; color: #155724; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .dont-title { font-size: 12px; font-weight: 700; color: #721c24; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .do-title-icon, .dont-title-icon { font-family: 'Segoe MDL2 Assets'; }
+  .do-example { font-size: 12px; color: #155724; line-height: 1.8; }
+  .dont-example { font-size: 12px; color: #721c24; line-height: 1.8; text-decoration: line-through; opacity: 0.8; }
+  .do-reason   { font-size: 11px; color: #28a745; margin-top: 6px; }
+  .dont-reason { font-size: 11px; color: #dc3545; margin-top: 6px; font-style: italic; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Breadcrumb</h1>
+  <p>Indicador de caminho de navegacao — onde o usuario esta e como voltar</p>
+</div>
+
+<div class="container">
+
+  <!-- ===== POSICAO NA INTERFACE ===== -->
+  <div class="section">
+    <div class="section-title">Posicao na Interface — Header Global</div>
+    <p class="section-desc">O breadcrumb fica no header global da aplicacao, centralizado, sempre visivel independentemente do scroll do conteudo.</p>
+
+    <div class="demo-dark">
+      <div class="logo-area">
+        <span class="logo-icon">&#xE8A5;</span> Empresa
+      </div>
+
+      <!-- Breadcrumb centralizado -->
+      <ol class="breadcrumb-list" style="color:#adb5bd;">
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#adb5bd;" href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#adb5bd;" href="#">Meus Templates</a>
+        </li>
+        <li class="breadcrumb-item">
+          <span class="breadcrumb-current" style="color:#adb5bd;">Editar: Acordo de Compensacao</span>
+        </li>
+      </ol>
+
+      <div class="right-area">
+        <span>&#xE7F4; F2</span>
+        <span>A+</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px; color:#6c757d; text-align:center;">
+      <span style="font-family:'Segoe MDL2 Assets'; font-size:11px;">&#xE7BA;</span>
+      O ultimo item (em negrito) representa a tela atual e nao e clicavel. Os anteriores sao links.
+    </p>
+  </div>
+
+  <!-- ===== ANATOMIA ===== -->
+  <div class="section">
+    <div class="section-title">Anatomia e Estados</div>
+    <p class="section-desc">Cada item tem um estado visual distinto. Passe o mouse sobre os links para ver o hover.</p>
+
+    <!-- Sobre fundo escuro -->
+    <div class="demo-light-label">Sobre fundo escuro (header da aplicacao)</div>
+    <div class="demo-dark" style="margin-bottom:20px; padding:16px 24px; border-radius:8px;">
+      <ol class="breadcrumb-list" style="color:#adb5bd; width:100%; justify-content:center;">
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#adb5bd;" href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#adb5bd;" href="#">Meus Templates</a>
+        </li>
+        <li class="breadcrumb-item">
+          <span class="breadcrumb-current" style="color:#adb5bd;">Editar: Acordo de Compensacao</span>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Sobre fundo claro (alternativo) -->
+    <div class="demo-light-label" style="margin-top:20px;">Variante sobre fundo claro (dentro de pagina)</div>
+    <div class="demo-light">
+      <ol class="breadcrumb-list" style="color:#6c757d;">
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#184194;" href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="breadcrumb-link" style="color:#184194;" href="#">Meus Templates</a>
+        </li>
+        <li class="breadcrumb-item">
+          <span class="breadcrumb-current" style="color:#495057;">Editar: Acordo de Compensacao</span>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Tabela de especificacoes -->
+    <div style="margin-top:24px;">
+      <table class="spec-table">
+        <thead>
+          <tr><th>Elemento</th><th>Fonte</th><th>Cor</th><th>Opacidade</th><th>Comportamento</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Item clicavel (normal)</strong></td>
+            <td><code>AppFontSmall</code> (12px)</td>
+            <td><code>TextLightBrush</code></td>
+            <td>0.7</td>
+            <td>Clique navega para a tela</td>
+          </tr>
+          <tr>
+            <td><strong>Item clicavel (hover)</strong></td>
+            <td><code>AppFontSmall</code> (12px)</td>
+            <td><code>TextLightBrush</code></td>
+            <td>1.0</td>
+            <td>Sublinhado + cursor pointer</td>
+          </tr>
+          <tr>
+            <td><strong>Item atual (ultimo)</strong></td>
+            <td><code>AppFontSmall</code> (12px) SemiBold</td>
+            <td><code>TextLightBrush</code></td>
+            <td>1.0</td>
+            <td>Nao clicavel, sem cursor</td>
+          </tr>
+          <tr>
+            <td><strong>Separador</strong></td>
+            <td>Segoe MDL2 Assets, 10px</td>
+            <td>Herda do contexto</td>
+            <td>0.5</td>
+            <td>Apenas visual, Margin: 8px</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== HIERARQUIA DO SISTEMA ===== -->
+  <div class="section">
+    <div class="section-title">Hierarquia de Navegacao — Exemplos Reais</div>
+    <p class="section-desc">Todos os caminhos possiveis no sistema e como aparecem no breadcrumb.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <div class="hierarchy">
+          <div class="h-level-1"><span class="h-icon">&#xE80F;</span> Home</div>
+          <div class="h-level-2"><span class="h-icon">&#xE8A5;</span> Documentos Word</div>
+          <div class="h-level-2"><span class="h-icon">&#xE8A5;</span> Planilhas Excel</div>
+          <div class="h-level-2"><span class="h-icon">&#xE896;</span> Meus Templates</div>
+          <div class="h-level-3"><span class="h-icon">&#xE70F;</span> Editar: [Nome]</div>
+          <div class="h-level-4"><span class="h-icon">&#xE890;</span> Preview</div>
+          <div class="h-level-3"><span class="h-icon">&#xE710;</span> Novo Template</div>
+          <div class="h-level-2"><span class="h-icon">&#xE74E;</span> Gerar Documentos</div>
+          <div class="h-level-3"><span class="h-icon">&#xE890;</span> Preview</div>
+          <div class="h-level-3"><span class="h-icon">&#xE73E;</span> Resultado</div>
+          <div class="h-level-2"><span class="h-icon">&#xE8A5;</span> Relatorios Integrados</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="demo-light-label">Breadcrumbs correspondentes</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <span class="bc-current">Home</span>
+          </div>
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <a class="bc-link" href="#">Home</a><span class="bc-sep">&#xE76C;</span><span class="bc-current">Documentos Word</span>
+          </div>
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <a class="bc-link" href="#">Home</a><span class="bc-sep">&#xE76C;</span><span class="bc-current">Meus Templates</span>
+          </div>
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <a class="bc-link" href="#">Home</a><span class="bc-sep">&#xE76C;</span>
+            <a class="bc-link" href="#">Meus Templates</a><span class="bc-sep">&#xE76C;</span>
+            <span class="bc-current">Editar: Acordo...</span>
+          </div>
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <a class="bc-link" href="#">Home</a><span class="bc-sep">&#xE76C;</span>
+            <a class="bc-link" href="#">Meus Templates</a><span class="bc-sep">&#xE76C;</span>
+            <a class="bc-link" href="#">Editor</a><span class="bc-sep">&#xE76C;</span>
+            <span class="bc-current">Preview</span>
+          </div>
+          <div class="nav-sim-breadcrumb" style="padding:10px 16px; font-size:11px;">
+            <a class="bc-link" href="#">Home</a><span class="bc-sep">&#xE76C;</span>
+            <a class="bc-link" href="#">Gerar Docs</a><span class="bc-sep">&#xE76C;</span>
+            <span class="bc-current">Resultado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SIMULADOR INTERATIVO ===== -->
+  <div class="section">
+    <div class="section-title">Simulador de Navegacao Interativo</div>
+    <p class="section-desc">Clique nos botoes abaixo para simular a navegacao e ver o breadcrumb atualizar em tempo real.</p>
+
+    <!-- Breadcrumb simulado -->
+    <div id="sim-breadcrumb" class="nav-sim-breadcrumb" style="margin-bottom:20px; font-size:13px; padding:16px 24px;">
+      <span class="bc-current">Home</span>
+    </div>
+
+    <!-- Botoes de navegacao -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px;">
+      <button class="nav-btn" onclick="navTo('home')">
+        <span class="nav-btn-icon">&#xE80F;</span> Home
+      </button>
+      <button class="nav-btn" onclick="navTo('word')">
+        <span class="nav-btn-icon">&#xE8A5;</span> Documentos Word
+      </button>
+      <button class="nav-btn" onclick="navTo('excel')">
+        <span class="nav-btn-icon">&#xE8A5;</span> Planilhas Excel
+      </button>
+      <button class="nav-btn" onclick="navTo('templates')">
+        <span class="nav-btn-icon">&#xE896;</span> Meus Templates
+      </button>
+      <button class="nav-btn" onclick="navTo('editor')">
+        <span class="nav-btn-icon">&#xE70F;</span> Editar: Acordo de Compensacao
+      </button>
+      <button class="nav-btn" onclick="navTo('preview-editor')">
+        <span class="nav-btn-icon">&#xE890;</span> Preview (do editor)
+      </button>
+      <button class="nav-btn" onclick="navTo('gerar')">
+        <span class="nav-btn-icon">&#xE74E;</span> Gerar Documentos
+      </button>
+      <button class="nav-btn" onclick="navTo('preview-gerar')">
+        <span class="nav-btn-icon">&#xE890;</span> Preview (da geracao)
+      </button>
+      <button class="nav-btn" onclick="navTo('resultado')">
+        <span class="nav-btn-icon">&#xE73E;</span> Resultado da Geracao
+      </button>
+    </div>
+
+    <p style="font-size:12px; color:#adb5bd; text-align:center;">
+      Nos itens clicaveis acima, voce pode clicar para "voltar" ao nivel anterior.
+    </p>
+  </div>
+
+  <!-- ===== DO AND DONT ===== -->
+  <div class="section">
+    <div class="section-title">Correto e Incorreto</div>
+    <div class="do-dont">
+
+      <div class="do-box">
+        <div class="do-title"><span class="do-title-icon">&#xE73E;</span> Correto</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div>
+            <div class="do-example">
+              <div class="nav-sim-breadcrumb" style="background:#e6f4ea; border-radius:6px; padding:10px 14px; font-size:12px; color:#155724; display:inline-flex; gap:0; align-items:center;">
+                Home<span style="font-family:'Segoe MDL2 Assets'; font-size:10px; margin:0 8px; opacity:0.4;">&#xE76C;</span>Meus Templates<span style="font-family:'Segoe MDL2 Assets'; font-size:10px; margin:0 8px; opacity:0.4;">&#xE76C;</span><strong>Editar: Acordo</strong>
+              </div>
+            </div>
+            <div class="do-reason">Nomenclatura consistente com o titulo da pagina. Ultimo item em negrito, sem link.</div>
+          </div>
+          <div>
+            <div class="do-example">
+              <div style="font-size:12px; color:#155724;">Nivel maximo: 4 niveis (Home > A > B > C)</div>
+            </div>
+            <div class="do-reason">Hierarquia clara, usuario nao se perde.</div>
+          </div>
+          <div>
+            <div class="do-example">
+              <div style="font-size:12px; color:#155724;">Atualizar breadcrumb em TODA navegacao, incluindo botao Voltar</div>
+            </div>
+            <div class="do-reason">Estado sempre reflete onde o usuario esta.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dont-box">
+        <div class="dont-title"><span class="dont-title-icon">&#xE711;</span> Incorreto</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div>
+            <div class="dont-example">
+              <div class="nav-sim-breadcrumb" style="background:#fde8ea; border-radius:6px; padding:10px 14px; font-size:12px; color:#721c24; display:inline-flex; gap:0; align-items:center;">
+                Inicio / Templates / Editar Template / Edicao Atual
+              </div>
+            </div>
+            <div class="dont-reason" style="text-decoration:none;">Separador "/" inconsistente. Nomenclatura diferente dos menus. Item atual como link.</div>
+          </div>
+          <div>
+            <div class="dont-example">Breadcrumb em Dialog ou Modal</div>
+            <div class="dont-reason" style="text-decoration:none;">Dialogs nao tem hierarquia de pagina. Use o titulo do dialog.</div>
+          </div>
+          <div>
+            <div class="dont-example">Breadcrumb em tela de Wizard (usa Stepper)</div>
+            <div class="dont-reason" style="text-decoration:none;">O Stepper ja comunica o progresso das etapas — breadcrumb e redundante.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== IMPLEMENTACAO WPF ===== -->
+  <div class="section">
+    <div class="section-title">Implementacao WPF — Resumo</div>
+    <p class="section-desc">O <code>BreadcrumbControl</code> ja esta implementado em <code>Controls/BreadcrumbControl.xaml</code>.</p>
+
+    <table class="spec-table" style="margin-bottom:20px;">
+      <thead>
+        <tr><th>Propriedade</th><th>Tipo</th><th>Descricao</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Path</code></td>
+          <td><code>string</code></td>
+          <td>Caminho no formato <code>"Home &gt; Categoria &gt; Item"</code></td>
+        </tr>
+        <tr>
+          <td><code>Separator</code></td>
+          <td><code>string</code></td>
+          <td>Separador entre itens. Padrao: <code>" &gt; "</code></td>
+        </tr>
+        <tr>
+          <td><code>NavigateCommand</code></td>
+          <td><code>ICommand</code></td>
+          <td>Executado ao clicar num item. Recebe a <em>Key</em> do item.</td>
+        </tr>
+        <tr>
+          <td><code>Items</code></td>
+          <td><code>ObservableCollection&lt;BreadcrumbItem&gt;</code></td>
+          <td>Alternativa ao Path para controle total de keys.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="background:#f0f4ff; border:1px solid #c7d7ff; border-radius:8px; padding:16px 20px;">
+      <div style="font-size:12px; font-weight:700; color:#184194; margin-bottom:10px;">Padrao obrigatorio — Atualizar ao navegar</div>
+      <pre style="font-size:12px; color:#333; line-height:1.8; overflow-x:auto;">// No MainViewModel — todo metodo de navegacao deve definir ambos
+PageTitle = "Editar: Acordo de Compensacao";
+Breadcrumb = "Home &gt; Meus Templates &gt; Editar: Acordo de Compensacao";</pre>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:0;">
+  Design System da Empresa · Breadcrumb — v1.0 · Marco 2026 ·
+  <a href="../02-Componentes/14-Breadcrumb.md" style="color:rgba(255,255,255,0.5);">Ver documentacao completa</a>
+</div>
+
+<script>
+  var paths = {
+    'home':         [{ label: 'Home', key: 'home', last: true }],
+    'word':         [{ label: 'Home', key: 'home' }, { label: 'Documentos Word', key: 'word', last: true }],
+    'excel':        [{ label: 'Home', key: 'home' }, { label: 'Planilhas Excel', key: 'excel', last: true }],
+    'templates':    [{ label: 'Home', key: 'home' }, { label: 'Meus Templates', key: 'templates', last: true }],
+    'editor':       [{ label: 'Home', key: 'home' }, { label: 'Meus Templates', key: 'templates' }, { label: 'Editar: Acordo de Compensacao', key: '', last: true }],
+    'preview-editor': [{ label: 'Home', key: 'home' }, { label: 'Meus Templates', key: 'templates' }, { label: 'Editor', key: 'editor' }, { label: 'Preview', key: '', last: true }],
+    'gerar':        [{ label: 'Home', key: 'home' }, { label: 'Gerar Documentos', key: 'gerar', last: true }],
+    'preview-gerar':[{ label: 'Home', key: 'home' }, { label: 'Gerar Documentos', key: 'gerar' }, { label: 'Preview', key: '', last: true }],
+    'resultado':    [{ label: 'Home', key: 'home' }, { label: 'Gerar Documentos', key: 'gerar' }, { label: 'Resultado da Geracao', key: '', last: true }],
+  };
+
+  function navTo(key) {
+    var items = paths[key];
+    if (!items) return;
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if (i > 0) {
+        html += '<span class="bc-sep">&#xE76C;</span>';
+      }
+      if (item.last) {
+        html += '<span class="bc-current">' + item.label + '</span>';
+      } else {
+        html += '<a class="bc-link" href="#" onclick="navTo(\'' + item.key + '\'); return false;">' + item.label + '</a>';
+      }
+    }
+    document.getElementById('sim-breadcrumb').innerHTML = html;
+  }
+</script>
+
+</body>
+</html>

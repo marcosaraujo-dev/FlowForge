@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animacoes e Transicoes — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  /* Duration tokens */
+  .duration-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .duration-card { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px; text-align: center; }
+  .duration-name { font-size: 13px; font-weight: 600; color: #184194; margin-bottom: 4px; }
+  .duration-value { font-size: 20px; font-weight: 700; color: #495057; margin-bottom: 4px; }
+  .duration-use { font-size: 11px; color: #adb5bd; }
+  /* Easing visualization */
+  .easing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .easing-card { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px; }
+  .easing-name { font-size: 13px; font-weight: 600; color: #184194; margin-bottom: 2px; }
+  .easing-css { font-size: 10px; color: #6c757d; font-family: 'Consolas', monospace; margin-bottom: 8px; }
+  .easing-track { height: 4px; background: #e9ecef; border-radius: 2px; position: relative; overflow: hidden; }
+  .easing-dot { width: 12px; height: 12px; background: #184194; border-radius: 50%; position: absolute; top: -4px; left: 0; }
+  .easing-card:hover .easing-dot { left: calc(100% - 12px); }
+  .easing-desc { font-size: 11px; color: #adb5bd; margin-top: 8px; }
+  /* Hover demos */
+  .hover-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .hover-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; text-align: center; }
+  .hover-demo-label { font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 12px; }
+  /* Button hover */
+  .demo-btn-h { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-family: inherit; border: none; cursor: pointer; font-weight: 500; }
+  .btn-primary-h { background: #184194; color: white; transition: background-color 100ms ease-out; }
+  .btn-primary-h:hover { background: #0f2d6b; }
+  .btn-primary-h:active { background: #0a1f4a; transform: scale(0.98); }
+  .btn-outline-h { background: transparent; color: #495057; border: 1px solid #dee2e6; transition: all 100ms ease-out; }
+  .btn-outline-h:hover { background: #f5f8ff; border-color: #184194; color: #184194; }
+  .btn-danger-h { background: #dc3545; color: white; transition: background-color 100ms ease-out; }
+  .btn-danger-h:hover { background: #c82333; }
+  /* Card hover */
+  .card-hover-demo { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 150ms ease-out; cursor: pointer; text-align: left; }
+  .card-hover-demo:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); border-color: #184194; }
+  .card-hover-demo:active { box-shadow: 0 1px 2px rgba(0,0,0,0.05); transform: translateY(0); }
+  .card-hover-demo .ch-title { font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 4px; }
+  .card-hover-demo .ch-desc { font-size: 12px; color: #6c757d; }
+  /* Row hover */
+  .row-hover-table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .row-hover-table th { background: #f8f9fa; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; color: #6c757d; border-bottom: 1px solid #dee2e6; }
+  .row-hover-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; transition: background-color 100ms ease-out; }
+  .row-hover-table tr:hover td { background: #f5f8ff; }
+  /* Accordion */
+  .accordion-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; max-width: 400px; }
+  .accordion-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; font-weight: 600; color: #212529; background: #f8f9fa; border-bottom: 1px solid #dee2e6; transition: background-color 100ms ease-out; user-select: none; }
+  .accordion-header:hover { background: #f0f0f0; }
+  .accordion-arrow { font-family: 'Segoe MDL2 Assets'; font-size: 12px; color: #184194; transition: transform 250ms ease-out; }
+  .accordion-body { max-height: 0; overflow: hidden; transition: max-height 250ms ease-out, padding 250ms ease-out; padding: 0 16px; font-size: 12px; color: #6c757d; line-height: 1.6; }
+  .accordion-demo.open .accordion-body { max-height: 200px; padding: 12px 16px; }
+  .accordion-demo.open .accordion-arrow { transform: rotate(180deg); }
+  /* Loading animations */
+  .loading-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; }
+  .loading-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px; text-align: center; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .loading-label { font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.3px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @keyframes progress { 0% { width: 0; } 100% { width: 100%; } }
+  .spinner { width: 32px; height: 32px; border: 3px solid #e9ecef; border-top-color: #184194; border-radius: 50%; animation: spin 800ms linear infinite; }
+  .skeleton-line { height: 10px; border-radius: 4px; background: linear-gradient(90deg, #e9ecef 25%, #f5f5f5 50%, #e9ecef 75%); background-size: 200px 100%; animation: shimmer 1400ms linear infinite; }
+  .dot-pulse { display: flex; gap: 4px; }
+  .dot-pulse span { width: 8px; height: 8px; border-radius: 50%; background: #184194; animation: pulse 1200ms ease-in-out infinite; }
+  .dot-pulse span:nth-child(2) { animation-delay: 200ms; }
+  .dot-pulse span:nth-child(3) { animation-delay: 400ms; }
+  .progress-track { width: 150px; height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden; }
+  .progress-bar { height: 100%; background: #184194; border-radius: 2px; animation: progress 3000ms ease-out infinite; }
+  /* Fade demo */
+  .fade-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; max-width: 400px; }
+  .fade-target { transition: opacity 150ms ease-out; padding: 12px; background: #f8f9fa; border-radius: 6px; font-size: 12px; color: #495057; text-align: center; }
+  .fade-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 5px; border: 1px solid #dee2e6; background: white; font-size: 12px; font-family: inherit; cursor: pointer; margin-top: 10px; color: #184194; }
+  .fade-btn:hover { background: #f5f8ff; border-color: #184194; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Animacoes e Transicoes</h1>
+  <p>Tokens de duracao, curvas de easing e demos interativos de cada tipo de transicao</p>
+</div>
+
+<div class="container">
+
+  <!-- TOKENS DE DURACAO -->
+  <div class="section">
+    <div class="section-title">Tokens de Duracao</div>
+    <p class="section-desc">Duracoes fixas garantem ritmo consistente em toda a aplicacao.</p>
+
+    <div class="duration-grid">
+      <div class="duration-card">
+        <div class="duration-name">Instant</div>
+        <div class="duration-value">0ms</div>
+        <div class="duration-use">Sem animacao</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-name">Fast</div>
+        <div class="duration-value">100ms</div>
+        <div class="duration-use">Hover, foco, cor</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-name">Normal</div>
+        <div class="duration-value">150ms</div>
+        <div class="duration-use">Estados, fade</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-name">Slow</div>
+        <div class="duration-value">250ms</div>
+        <div class="duration-use">Expandir, slide</div>
+      </div>
+      <div class="duration-card">
+        <div class="duration-name">Slower</div>
+        <div class="duration-value">400ms</div>
+        <div class="duration-use">Modais, paginas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CURVAS DE EASING -->
+  <div class="section">
+    <div class="section-title">Curvas de Easing</div>
+    <p class="section-desc">Passe o mouse em cada card para ver a bolinha se mover com a curva respectiva.</p>
+
+    <div class="easing-grid">
+      <div class="easing-card">
+        <div class="easing-name">Default / Enter</div>
+        <div class="easing-css">ease-out</div>
+        <div class="easing-track"><div class="easing-dot" style="transition: left 400ms ease-out;"></div></div>
+        <div class="easing-desc">Chega rapido, desacelera. Padrao para a maioria.</div>
+      </div>
+      <div class="easing-card">
+        <div class="easing-name">Exit</div>
+        <div class="easing-css">ease-in</div>
+        <div class="easing-track"><div class="easing-dot" style="transition: left 400ms ease-in;"></div></div>
+        <div class="easing-desc">Acelera ao sair. Elementos saindo da tela.</div>
+      </div>
+      <div class="easing-card">
+        <div class="easing-name">Move</div>
+        <div class="easing-css">ease-in-out</div>
+        <div class="easing-track"><div class="easing-dot" style="transition: left 400ms ease-in-out;"></div></div>
+        <div class="easing-desc">Suave no inicio e fim. Elementos se movendo.</div>
+      </div>
+      <div class="easing-card">
+        <div class="easing-name">Linear</div>
+        <div class="easing-css">linear</div>
+        <div class="easing-track"><div class="easing-dot" style="transition: left 400ms linear;"></div></div>
+        <div class="easing-desc">Velocidade constante. Spinners e progress.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOVER: BOTOES -->
+  <div class="section">
+    <div class="section-title">Transicoes de Hover — Botoes</div>
+    <p class="section-desc">Passe o mouse e clique nos botoes. Transicao: 100ms ease-out.</p>
+
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="demo-btn-h btn-primary-h">Primary</button>
+      <button class="demo-btn-h btn-outline-h">Outline</button>
+      <button class="demo-btn-h btn-danger-h">Danger</button>
+      <button class="demo-btn-h btn-primary-h" style="background:#28a745; transition:background-color 100ms ease-out;" onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">Success</button>
+      <button class="demo-btn-h btn-outline-h" disabled style="opacity:0.5; cursor:not-allowed;">Disabled</button>
+    </div>
+  </div>
+
+  <!-- HOVER: CARDS -->
+  <div class="section">
+    <div class="section-title">Transicoes de Hover — Cards</div>
+    <p class="section-desc">Cards clicaveis sobem 2px e ganham sombra ao hover. Transicao: 150ms ease-out.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
+      <div class="card-hover-demo">
+        <div class="ch-title">Template Word</div>
+        <div class="ch-desc">Acordo de Compensacao de Horas eSocial</div>
+      </div>
+      <div class="card-hover-demo">
+        <div class="ch-title">Template Excel</div>
+        <div class="ch-desc">Planilha de Calculo Rescisorio</div>
+      </div>
+      <div class="card-hover-demo">
+        <div class="ch-title">Template Word</div>
+        <div class="ch-desc">Carta de Apresentacao do Trabalhador</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOVER: LINHAS DE TABELA -->
+  <div class="section">
+    <div class="section-title">Transicoes de Hover — Linhas de Tabela</div>
+    <p class="section-desc">Hover azulado sutil (#F5F8FF). Transicao: 100ms ease-out.</p>
+
+    <table class="row-hover-table">
+      <thead><tr><th>Nome</th><th>Cargo</th><th>Empresa</th></tr></thead>
+      <tbody>
+        <tr><td>Joao Carlos da Silva</td><td>Analista de Sistemas</td><td>Empresa Tecnologia</td></tr>
+        <tr><td>Maria Santos Lima</td><td>Contadora</td><td>Contabilidade Express</td></tr>
+        <tr><td>Carlos Eduardo Souza</td><td>Gerente de Projetos</td><td>Engenharia Total</td></tr>
+        <tr><td>Ana Paula Ferreira</td><td>Advogada Trabalhista</td><td>Santos & Associados</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EXPANDIR/COLAPSAR -->
+  <div class="section">
+    <div class="section-title">Expandir / Colapsar — Accordion</div>
+    <p class="section-desc">Clique nos headers. Transicao: 250ms ease-out (max-height + opacity).</p>
+
+    <div style="display:flex; flex-direction:column; gap:8px; max-width:400px;">
+      <div class="accordion-demo open" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span>Dados Pessoais</span>
+          <span class="accordion-arrow">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          Nome, CPF, RG, Data de Nascimento, Estado Civil, Endereco completo, Telefone, Email.
+        </div>
+      </div>
+      <div class="accordion-demo" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span>Dados Contratuais</span>
+          <span class="accordion-arrow">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          Data de Admissao, Cargo, Departamento, Salario Base, Jornada de Trabalho, Tipo de Contrato.
+        </div>
+      </div>
+      <div class="accordion-demo" onclick="this.classList.toggle('open')">
+        <div class="accordion-header">
+          <span>Informacoes Bancarias</span>
+          <span class="accordion-arrow">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          Banco, Agencia, Conta Corrente, Tipo de Conta, PIX.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING ANIMATIONS -->
+  <div class="section">
+    <div class="section-title">Animacoes de Loading</div>
+    <p class="section-desc">Animacoes continuas para indicar operacoes em andamento. Todas usam easing linear.</p>
+
+    <div class="loading-grid">
+      <div class="loading-demo">
+        <div class="loading-label">Spinner (800ms/volta)</div>
+        <div class="spinner"></div>
+      </div>
+      <div class="loading-demo">
+        <div class="loading-label">Skeleton Shimmer (1400ms)</div>
+        <div style="width:100%; display:flex; flex-direction:column; gap:8px;">
+          <div class="skeleton-line" style="width:80%;"></div>
+          <div class="skeleton-line" style="width:60%;"></div>
+          <div class="skeleton-line" style="width:70%;"></div>
+        </div>
+      </div>
+      <div class="loading-demo">
+        <div class="loading-label">Dot Pulse (1200ms)</div>
+        <div class="dot-pulse">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="loading-demo">
+        <div class="loading-label">Progress Bar (ease-out)</div>
+        <div class="progress-track"><div class="progress-bar"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FADE IN/OUT -->
+  <div class="section">
+    <div class="section-title">Fade In / Out</div>
+    <p class="section-desc">Clique no botao para alternar. Entrada: 150ms ease-out. Saida: 100ms ease-in.</p>
+
+    <div class="fade-demo">
+      <div class="fade-target" id="fadeTarget">
+        Este conteudo aparece e desaparece com transicao de opacidade.
+      </div>
+      <button class="fade-btn" onclick="var el=document.getElementById('fadeTarget'); el.style.opacity = el.style.opacity === '0' ? '1' : '0';">
+        Alternar visibilidade
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:40px;">
+  Design System da Empresa · <a href="../01-Fundamentos/08-Animacoes.md" style="color:rgba(255,255,255,0.8);">Documentacao completa: 08-Animacoes.md</a>
+</div>
+
+</body>
+</html>

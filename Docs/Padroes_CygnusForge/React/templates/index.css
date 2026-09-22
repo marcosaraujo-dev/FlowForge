@@ -1,0 +1,19 @@
+/* CygnusForge — Template base index.css para projetos React com Mantine
+ *
+ * Como usar:
+ *   1. Copie este arquivo para src/index.css do novo projeto
+ *   2. Instale o Mantine: npm install @mantine/core @mantine/hooks
+ *   3. Importe no main.tsx, NESTA ORDEM:
+ *        import '@mantine/core/styles.css'
+ *        import './index.css'
+ *   4. A paleta da marca fica em src/theme.ts — nao duplique cores aqui.
+ *      Ver Padroes_CygnusForge/React/00-Stack.md, secao "Configuracao Mantine".
+ */
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}

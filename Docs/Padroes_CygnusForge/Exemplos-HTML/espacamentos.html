@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espacamentos — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  /* Spacing scale */
+  .scale-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .scale-label { width: 100px; font-size: 12px; font-weight: 600; color: #495057; text-align: right; flex-shrink: 0; }
+  .scale-bar { height: 28px; background: #184194; border-radius: 4px; transition: width 0.3s ease; opacity: 0.8; }
+  .scale-value { font-size: 11px; color: #6c757d; font-family: 'Consolas', monospace; flex-shrink: 0; width: 40px; }
+  /* Padding demo */
+  .padding-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .padding-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .padding-demo-header { padding: 8px 12px; background: #f8f9fa; border-bottom: 1px solid #e9ecef; font-size: 11px; font-weight: 600; color: #184194; text-transform: uppercase; letter-spacing: 0.3px; }
+  .padding-demo-content { position: relative; }
+  .padding-area { background: rgba(24, 65, 148, 0.08); }
+  .padding-inner { background: white; border: 1px dashed #184194; font-size: 11px; color: #6c757d; display: flex; align-items: center; justify-content: center; min-height: 40px; }
+  .padding-value { font-size: 10px; color: #adb5bd; text-align: center; padding: 6px; font-family: 'Consolas', monospace; }
+  /* Radius demo */
+  .radius-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+  .radius-demo { background: white; border: 2px solid #184194; height: 80px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+  .radius-name { font-size: 11px; font-weight: 600; color: #184194; }
+  .radius-value { font-size: 10px; color: #6c757d; font-family: 'Consolas', monospace; }
+  /* Height demo */
+  .height-grid { display: flex; flex-direction: column; gap: 12px; }
+  .height-row { display: flex; align-items: center; gap: 16px; }
+  .height-box { background: #184194; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 600; min-width: 160px; }
+  .height-info { font-size: 12px; color: #6c757d; }
+  .height-info strong { color: #495057; }
+  /* Margin demo */
+  .margin-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px; }
+  .margin-item { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 12px 16px; font-size: 12px; color: #495057; position: relative; }
+  .margin-indicator { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); font-size: 10px; color: #184194; font-family: 'Consolas', monospace; white-space: nowrap; }
+  .margin-spacer { display: flex; align-items: center; justify-content: center; }
+  .margin-spacer-line { flex: 1; height: 0; border-top: 1px dashed #adb5bd; }
+  .margin-spacer-label { padding: 0 8px; font-size: 10px; color: #adb5bd; font-family: 'Consolas', monospace; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Espacamentos</h1>
+  <p>Escala de espacamento, padding, margin, border radius e alturas padrao</p>
+</div>
+
+<div class="container">
+
+  <!-- ESCALA BASE -->
+  <div class="section">
+    <div class="section-title">Escala Base (multiplos de 4px)</div>
+    <p class="section-desc">Todos os espacamentos do Design System sao multiplos de 4px para garantir alinhamento consistente.</p>
+
+    <div class="scale-row"><div class="scale-label">Space1</div><div class="scale-bar" style="width:4px;"></div><div class="scale-value">4px</div></div>
+    <div class="scale-row"><div class="scale-label">Space2</div><div class="scale-bar" style="width:8px;"></div><div class="scale-value">8px</div></div>
+    <div class="scale-row"><div class="scale-label">Space3</div><div class="scale-bar" style="width:12px;"></div><div class="scale-value">12px</div></div>
+    <div class="scale-row"><div class="scale-label">Space4</div><div class="scale-bar" style="width:16px;"></div><div class="scale-value">16px</div></div>
+    <div class="scale-row"><div class="scale-label">Space5</div><div class="scale-bar" style="width:20px;"></div><div class="scale-value">20px</div></div>
+    <div class="scale-row"><div class="scale-label">Space6</div><div class="scale-bar" style="width:24px;"></div><div class="scale-value">24px</div></div>
+    <div class="scale-row"><div class="scale-label">Space7</div><div class="scale-bar" style="width:28px;"></div><div class="scale-value">28px</div></div>
+    <div class="scale-row"><div class="scale-label">Space8</div><div class="scale-bar" style="width:32px;"></div><div class="scale-value">32px</div></div>
+    <div class="scale-row"><div class="scale-label">Space9</div><div class="scale-bar" style="width:36px;"></div><div class="scale-value">36px</div></div>
+    <div class="scale-row"><div class="scale-label">Space10</div><div class="scale-bar" style="width:40px;"></div><div class="scale-value">40px</div></div>
+    <div class="scale-row"><div class="scale-label">Space11</div><div class="scale-bar" style="width:44px;"></div><div class="scale-value">44px</div></div>
+    <div class="scale-row"><div class="scale-label">Space12</div><div class="scale-bar" style="width:48px;"></div><div class="scale-value">48px</div></div>
+  </div>
+
+  <!-- PADDING POR COMPONENTE -->
+  <div class="section">
+    <div class="section-title">Padding por Componente</div>
+    <p class="section-desc">Cada tipo de componente tem padding interno definido. A area azul clara mostra o padding.</p>
+
+    <div class="padding-grid">
+      <div class="padding-demo">
+        <div class="padding-demo-header">Badge</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:3px 8px;">
+            <div class="padding-inner">Badge</div>
+          </div>
+          <div class="padding-value">3px V / 8px H</div>
+        </div>
+      </div>
+
+      <div class="padding-demo">
+        <div class="padding-demo-header">Button Small</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:4px 12px;">
+            <div class="padding-inner">Botao</div>
+          </div>
+          <div class="padding-value">4px V / 12px H</div>
+        </div>
+      </div>
+
+      <div class="padding-demo">
+        <div class="padding-demo-header">Button Medium</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:8px 16px;">
+            <div class="padding-inner">Botao</div>
+          </div>
+          <div class="padding-value">8px V / 16px H</div>
+        </div>
+      </div>
+
+      <div class="padding-demo">
+        <div class="padding-demo-header">Input</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:6px 8px;">
+            <div class="padding-inner">Input text</div>
+          </div>
+          <div class="padding-value">6px V / 8px H</div>
+        </div>
+      </div>
+
+      <div class="padding-demo">
+        <div class="padding-demo-header">Card</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:10px;">
+            <div class="padding-inner">Conteudo do card</div>
+          </div>
+          <div class="padding-value">10px (todos os lados)</div>
+        </div>
+      </div>
+
+      <div class="padding-demo">
+        <div class="padding-demo-header">Alert</div>
+        <div class="padding-demo-content">
+          <div class="padding-area" style="padding:12px 16px;">
+            <div class="padding-inner">Mensagem de alerta</div>
+          </div>
+          <div class="padding-value">12px V / 16px H</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARGIN ENTRE ELEMENTOS -->
+  <div class="section">
+    <div class="section-title">Margin entre Elementos</div>
+    <p class="section-desc">Espacamento vertical entre diferentes tipos de elementos.</p>
+
+    <div class="margin-demo" style="max-width:500px;">
+      <div class="margin-item">Label → Input</div>
+      <div class="margin-spacer" style="height:5px;"><div class="margin-spacer-line"></div><div class="margin-spacer-label">5px</div><div class="margin-spacer-line"></div></div>
+      <div class="margin-item">Input field</div>
+      <div class="margin-spacer" style="height:15px;"><div class="margin-spacer-line"></div><div class="margin-spacer-label">15px</div><div class="margin-spacer-line"></div></div>
+      <div class="margin-item">Proximo campo (Between Items)</div>
+      <div class="margin-spacer" style="height:20px;"><div class="margin-spacer-line"></div><div class="margin-spacer-label">20px</div><div class="margin-spacer-line"></div></div>
+      <div class="margin-item">Nova secao (Between Sections)</div>
+      <div class="margin-spacer" style="height:24px;"><div class="margin-spacer-line"></div><div class="margin-spacer-label">24px</div><div class="margin-spacer-line"></div></div>
+      <div class="margin-item">Novo card (Between Cards)</div>
+    </div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="section">
+    <div class="section-title">Border Radius</div>
+    <p class="section-desc">Arredondamentos padrao para cada tipo de componente.</p>
+
+    <div class="radius-grid">
+      <div class="radius-demo" style="border-radius:0;">
+        <div class="radius-name">None</div>
+        <div class="radius-value">0px</div>
+      </div>
+      <div class="radius-demo" style="border-radius:4px;">
+        <div class="radius-name">Small</div>
+        <div class="radius-value">4px</div>
+      </div>
+      <div class="radius-demo" style="border-radius:6px;">
+        <div class="radius-name">Medium</div>
+        <div class="radius-value">6px</div>
+      </div>
+      <div class="radius-demo" style="border-radius:10px;">
+        <div class="radius-name">Large</div>
+        <div class="radius-value">10px</div>
+      </div>
+      <div class="radius-demo" style="border-radius:40px;">
+        <div class="radius-name">Pill</div>
+        <div class="radius-value">10px+ (pill)</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; font-size:12px; color:#6c757d;">
+      <span><strong>None:</strong> DataGrid cells</span> ·
+      <span><strong>Small:</strong> Inputs, TextBox</span> ·
+      <span><strong>Medium:</strong> Buttons, Alerts</span> ·
+      <span><strong>Large:</strong> Cards, Dialogs</span> ·
+      <span><strong>Pill:</strong> Badges, Tags</span>
+    </div>
+  </div>
+
+  <!-- ALTURAS PADRAO -->
+  <div class="section">
+    <div class="section-title">Alturas Padrao</div>
+    <p class="section-desc">Alturas fixas para manter alinhamento vertical entre componentes na mesma linha.</p>
+
+    <div class="height-grid">
+      <div class="height-row">
+        <div class="height-box" style="height:28px;">Button Small</div>
+        <div class="height-info"><strong>28px</strong> — Botoes compactos, acoes em tabela</div>
+      </div>
+      <div class="height-row">
+        <div class="height-box" style="height:34px;">Button Medium / Input</div>
+        <div class="height-info"><strong>34px</strong> — Altura padrao de botoes e campos de formulario</div>
+      </div>
+      <div class="height-row">
+        <div class="height-box" style="height:40px;">Button Large / Header</div>
+        <div class="height-info"><strong>40px</strong> — Botoes grandes, header de DataGrid</div>
+      </div>
+      <div class="height-row">
+        <div class="height-box" style="height:48px;">DataGrid Row</div>
+        <div class="height-info"><strong>48px</strong> — Altura padrao de linha de tabela</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BORDER THICKNESS -->
+  <div class="section">
+    <div class="section-title">Border Thickness</div>
+    <p class="section-desc">Espessuras de borda padronizadas.</p>
+
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="width:120px; height:60px; border:1px solid #184194; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:#6c757d;">Thin</div>
+        <div style="font-size:11px; font-weight:600; color:#495057; margin-top:6px;">1px</div>
+        <div style="font-size:10px; color:#adb5bd;">Cards, inputs, tabelas</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:120px; height:60px; border:2px solid #184194; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:#6c757d;">Medium</div>
+        <div style="font-size:11px; font-weight:600; color:#495057; margin-top:6px;">2px</div>
+        <div style="font-size:10px; color:#adb5bd;">Foco, tab ativa, separador</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:120px; height:60px; border:4px solid #184194; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:#6c757d;">Thick</div>
+        <div style="font-size:11px; font-weight:600; color:#495057; margin-top:6px;">4px</div>
+        <div style="font-size:10px; color:#adb5bd;">Borda lateral de info box</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:40px;">
+  Design System da Empresa · <a href="../01-Fundamentos/04-Espacamentos.md" style="color:rgba(255,255,255,0.8);">Documentacao completa: 04-Espacamentos.md</a>
+</div>
+
+</body>
+</html>

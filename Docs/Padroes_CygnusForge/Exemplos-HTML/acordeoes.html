@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acordeões — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  .spec-tag { display: inline-block; background: #e9ecef; border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #495057; margin: 2px; }
+  .icon { font-family: 'Segoe MDL2 Assets', 'Segoe UI Symbol', sans-serif; }
+
+  /* ─── ACORDEÃO PADRÃO ──────────────────────────── */
+  .accordion { border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .accordion-item { border-bottom: 1px solid #dee2e6; }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: white;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .accordion-header:hover { background: #f8f9fa; }
+  .accordion-header.open { background: #184194; }
+  .accordion-header.open:hover { background: #0F2D6B; }
+  .accordion-title { font-size: 14px; font-weight: 600; color: #212529; display: flex; align-items: center; gap: 10px; }
+  .accordion-header.open .accordion-title { color: #ffffff; }
+  .accordion-header.open .accordion-title .icon { color: #ffffff; }
+  .accordion-icon { font-size: 12px; color: #6c757d; transition: transform 0.2s; }
+  .accordion-header.open .accordion-icon { transform: rotate(180deg); color: #ffffff; }
+  .accordion-body {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.15s;
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.6;
+  }
+  .accordion-body.open {
+    max-height: 600px;
+    padding: 14px 18px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* ─── ACORDEÃO PRIMÁRIO (herda estilo padrão com fundo PrimaryColor) ── */
+  /* A variante primária já é o padrão — header aberto com #184194 */
+
+  /* ─── ACORDEÃO COMPACTO ────────────────────────── */
+  .accordion-compact .accordion-header { padding: 10px 14px; }
+  .accordion-compact .accordion-title { font-size: 13px; font-weight: 600; }
+  .accordion-compact .accordion-body.open { padding: 10px 14px; font-size: 13px; }
+
+  /* ─── FORM GRID ──────────────────────────────── */
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 12px; font-weight: 600; color: #6c757d; }
+  .field-input { height: 32px; border: 1px solid #dee2e6; border-radius: 5px; padding: 0 10px; font-size: 13px; color: #333; font-family: inherit; }
+  .field-input:focus { outline: none; border-color: #93c5fd; }
+
+  /* ─── BADGE ─────────────────────────────────── */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-primary { background: #dbe7ff; color: #184194; }
+  .badge-success { background: #d4edda; color: #155724; }
+  .badge-warning { background: #fff3cd; color: #856404; }
+  .accordion-header.open .badge { background: rgba(255,255,255,0.2); color: #ffffff; }
+
+  /* ─── COMPARATIVO ───────────────────────────── */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .compare-card { background: #f8f9fa; border-radius: 6px; padding: 14px; font-size: 13px; }
+  .compare-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .compare-card ul { padding-left: 18px; color: #6c757d; line-height: 1.8; }
+  .compare-ok h4 { color: #155724; }
+  .compare-no h4 { color: #721c24; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Acordeões</h1>
+  <p>Expansão e colapso de seções para otimizar espaço vertical</p>
+</div>
+
+<div class="container">
+
+  <!-- PADRÃO -->
+  <div class="section">
+    <div class="section-title">Acordeão Padrão</div>
+    <p class="section-desc">Clique no cabeçalho para expandir ou recolher. Múltiplas seções podem estar abertas simultaneamente.</p>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header open" onclick="toggleAcc(this)">
+          <div class="accordion-title">
+            <span class="icon">&#xEA1F;</span> Dados da Empresa
+          </div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body open">
+          <div class="form-grid-2">
+            <div class="field"><label class="field-label">RAZÃO SOCIAL</label><input class="field-input" value="Transportes Nordeste Ltda" readonly></div>
+            <div class="field"><label class="field-label">CNPJ</label><input class="field-input" value="12.345.678/0001-90" readonly></div>
+            <div class="field"><label class="field-label">MUNICÍPIO</label><input class="field-input" value="São Paulo" readonly></div>
+            <div class="field"><label class="field-label">UF</label><input class="field-input" value="SP" readonly></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">
+            <span class="icon">&#xE77B;</span> Dados do Trabalhador
+          </div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          <div class="form-grid-2">
+            <div class="field"><label class="field-label">NOME</label><input class="field-input" value="João Carlos da Silva" readonly></div>
+            <div class="field"><label class="field-label">CPF</label><input class="field-input" value="123.456.789-00" readonly></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">
+            <span class="icon">&#xE9F9;</span> Informações Contratuais
+          </div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          <div class="form-grid-3">
+            <div class="field"><label class="field-label">DATA ADMISSÃO</label><input class="field-input" value="01/03/2018" readonly></div>
+            <div class="field"><label class="field-label">CARGO</label><input class="field-input" value="Motorista" readonly></div>
+            <div class="field"><label class="field-label">SALÁRIO</label><input class="field-input" value="R$ 3.200,00" readonly></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGUNDO EXEMPLO (com badges) -->
+  <div class="section">
+    <div class="section-title">Acordeão com Badges</div>
+    <p class="section-desc">Mesmo estilo padrão — header aberto em PrimaryColor (#184194). Badges complementam o título.</p>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header open" onclick="toggleAcc(this)">
+          <div class="accordion-title">Configurações Gerais <span class="badge badge-primary">3 campos</span></div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body open">
+          <div class="form-grid-2">
+            <div class="field"><label class="field-label">COMPETÊNCIA</label><input class="field-input" value="03/2026" readonly></div>
+            <div class="field"><label class="field-label">TIPO DE FOLHA</label><input class="field-input" value="Normal" readonly></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title">Opções de Geração <span class="badge badge-warning">opcional</span></div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          <div style="font-size:13px; color:#6c757d;">Modo individual, unificado, ordenação por nome ou matrícula, etc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPACTO -->
+  <div class="section">
+    <div class="section-title">Acordeão Compacto</div>
+    <p class="section-desc">Versão com menos padding. Use dentro de cards ou painéis com espaço limitado.</p>
+
+    <div class="accordion accordion-compact">
+      <div class="accordion-item">
+        <div class="accordion-header open" onclick="toggleAcc(this)">
+          <div class="accordion-title"><span class="icon">&#xE8BD;</span> Jornada de Trabalho</div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body open">
+          Segunda a Sexta · 08:00–17:00 · Intervalo: 1h · Total semanal: 44h
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title"><span class="icon">&#xE707;</span> Dados Bancários</div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          Banco Bradesco · Ag: 1234 · CC: 56789-0 · Conta Corrente
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <div class="accordion-title"><span class="icon">&#xE8D6;</span> Dependentes</div>
+          <span class="icon accordion-icon">&#xE70D;</span>
+        </div>
+        <div class="accordion-body">
+          2 dependentes cadastrados. Maria da Silva (cônjuge) · Pedro da Silva (filho, 8 anos).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUANDO USAR / NÃO USAR -->
+  <div class="section">
+    <div class="section-title">Quando usar Acordeões</div>
+    <div class="compare-grid">
+      <div class="compare-card compare-ok">
+        <h4>✓ Use acordeões quando</h4>
+        <ul>
+          <li>O conteúdo pode ser agrupado em seções opcionais</li>
+          <li>Usuários raramente precisam ver todas as seções ao mesmo tempo</li>
+          <li>A tela ficaria longa demais sem colapsar grupos</li>
+          <li>São seções de configuração avançada ou detalhes secundários</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-no">
+        <h4>✗ Não use acordeões quando</h4>
+        <ul>
+          <li>O usuário precisa comparar dados entre seções</li>
+          <li>As seções são curtas (use scroll direto)</li>
+          <li>São etapas de um processo sequencial (use stepper)</li>
+          <li>O conteúdo pode ser organizado em tabs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleAcc(header) {
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  const body = header.nextElementSibling;
+  body.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>

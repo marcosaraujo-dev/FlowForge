@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System da Empresa — Portal de Exemplos</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  /* Header */
+  .site-header { background: linear-gradient(135deg, #184194 0%, #0f2d6b 100%); color: white; padding: 40px; text-align: center; }
+  .site-header .logo { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .site-header .subtitle { font-size: 16px; opacity: 0.8; margin-bottom: 24px; }
+  .version-badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+  /* Nav */
+  .nav-tabs { display: flex; justify-content: center; gap: 4px; background: #0f2d6b; padding: 0 40px; }
+  .nav-tab { padding: 12px 20px; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 14px; border-bottom: 2px solid transparent; transition: all 0.15s; text-decoration: none; }
+  .nav-tab:hover, .nav-tab.active { color: white; border-bottom-color: white; }
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  /* Section */
+  .section-header { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; margin-top: 40px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-header:first-child { margin-top: 0; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  /* Card grid */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  /* Example card */
+  .ex-card { background: white; border: 1px solid #dee2e6; border-radius: 10px; overflow: hidden; transition: all 0.15s; text-decoration: none; color: inherit; display: block; }
+  .ex-card:hover { box-shadow: 0 4px 16px rgba(24,65,148,0.12); transform: translateY(-2px); border-color: #184194; }
+  .ex-card .preview { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6c757d; overflow: hidden; padding: 12px; }
+  .ex-card .info { padding: 12px; border-top: 1px solid #f0f0f0; }
+  .ex-card .info-title { font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 4px; }
+  .ex-card .info-desc { font-size: 12px; color: #adb5bd; }
+  /* Color swatches preview */
+  .color-strip { display: flex; height: 100%; width: 100%; border-radius: 4px; overflow: hidden; }
+  .color-strip div { flex: 1; }
+  /* Typography preview */
+  .typo-preview { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  /* Badge preview */
+  .badge-row-preview { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .bp { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+  /* Button preview */
+  .btn-preview { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-family: inherit; border: none; cursor: default; }
+  /* Table preview */
+  .table-mini { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .table-mini th { background: #f8f9fa; padding: 4px 6px; border-bottom: 1px solid #dee2e6; }
+  .table-mini td { padding: 4px 6px; border-bottom: 1px solid #f0f0f0; }
+  .table-mini tr:hover td { background: #f5f8ff; }
+  /* Alert preview */
+  .alert-mini { padding: 6px 10px; border-radius: 4px; border: 1px solid; font-size: 10px; margin-bottom: 4px; }
+  /* Colors in fundamentos */
+  .fund-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .fund-item { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .fund-dot { width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08); }
+  /* Icon preview */
+  .icon-grid-mini { display: flex; flex-wrap: wrap; gap: 8px; }
+  .icon-item { font-family: 'Segoe MDL2 Assets'; font-size: 20px; color: #184194; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="logo">Design System da Empresa</div>
+  <div class="subtitle">Galeria visual de componentes, cores, tipografia e padroes</div>
+  <span class="version-badge">v1.0 · Marco 2026</span>
+</div>
+
+<div class="container">
+
+  <!-- FUNDAMENTOS -->
+  <div class="section-header">Fundamentos</div>
+  <p class="section-desc">Design tokens — aplicaveis a qualquer tecnologia ou framework.</p>
+  <div class="card-grid">
+
+    <!-- Cores -->
+    <a href="cores.html" class="ex-card">
+      <div class="preview">
+        <div class="color-strip">
+          <div style="background:#184194;"></div>
+          <div style="background:#28a745;"></div>
+          <div style="background:#dc3545;"></div>
+          <div style="background:#ffc107;"></div>
+          <div style="background:#17a2b8;"></div>
+          <div style="background:#6c757d;"></div>
+          <div style="background:#f5f5f5; border:1px solid #dee2e6;"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Cores</div>
+        <div class="info-desc">Paleta completa — Primary, semanticas, neutras, fundo e texto</div>
+      </div>
+    </a>
+
+    <!-- Tipografia -->
+    <a href="tipografia.html" class="ex-card">
+      <div class="preview">
+        <div class="typo-preview">
+          <div style="font-size:18px; font-weight:600; color:#495057; line-height:1;">Titulo</div>
+          <div style="font-size:14px; font-weight:600; color:#495057; line-height:1;">Subtitulo</div>
+          <div style="font-size:13px; color:#6c757d; line-height:1;">Texto secundario</div>
+          <div style="font-size:12px; color:#adb5bd; line-height:1;">Caption / Ajuda</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Tipografia</div>
+        <div class="info-desc">Escala de tamanhos, estilos de texto e hierarquia visual</div>
+      </div>
+    </a>
+
+    <!-- Icones -->
+    <a href="icones.html" class="ex-card">
+      <div class="preview">
+        <div class="icon-grid-mini">
+          <span class="icon-item">&#xE710;</span>
+          <span class="icon-item">&#xE70F;</span>
+          <span class="icon-item" style="color:#dc3545;">&#xE74D;</span>
+          <span class="icon-item">&#xE74E;</span>
+          <span class="icon-item" style="color:#6c757d;">&#xE721;</span>
+          <span class="icon-item">&#xE787;</span>
+          <span class="icon-item" style="color:#17a2b8;">&#xE8A5;</span>
+          <span class="icon-item" style="color:#6c757d;">&#xE713;</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Icones</div>
+        <div class="info-desc">Catalogo Segoe MDL2 Assets com codigos e galeria interativa</div>
+      </div>
+    </a>
+
+    <!-- Espacamentos -->
+    <a href="espacamentos.html" class="ex-card">
+      <div class="preview" style="padding:12px; flex-direction:column; gap:6px; align-items:flex-start;">
+        <div style="display:flex; align-items:center; gap:6px; width:100%;">
+          <div style="font-size:9px; color:#6c757d; width:30px; text-align:right;">4px</div>
+          <div style="height:8px; width:8px; background:#184194; border-radius:2px; opacity:0.6;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; width:100%;">
+          <div style="font-size:9px; color:#6c757d; width:30px; text-align:right;">8px</div>
+          <div style="height:8px; width:16px; background:#184194; border-radius:2px; opacity:0.7;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; width:100%;">
+          <div style="font-size:9px; color:#6c757d; width:30px; text-align:right;">16px</div>
+          <div style="height:8px; width:32px; background:#184194; border-radius:2px; opacity:0.8;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; width:100%;">
+          <div style="font-size:9px; color:#6c757d; width:30px; text-align:right;">24px</div>
+          <div style="height:8px; width:48px; background:#184194; border-radius:2px; opacity:0.9;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; width:100%;">
+          <div style="font-size:9px; color:#6c757d; width:30px; text-align:right;">48px</div>
+          <div style="height:8px; width:96px; background:#184194; border-radius:2px;"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Espacamentos</div>
+        <div class="info-desc">Escala base, padding, margin, border radius e alturas</div>
+      </div>
+    </a>
+
+    <!-- Sombras -->
+    <a href="sombras.html" class="ex-card">
+      <div class="preview" style="gap:10px; padding:16px;">
+        <div style="width:50px; height:40px; background:white; border:1px solid #dee2e6; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:8px; color:#adb5bd;">None</div>
+        <div style="width:50px; height:40px; background:white; border:1px solid #dee2e6; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.08); display:flex; align-items:center; justify-content:center; font-size:8px; color:#adb5bd;">Small</div>
+        <div style="width:50px; height:40px; background:white; border:1px solid #dee2e6; border-radius:6px; box-shadow:0 4px 16px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center; font-size:8px; color:#adb5bd;">Medium</div>
+        <div style="width:50px; height:40px; background:white; border:1px solid #dee2e6; border-radius:6px; box-shadow:0 8px 32px rgba(0,0,0,0.20); display:flex; align-items:center; justify-content:center; font-size:8px; color:#adb5bd;">Large</div>
+      </div>
+      <div class="info">
+        <div class="info-title">Sombras e Elevacao</div>
+        <div class="info-desc">5 niveis de profundidade — tokens e uso por componente</div>
+      </div>
+    </a>
+
+    <!-- Animacoes -->
+    <a href="animacoes.html" class="ex-card">
+      <div class="preview" style="gap:12px;">
+        <div style="width:24px; height:24px; border:2px solid #e9ecef; border-top-color:#184194; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+        <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+          <div style="font-size:9px; color:#6c757d;">100ms · 150ms · 250ms · 400ms</div>
+          <div style="height:4px; background:#e9ecef; border-radius:2px; overflow:hidden;">
+            <div style="height:100%; width:60%; background:#184194; border-radius:2px;"></div>
+          </div>
+          <div style="font-size:9px; color:#adb5bd;">ease-out · ease-in · ease-in-out · linear</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Animacoes e Transicoes</div>
+        <div class="info-desc">Duracoes, easing, hover, expand, fade e loading interativos</div>
+      </div>
+    </a>
+
+    <!-- Estados -->
+    <a href="estados.html" class="ex-card">
+      <div class="preview" style="gap:4px; padding:10px;">
+        <div style="display:flex; gap:3px; align-items:center;">
+          <div style="padding:3px 6px; background:#184194; color:white; border-radius:3px; font-size:8px;">Normal</div>
+          <div style="padding:3px 6px; background:#0f2d6b; color:white; border-radius:3px; font-size:8px;">Hover</div>
+          <div style="padding:3px 6px; background:#184194; color:white; border-radius:3px; font-size:8px; outline:1px solid #93c5fd; outline-offset:1px;">Focus</div>
+        </div>
+        <div style="display:flex; gap:3px; align-items:center;">
+          <div style="padding:3px 6px; background:#0a1f4a; color:white; border-radius:3px; font-size:8px;">Active</div>
+          <div style="padding:3px 6px; background:#184194; color:white; border-radius:3px; font-size:8px; opacity:0.5;">Disabled</div>
+          <div style="padding:3px 6px; background:#184194; color:white; border-radius:3px; font-size:8px;">Loading</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Estados de Interacao</div>
+        <div class="info-desc">6 estados visuais por componente — cores, transicoes e prioridade</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- COMPONENTES -->
+  <div class="section-header" style="margin-top:40px;">Componentes</div>
+  <p class="section-desc">Biblioteca de componentes de interface com variantes, estados e exemplos.</p>
+  <div class="card-grid">
+
+    <!-- Botoes -->
+    <a href="botoes.html" class="ex-card">
+      <div class="preview" style="gap:6px; flex-direction:column;">
+        <div style="display:flex; gap:6px;">
+          <button class="btn-preview" style="background:#184194; color:white;">Salvar</button>
+          <button class="btn-preview" style="background:#6c757d; color:white;">Cancelar</button>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="btn-preview" style="background:#28a745; color:white;">Aprovar</button>
+          <button class="btn-preview" style="background:#dc3545; color:white;">Excluir</button>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Botoes</div>
+        <div class="info-desc">Variantes, tamanhos, estados e hierarquia de acoes</div>
+      </div>
+    </a>
+
+    <!-- Badges -->
+    <a href="badges.html" class="ex-card">
+      <div class="preview">
+        <div class="badge-row-preview">
+          <span class="bp" style="background:#d4edda; color:#155724;">Ativo</span>
+          <span class="bp" style="background:#f8d7da; color:#721c24;">Inativo</span>
+          <span class="bp" style="background:#fff3cd; color:#856404;">Pendente</span>
+          <span class="bp" style="background:#d1ecf1; color:#0c5460;">Em Analise</span>
+          <span class="bp" style="background:#e2e3e5; color:#383d41;">Rascunho</span>
+          <span class="bp" style="background:#184194; color:white;">CLT</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Badges e Status</div>
+        <div class="info-desc">Indicadores de estado e categoria</div>
+      </div>
+    </a>
+
+    <!-- Cards -->
+    <a href="cards.html" class="ex-card">
+      <div class="preview" style="padding:8px;">
+        <div style="background:white; border:1px solid #dee2e6; border-radius:6px; width:100%; font-size:10px;">
+          <div style="padding:8px 10px; border-bottom:1px solid #e9ecef; font-weight:600; color:#495057;">Dados Pessoais</div>
+          <div style="padding:8px 10px; color:#6c757d;">Nome: Joao da Silva<br>CPF: 000.000.000-00</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Cards</div>
+        <div class="info-desc">Simples, com header, footer, estatistica e info box</div>
+      </div>
+    </a>
+
+    <!-- Formularios -->
+    <a href="formularios.html" class="ex-card">
+      <div class="preview" style="padding:12px; flex-direction:column; gap:6px; align-items:stretch;">
+        <div style="font-size:10px; font-weight:600; color:#495057;">Nome Completo *</div>
+        <div style="height:22px; border:1px solid #dee2e6; border-radius:4px; background:white;"></div>
+        <div style="font-size:10px; font-weight:600; color:#495057;">Cargo</div>
+        <div style="height:22px; border:1px solid #dee2e6; border-radius:4px; background:white;"></div>
+      </div>
+      <div class="info">
+        <div class="info-title">Formularios</div>
+        <div class="info-desc">Campos, estados, layouts 1/2/3 colunas e validacao</div>
+      </div>
+    </a>
+
+    <!-- Tabelas -->
+    <a href="tabelas.html" class="ex-card">
+      <div class="preview" style="padding:8px;">
+        <table class="table-mini">
+          <thead><tr><th>Nome</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Ana Lima</td><td><span class="bp" style="background:#d4edda; color:#155724;">Ativo</span></td></tr>
+            <tr style="background:#f5f8ff;"><td>Carlos</td><td><span class="bp" style="background:#fff3cd; color:#856404;">Pendente</span></td></tr>
+            <tr style="background:#e3efff;"><td>Marcos</td><td><span class="bp" style="background:#d4edda; color:#155724;">Ativo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info">
+        <div class="info-title">Tabelas</div>
+        <div class="info-desc">Estados de linha, colunas, acoes e estado vazio</div>
+      </div>
+    </a>
+
+    <!-- Alertas -->
+    <a href="alertas.html" class="ex-card">
+      <div class="preview" style="padding:8px; flex-direction:column; gap:4px; width:100%;">
+        <div class="alert-mini" style="background:#d4edda; border-color:#28a745; color:#155724;">Salvo com sucesso.</div>
+        <div class="alert-mini" style="background:#f8d7da; border-color:#dc3545; color:#721c24;">Erro ao processar.</div>
+        <div class="alert-mini" style="background:#fff3cd; border-color:#ffc107; color:#856404; margin-bottom:0;">Atencao: divergencia.</div>
+      </div>
+      <div class="info">
+        <div class="info-title">Alertas</div>
+        <div class="info-desc">Feedback de acoes, toasts e mensagens inline</div>
+      </div>
+    </a>
+
+    <!-- Tabs -->
+    <a href="tabs.html" class="ex-card">
+      <div class="preview" style="padding:12px; flex-direction:column; align-items:stretch; gap:0;">
+        <div style="display:flex; border-bottom:2px solid #dee2e6; gap:0;">
+          <div style="padding:6px 12px; font-size:11px; color:#184194; font-weight:600; border-bottom:2px solid #184194; margin-bottom:-2px;">Dados Gerais</div>
+          <div style="padding:6px 12px; font-size:11px; color:#adb5bd;">Documentos</div>
+          <div style="padding:6px 12px; font-size:11px; color:#adb5bd;">Histórico</div>
+        </div>
+        <div style="padding:10px 0; font-size:10px; color:#6c757d;">Conteúdo da aba ativa...</div>
+      </div>
+      <div class="info">
+        <div class="info-title">Tabs</div>
+        <div class="info-desc">Underline, Boxed e Pills — com badge, ícone e estados</div>
+      </div>
+    </a>
+
+    <!-- Acordeoes -->
+    <a href="acordeoes.html" class="ex-card">
+      <div class="preview" style="padding:8px; flex-direction:column; gap:4px; align-items:stretch;">
+        <div style="border:1px solid #dee2e6; border-radius:5px; overflow:hidden;">
+          <div style="padding:7px 10px; background:#184194; display:flex; justify-content:space-between; font-size:10px; font-weight:600; color:#ffffff; border-bottom:1px solid #dee2e6;">
+            <span>Dados Pessoais</span><span style="font-family:'Segoe MDL2 Assets';">&#xE70E;</span>
+          </div>
+          <div style="padding:7px 10px; font-size:10px; color:#495057; display:flex; justify-content:space-between;">
+            <span>Dados Contratuais</span><span style="color:#adb5bd; font-family:'Segoe MDL2 Assets';">&#xE70D;</span>
+          </div>
+          <div style="padding:7px 10px; font-size:10px; color:#495057; display:flex; justify-content:space-between; border-top:1px solid #f0f0f0;">
+            <span>Informações Bancárias</span><span style="color:#adb5bd; font-family:'Segoe MDL2 Assets';">&#xE70D;</span>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Acordeões</div>
+        <div class="info-desc">Header primário azul, padrão e versão compacta</div>
+      </div>
+    </a>
+
+    <!-- Loading -->
+    <a href="loading.html" class="ex-card">
+      <div class="preview" style="gap:12px;">
+        <div style="width:36px; height:36px; border:3px solid #e9ecef; border-top-color:#184194; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="height:8px; width:90px; background:linear-gradient(90deg,#e9ecef 25%,#f5f5f5 50%,#e9ecef 75%); background-size:200px 100%; animation:shimmer 1.4s infinite; border-radius:3px;"></div>
+          <div style="height:8px; width:70px; background:linear-gradient(90deg,#e9ecef 25%,#f5f5f5 50%,#e9ecef 75%); background-size:200px 100%; animation:shimmer 1.4s infinite; border-radius:3px;"></div>
+          <div style="height:8px; width:80px; background:linear-gradient(90deg,#e9ecef 25%,#f5f5f5 50%,#e9ecef 75%); background-size:200px 100%; animation:shimmer 1.4s infinite; border-radius:3px;"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Loading e Estados</div>
+        <div class="info-desc">Overlay, inline, skeleton, vazio e erro</div>
+      </div>
+    </a>
+
+    <!-- Dialogs -->
+    <a href="dialogs.html" class="ex-card">
+      <div class="preview" style="padding:8px; align-items:center; justify-content:center;">
+        <div style="width:140px; background:white; border:1px solid #dee2e6; border-radius:7px; box-shadow:0 4px 14px rgba(0,0,0,0.15); overflow:hidden; font-size:9px;">
+          <div style="padding:7px 10px; background:#f8f9fa; border-bottom:1px solid #dee2e6; font-weight:600; color:#212529;">Confirmar Exclusão</div>
+          <div style="padding:8px 10px; color:#6c757d; line-height:1.4;">Tem certeza? Esta ação não pode ser desfeita.</div>
+          <div style="padding:6px 10px; border-top:1px solid #dee2e6; display:flex; justify-content:flex-end; gap:4px;">
+            <div style="padding:3px 6px; border:1px solid #dee2e6; border-radius:3px; color:#495057;">Não</div>
+            <div style="padding:3px 6px; background:#dc3545; border-radius:3px; color:white;">Excluir</div>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Dialogs e Modais</div>
+        <div class="info-desc">Confirmação, formulário, informativo e wizard</div>
+      </div>
+    </a>
+
+    <!-- Menu Lateral -->
+    <a href="menu.html" class="ex-card">
+      <div class="preview" style="padding:0; overflow:hidden; align-items:stretch;">
+        <div style="display:flex; width:100%; height:100%;">
+          <div style="width:90px; background:#1e2d5a; padding:8px 6px; display:flex; flex-direction:column; gap:2px;">
+            <div style="padding:5px 8px; display:flex; align-items:center; gap:5px; background:rgba(255,255,255,0.1); border-radius:4px; border-left:2px solid #4d8bff;">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:11px; color:white;">&#xE80F;</span>
+              <span style="font-size:9px; color:white; font-weight:600;">Dashboard</span>
+            </div>
+            <div style="padding:5px 8px; display:flex; align-items:center; gap:5px; border-radius:4px;">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:11px; color:rgba(255,255,255,0.5);">&#xE8D6;</span>
+              <span style="font-size:9px; color:rgba(255,255,255,0.5);">Trabalhadores</span>
+            </div>
+            <div style="padding:5px 8px; display:flex; align-items:center; gap:5px; border-radius:4px;">
+              <span style="font-family:'Segoe MDL2 Assets'; font-size:11px; color:rgba(255,255,255,0.5);">&#xE896;</span>
+              <span style="font-size:9px; color:rgba(255,255,255,0.5);">Gerar Docs</span>
+            </div>
+          </div>
+          <div style="flex:1; background:#f8f9fa; padding:8px; font-size:9px; color:#6c757d;">Conteúdo principal...</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Menu Lateral</div>
+        <div class="info-desc">Sidebar expandida, compacta e 2 níveis hierárquicos</div>
+      </div>
+    </a>
+
+    <!-- Breadcrumb -->
+    <a href="breadcrumb.html" class="ex-card">
+      <div class="preview" style="padding:10px; flex-direction:column; gap:6px; align-items:stretch; justify-content:center;">
+        <div style="background:#1a2a5e; border-radius:5px; padding:8px 12px; display:flex; align-items:center; gap:0; font-size:10px; color:#adb5bd;">
+          <span style="opacity:0.7;">Home</span>
+          <span style="font-family:'Segoe MDL2 Assets'; font-size:9px; margin:0 6px; opacity:0.4;">&#xE76C;</span>
+          <span style="opacity:0.7;">Templates</span>
+          <span style="font-family:'Segoe MDL2 Assets'; font-size:9px; margin:0 6px; opacity:0.4;">&#xE76C;</span>
+          <span style="font-weight:600;">Editar: Acordo</span>
+        </div>
+        <div style="background:#f5f5f5; border-radius:5px; padding:8px 12px; display:flex; align-items:center; gap:0; font-size:10px; color:#6c757d;">
+          <span style="color:#184194; opacity:0.8;">Home</span>
+          <span style="font-family:'Segoe MDL2 Assets'; font-size:9px; margin:0 6px; opacity:0.4; color:#adb5bd;">&#xE76C;</span>
+          <span style="color:#184194; opacity:0.8;">Templates</span>
+          <span style="font-family:'Segoe MDL2 Assets'; font-size:9px; margin:0 6px; opacity:0.4; color:#adb5bd;">&#xE76C;</span>
+          <span style="color:#495057; font-weight:600;">Editar: Acordo</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Breadcrumb</div>
+        <div class="info-desc">Caminho de navegacao com links e item atual — header global e variante clara</div>
+      </div>
+    </a>
+
+    <!-- Tooltips -->
+    <a href="tooltips.html" class="ex-card">
+      <div class="preview" style="padding:16px; align-items:center; justify-content:center;">
+        <div style="position:relative; display:inline-block;">
+          <div style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:1px solid #dee2e6; border-radius:5px; font-family:'Segoe MDL2 Assets'; font-size:16px; color:#495057;">&#xE70F;</div>
+          <div style="position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:#1a2a5e; color:white; padding:4px 10px; border-radius:4px; font-size:10px; white-space:nowrap; box-shadow:0 4px 16px rgba(0,0,0,0.12);">Editar registro<div style="position:absolute; bottom:-4px; left:50%; transform:translateX(-50%) rotate(45deg); width:8px; height:8px; background:#1a2a5e;"></div></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Tooltips</div>
+        <div class="info-desc">Variantes de cor, posicoes, conteudo simples e complexo</div>
+      </div>
+    </a>
+
+    <!-- Secoes de Formulario -->
+    <a href="secoes-formulario.html" class="ex-card">
+      <div class="preview" style="padding:10px; flex-direction:column; gap:8px; align-items:stretch;">
+        <div style="font-size:10px; font-weight:600; color:#212529; padding-bottom:4px; border-bottom:1px solid #dee2e6;">Dados Pessoais</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+          <div style="height:16px; border:1px solid #dee2e6; border-radius:3px; background:white;"></div>
+          <div style="height:16px; border:1px solid #dee2e6; border-radius:3px; background:white;"></div>
+        </div>
+        <div style="font-size:10px; font-weight:600; color:#212529; padding-bottom:4px; padding-top:4px; border-bottom:1px solid #dee2e6; border-top:1px solid #e9ecef; margin-top:2px;">Dados Contratuais</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px;">
+          <div style="height:16px; border:1px solid #dee2e6; border-radius:3px; background:white;"></div>
+          <div style="height:16px; border:1px solid #dee2e6; border-radius:3px; background:white;"></div>
+          <div style="height:16px; border:1px solid #dee2e6; border-radius:3px; background:white;"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Seções de Formulário</div>
+        <div class="info-desc">Grupos de campos, separadores, numeração e espaçamentos</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- LAYOUT E RECEITAS -->
+  <div class="section-header" style="margin-top:40px;">Layout e Receitas de Tela</div>
+  <p class="section-desc">Blueprints completos de telas montadas — identicos em WPF e React.</p>
+  <div class="card-grid">
+    <a href="receitas.html" class="ex-card">
+      <div class="preview" style="padding:8px; flex-direction:column; gap:4px; align-items:stretch;">
+        <div style="display:flex; gap:3px; margin-bottom:4px;">
+          <div style="flex:1; height:8px; background:#184194; border-radius:2px; opacity:0.8;"></div>
+          <div style="flex:1; height:8px; background:#e9ecef; border-radius:2px;"></div>
+          <div style="flex:1; height:8px; background:#e9ecef; border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; height:60px; gap:3px;">
+          <div style="width:30px; background:#1a2a5e; border-radius:3px;"></div>
+          <div style="flex:1; background:#f5f5f5; border-radius:3px; padding:4px; display:flex; flex-direction:column; gap:3px;">
+            <div style="height:8px; background:#dee2e6; border-radius:2px; width:60%;"></div>
+            <div style="height:24px; background:white; border:1px solid #dee2e6; border-radius:3px;"></div>
+            <div style="height:12px; background:white; border:1px solid #dee2e6; border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-title">Receitas de Tela</div>
+        <div class="info-desc">6 blueprints completos: Lista, Cadastro, Detalhe, Dashboard, Wizard, Split</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- LINKS PARA DOCS -->
+  <div class="section-header" style="margin-top:40px;">Documentacao em Markdown</div>
+  <p class="section-desc">Consulte a documentacao completa em texto para especificacoes detalhadas e regras de uso.</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:16px;">
+      <div style="font-size:13px; font-weight:700; color:#184194; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Fundamentos</div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:13px;">
+        <a href="../01-Fundamentos/01-Principios.md" style="color:#184194;">Principios de Design</a>
+        <a href="../01-Fundamentos/02-Cores.md" style="color:#184194;">Sistema de Cores</a>
+        <a href="../01-Fundamentos/03-Tipografia.md" style="color:#184194;">Tipografia</a>
+        <a href="../01-Fundamentos/04-Espacamentos.md" style="color:#184194;">Espacamentos</a>
+        <a href="../01-Fundamentos/05-Icones.md" style="color:#184194;">Icones</a>
+        <a href="../01-Fundamentos/06-Redacao-UX.md" style="color:#184194;">Redacao UX</a>
+        <a href="../01-Fundamentos/07-Sombras-Elevacao.md" style="color:#184194;">Sombras e Elevacao</a>
+        <a href="../01-Fundamentos/08-Animacoes.md" style="color:#184194;">Animacoes e Transicoes</a>
+        <a href="../01-Fundamentos/09-Acessibilidade.md" style="color:#184194;">Acessibilidade (WCAG)</a>
+        <a href="../01-Fundamentos/10-Estados-Interacao.md" style="color:#184194;">Estados de Interacao</a>
+      </div>
+    </div>
+    <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:16px;">
+      <div style="font-size:13px; font-weight:700; color:#184194; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Componentes</div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:13px;">
+        <a href="../02-Componentes/01-Botoes.md" style="color:#184194;">Botoes</a>
+        <a href="../02-Componentes/02-Badges-Status.md" style="color:#184194;">Badges e Status</a>
+        <a href="../02-Componentes/03-Cards.md" style="color:#184194;">Cards</a>
+        <a href="../02-Componentes/04-Formularios.md" style="color:#184194;">Formularios</a>
+        <a href="../02-Componentes/05-Tabelas.md" style="color:#184194;">Tabelas</a>
+        <a href="../02-Componentes/06-Alertas.md" style="color:#184194;">Alertas</a>
+        <a href="../02-Componentes/07-Tabs.md" style="color:#184194;">Tabs</a>
+        <a href="../02-Componentes/08-Acordeoes.md" style="color:#184194;">Acordeoes</a>
+        <a href="../02-Componentes/09-Tooltips.md" style="color:#184194;">Tooltips</a>
+        <a href="../02-Componentes/10-Loading-Estados.md" style="color:#184194;">Loading e Estados</a>
+        <a href="../02-Componentes/11-Menu-Lateral.md" style="color:#184194;">Menu Lateral</a>
+        <a href="../02-Componentes/12-Dialogs.md" style="color:#184194;">Dialogs</a>
+        <a href="../02-Componentes/13-Secoes-Formulario.md" style="color:#184194;">Secoes de Formulario</a>
+        <a href="../02-Componentes/14-Breadcrumb.md" style="color:#184194;">Breadcrumb</a>
+      </div>
+    </div>
+    <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:16px;">
+      <div style="font-size:13px; font-weight:700; color:#184194; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Layout</div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:13px;">
+        <a href="../03-Layout/01-Estrutura-Paginas.md" style="color:#184194;">Estrutura de Paginas</a>
+        <a href="../03-Layout/02-Navegacao.md" style="color:#184194;">Navegacao</a>
+        <a href="../03-Layout/03-Receitas-Tela.md" style="color:#184194;">Receitas de Tela (Blueprints)</a>
+      </div>
+    </div>
+    <div style="background:white; border:1px solid #dee2e6; border-radius:8px; padding:16px;">
+      <div style="font-size:13px; font-weight:700; color:#184194; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Frameworks</div>
+      <div style="display:flex; flex-direction:column; gap:4px; font-size:13px;">
+        <div style="font-size:11px; font-weight:600; color:#6c757d; text-transform:uppercase; letter-spacing:0.3px; margin-top:4px;">WPF (.NET 4.8)</div>
+        <a href="../WPF/README.md" style="color:#184194;">Indice</a>
+        <a href="../WPF/01-MVVM.md" style="color:#184194;">MVVM</a>
+        <a href="../WPF/03-PadroesObrigatorios.md" style="color:#184194;">Padroes Obrigatorios</a>
+        <a href="../WPF/04-AntiPatterns.md" style="color:#184194;">Anti-Patterns</a>
+        <a href="../WPF/05-Converters.md" style="color:#184194;">Converters</a>
+        <a href="../WPF/06-Templates.md" style="color:#184194;">Templates de Codigo</a>
+        <a href="../WPF/07-Componentes-Especificos.md" style="color:#184194;">Componentes Especificos</a>
+        <div style="font-size:11px; font-weight:600; color:#6c757d; text-transform:uppercase; letter-spacing:0.3px; margin-top:8px;">React (TypeScript)</div>
+        <a href="../React/README.md" style="color:#184194;">Indice</a>
+        <a href="../React/01-Componentizacao.md" style="color:#184194;">Componentizacao e SRP</a>
+        <a href="../React/02-Hooks.md" style="color:#184194;">Hooks</a>
+        <a href="../React/03-GerenciamentoEstado.md" style="color:#184194;">Gerenciamento de Estado</a>
+        <a href="../React/04-Performance.md" style="color:#184194;">Performance e Lazy Loading</a>
+        <a href="../React/05-PadroesObrigatorios.md" style="color:#184194;">Padroes Obrigatorios</a>
+        <a href="../React/06-AntiPatterns.md" style="color:#184194;">Anti-Patterns</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:40px;">
+  Design System da Empresa · Abra os arquivos .html individualmente no navegador para ver os exemplos interativos
+</div>
+
+</body>
+</html>

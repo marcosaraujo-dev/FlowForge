@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooltips — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  /* Tooltip demos */
+  .tooltip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+  .tooltip-demo { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 32px 24px; text-align: center; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .tooltip-demo-label { font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.3px; }
+  /* Static tooltip bubbles */
+  .tip { position: relative; display: inline-block; }
+  .tip-bubble { position: absolute; padding: 6px 12px; border-radius: 6px; font-size: 12px; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 10; }
+  .tip-bubble::after { content: ''; position: absolute; width: 8px; height: 8px; transform: rotate(45deg); }
+  /* Dark tooltip (default) */
+  .tip-dark { background: #1a2a5e; color: white; }
+  .tip-dark::after { background: #1a2a5e; }
+  /* Primary tooltip */
+  .tip-primary { background: #184194; color: white; }
+  .tip-primary::after { background: #184194; }
+  /* Success tooltip */
+  .tip-success { background: #28a745; color: white; }
+  .tip-success::after { background: #28a745; }
+  /* Warning tooltip */
+  .tip-warning { background: #ffc107; color: #212529; }
+  .tip-warning::after { background: #ffc107; }
+  /* Error tooltip */
+  .tip-error { background: #dc3545; color: white; }
+  .tip-error::after { background: #dc3545; }
+  /* Light tooltip */
+  .tip-light { background: white; color: #495057; border: 1px solid #dee2e6; }
+  .tip-light::after { background: white; border-right: 1px solid #dee2e6; border-bottom: 1px solid #dee2e6; }
+  /* Position: top */
+  .tip-top { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .tip-top::after { bottom: -4px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+  /* Position: bottom */
+  .tip-bottom { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .tip-bottom::after { top: -4px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+  /* Position: right */
+  .tip-right { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .tip-right::after { left: -4px; top: 50%; transform: translateY(-50%) rotate(45deg); }
+  /* Position: left */
+  .tip-left { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .tip-left::after { right: -4px; top: 50%; transform: translateY(-50%) rotate(45deg); }
+  /* Buttons for demo */
+  .demo-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 6px; border: 1px solid #dee2e6; background: white; font-family: 'Segoe MDL2 Assets'; font-size: 16px; color: #495057; cursor: default; }
+  .demo-btn-primary { background: #184194; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-family: 'Segoe UI', sans-serif; font-size: 13px; cursor: default; }
+  /* Live tooltip */
+  .live-target { position: relative; display: inline-block; cursor: pointer; }
+  .live-target .live-tip { visibility: hidden; opacity: 0; transition: opacity 0.15s ease-out, visibility 0.15s; }
+  .live-target:hover .live-tip { visibility: visible; opacity: 1; }
+  /* Complex tooltip */
+  .tip-complex { padding: 10px 14px; max-width: 220px; white-space: normal; text-align: left; }
+  .tip-complex-title { font-weight: 600; font-size: 12px; margin-bottom: 4px; }
+  .tip-complex-desc { font-size: 11px; opacity: 0.85; line-height: 1.4; }
+  /* Table demo */
+  .table-demo { width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .table-demo th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; color: #6c757d; border-bottom: 1px solid #dee2e6; }
+  .table-demo td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; color: #495057; }
+  .table-demo tr:hover td { background: #f5f8ff; }
+  .table-demo .action-cell { display: flex; gap: 6px; }
+  .table-demo .action-btn { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #dee2e6; border-radius: 4px; background: white; font-family: 'Segoe MDL2 Assets'; font-size: 13px; color: #495057; cursor: pointer; position: relative; }
+  .table-demo .action-btn:hover { background: #f5f8ff; border-color: #184194; color: #184194; }
+  .table-demo .action-btn:hover .live-tip { visibility: visible; opacity: 1; }
+  .table-demo .action-btn .live-tip { visibility: hidden; opacity: 0; transition: opacity 0.15s; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Tooltips</h1>
+  <p>Dicas contextuais — variantes, posicoes, conteudo simples e complexo</p>
+</div>
+
+<div class="container">
+
+  <!-- VARIANTES -->
+  <div class="section">
+    <div class="section-title">Variantes de Cor</div>
+    <p class="section-desc">O tooltip padrao usa fundo escuro. Variantes semanticas sao usadas para feedback contextual.</p>
+
+    <div class="tooltip-grid">
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Dark (padrao)</div>
+        <div class="tip">
+          <div class="demo-btn">&#xE70F;</div>
+          <div class="tip-bubble tip-dark tip-top">Editar registro</div>
+        </div>
+      </div>
+
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Primary</div>
+        <div class="tip">
+          <div class="demo-btn">&#xE8A5;</div>
+          <div class="tip-bubble tip-primary tip-top">Informacoes do sistema</div>
+        </div>
+      </div>
+
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Success</div>
+        <div class="tip">
+          <div class="demo-btn" style="color:#28a745;">&#xE8FB;</div>
+          <div class="tip-bubble tip-success tip-top">Validado com sucesso</div>
+        </div>
+      </div>
+
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Warning</div>
+        <div class="tip">
+          <div class="demo-btn" style="color:#856404;">&#xE7BA;</div>
+          <div class="tip-bubble tip-warning tip-top">Atencao: dado divergente</div>
+        </div>
+      </div>
+
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Error</div>
+        <div class="tip">
+          <div class="demo-btn" style="color:#dc3545;">&#xE783;</div>
+          <div class="tip-bubble tip-error tip-top">Erro de validacao</div>
+        </div>
+      </div>
+
+      <div class="tooltip-demo">
+        <div class="tooltip-demo-label">Light</div>
+        <div class="tip">
+          <div class="demo-btn">&#xE946;</div>
+          <div class="tip-bubble tip-light tip-top">Copiar para area de transferencia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSICOES -->
+  <div class="section">
+    <div class="section-title">Posicoes</div>
+    <p class="section-desc">O tooltip aparece acima por padrao. Use outras posicoes quando o espaco nao permitir.</p>
+
+    <div style="display:flex; gap:48px; justify-content:center; flex-wrap:wrap; padding:60px 0;">
+      <div class="tip" style="margin-top:40px;">
+        <div class="demo-btn-primary">Acima (padrao)</div>
+        <div class="tip-bubble tip-dark tip-top">Tooltip acima</div>
+      </div>
+      <div class="tip" style="margin-bottom:40px;">
+        <div class="demo-btn-primary">Abaixo</div>
+        <div class="tip-bubble tip-dark tip-bottom">Tooltip abaixo</div>
+      </div>
+      <div class="tip">
+        <div class="demo-btn-primary">Direita</div>
+        <div class="tip-bubble tip-dark tip-right">Tooltip direita</div>
+      </div>
+      <div class="tip">
+        <div class="demo-btn-primary">Esquerda</div>
+        <div class="tip-bubble tip-dark tip-left">Tooltip esquerda</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEUDO SIMPLES vs COMPLEXO -->
+  <div class="section">
+    <div class="section-title">Conteudo Simples vs Complexo</div>
+    <p class="section-desc">Tooltips simples tem apenas texto. Complexos adicionam titulo e descricao.</p>
+
+    <div style="display:flex; gap:48px; justify-content:center; flex-wrap:wrap; padding:50px 0 20px;">
+      <div class="tip" style="margin-top:30px;">
+        <div class="demo-btn">&#xE74D;</div>
+        <div class="tip-bubble tip-dark tip-top">Excluir</div>
+      </div>
+      <div class="tip" style="margin-top:60px;">
+        <div class="demo-btn" style="color:#dc3545;">&#xE74D;</div>
+        <div class="tip-bubble tip-dark tip-top tip-complex">
+          <div class="tip-complex-title">Excluir Registro</div>
+          <div class="tip-complex-desc">Remove permanentemente este trabalhador e todos os seus dados associados.</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:60px;">
+        <div class="demo-btn" style="color:#184194;">&#xE8A7;</div>
+        <div class="tip-bubble tip-primary tip-top tip-complex">
+          <div class="tip-complex-title">Gerar Documento</div>
+          <div class="tip-complex-desc">Cria o documento a partir do template selecionado com os dados do trabalhador.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO INTERATIVO -->
+  <div class="section">
+    <div class="section-title">Demo Interativo — Hover</div>
+    <p class="section-desc">Passe o mouse sobre os botoes para ver os tooltips aparecendo.</p>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; padding:20px 0;">
+      <div class="live-target">
+        <div class="demo-btn">&#xE710;</div>
+        <div class="tip-bubble tip-dark tip-top live-tip">Novo registro</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn">&#xE70F;</div>
+        <div class="tip-bubble tip-dark tip-top live-tip">Editar</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn" style="color:#dc3545;">&#xE74D;</div>
+        <div class="tip-bubble tip-error tip-top live-tip">Excluir registro</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn">&#xE74E;</div>
+        <div class="tip-bubble tip-dark tip-top live-tip">Salvar alteracoes</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn">&#xE721;</div>
+        <div class="tip-bubble tip-dark tip-top live-tip">Buscar</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn">&#xE787;</div>
+        <div class="tip-bubble tip-dark tip-top live-tip">Imprimir</div>
+      </div>
+      <div class="live-target">
+        <div class="demo-btn" style="color:#184194;">&#xE896;</div>
+        <div class="tip-bubble tip-primary tip-top live-tip">Gerar documento</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EM CONTEXTO: TABELA -->
+  <div class="section">
+    <div class="section-title">Em Contexto — Tabela com Acoes</div>
+    <p class="section-desc">Botoes de acao em DataGrid devem sempre ter tooltip. Passe o mouse nos icones.</p>
+
+    <table class="table-demo">
+      <thead>
+        <tr><th>Nome</th><th>CPF</th><th>Status</th><th style="text-align:center;">Acoes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Joao Carlos da Silva</td>
+          <td>123.456.789-00</td>
+          <td><span style="padding:2px 8px; border-radius:10px; background:#d4edda; color:#155724; font-size:11px; font-weight:600;">Ativo</span></td>
+          <td>
+            <div class="action-cell">
+              <div class="action-btn">&#xE70F;<div class="tip-bubble tip-dark tip-top live-tip" style="font-size:11px;">Editar</div></div>
+              <div class="action-btn">&#xE8A7;<div class="tip-bubble tip-dark tip-top live-tip" style="font-size:11px;">Gerar Documento</div></div>
+              <div class="action-btn" style="color:#dc3545;">&#xE74D;<div class="tip-bubble tip-error tip-top live-tip" style="font-size:11px;">Excluir</div></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Maria Santos Lima</td>
+          <td>987.654.321-00</td>
+          <td><span style="padding:2px 8px; border-radius:10px; background:#fff3cd; color:#856404; font-size:11px; font-weight:600;">Pendente</span></td>
+          <td>
+            <div class="action-cell">
+              <div class="action-btn">&#xE70F;<div class="tip-bubble tip-dark tip-top live-tip" style="font-size:11px;">Editar</div></div>
+              <div class="action-btn">&#xE8A7;<div class="tip-bubble tip-dark tip-top live-tip" style="font-size:11px;">Gerar Documento</div></div>
+              <div class="action-btn" style="color:#dc3545;">&#xE74D;<div class="tip-bubble tip-error tip-top live-tip" style="font-size:11px;">Excluir</div></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:40px;">
+  Design System da Empresa · <a href="../02-Componentes/09-Tooltips.md" style="color:rgba(255,255,255,0.8);">Documentacao completa: 09-Tooltips.md</a>
+</div>
+
+</body>
+</html>

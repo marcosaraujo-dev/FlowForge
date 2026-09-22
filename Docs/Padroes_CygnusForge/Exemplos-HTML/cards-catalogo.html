@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card de Catálogo e Agrupamento por Categoria — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+  /* === Card de Catálogo (ver 02-Componentes/15-Cards-Catalogo.md) === */
+  :root {
+    --cc-accent: #184194;
+    --cc-accent-dark: #0F2D6B;
+    --cc-bg: #FFFFFF;
+    --cc-border: #DEE2E6;
+    --cc-border-light: #E9ECEF;
+    --cc-text: #495057;
+    --cc-text-secondary: #6C757D;
+    --cc-text-light: #ADB5BD;
+    --cc-success-bg: #D4EDDA;
+    --cc-success-text: #155724;
+    --cc-success-dot: #28A745;
+    --cc-warn-bg: #FFF3CD;
+    --cc-warn-text: #856404;
+    --cc-warn-dot: #F59E0B;
+    --cc-radius: 12px;
+    --cc-radius-sm: 8px;
+    --cc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --cc-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --cc-transition: 0.3s ease;
+  }
+
+  .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+
+  .catalog-card { background: var(--cc-bg); border: 1px solid var(--cc-border-light); border-radius: var(--cc-radius); transition: all var(--cc-transition); text-decoration: none; color: inherit; }
+  .catalog-card:hover { text-decoration: none; }
+  /* CSS de autor (o display:flex das variantes abaixo) sempre vence o [hidden]{display:none}
+     padrão do navegador, independente de especificidade — sem esta regra o filtro marca o
+     atributo hidden mas o card continua renderizado visualmente. Ver 03-Layout/04-Agrupamento-Filtro.md */
+  .catalog-card[hidden] { display: none; }
+
+  .catalog-card--product { overflow: hidden; display: flex; flex-direction: column; }
+  .catalog-card--product:hover { transform: translateY(-6px); box-shadow: var(--cc-shadow-hover); }
+  .catalog-card--product .catalog-card__header { padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
+  .catalog-card--product .catalog-card__icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; background: rgba(255,255,255,0.2); }
+  .catalog-card--product .catalog-card__title { font-size: 1.15rem; font-weight: 700; color: var(--cc-bg); line-height: 1.2; }
+  .catalog-card--product .catalog-card__tagline { font-size: 0.8rem; color: rgba(255,255,255,0.75); margin-top: 0.2rem; }
+  .catalog-card--product .catalog-card__body { padding: 1.25rem 1.5rem; flex: 1; }
+  .catalog-card--product .catalog-card__desc { color: var(--cc-text-secondary); line-height: 1.6; font-size: 0.88rem; }
+  .catalog-card--product .catalog-card__footer { padding: 1rem 1.5rem; border-top: 1px solid var(--cc-border-light); display: flex; align-items: center; justify-content: space-between; }
+
+  .catalog-card__status { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+  .catalog-card__status--dev { background: var(--cc-warn-bg); color: var(--cc-warn-text); }
+  .catalog-card__status--dev::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--cc-warn-dot); }
+  .catalog-card__status--active { background: var(--cc-success-bg); color: var(--cc-success-text); }
+  .catalog-card__status--active::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--cc-success-dot); }
+
+  .catalog-card--article { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; box-shadow: var(--cc-shadow); }
+  .catalog-card--article:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); transform: translateY(-2px); }
+  .catalog-card--article .catalog-card__icon { width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; background: #E3EFFF; color: var(--cc-accent); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .catalog-card--article .catalog-card__title { font-size: 14px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+  .catalog-card--article .catalog-card__desc { font-size: 12.5px; color: var(--cc-text-secondary); line-height: 1.5; }
+  .catalog-card__meta { font-size: 11px; color: var(--cc-text-light); margin-top: 6px; }
+
+  .category-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .category-filter__chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.9rem; background: var(--cc-bg); border: 1px solid var(--cc-border); border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer; transition: all var(--cc-transition); }
+  .category-filter__chip:hover { border-color: var(--cc-accent); color: var(--cc-accent); }
+  .category-filter__chip.is-active { background: var(--cc-accent); border-color: var(--cc-accent); color: var(--cc-bg); }
+  .category-filter__count { font-size: 0.72rem; opacity: 0.75; }
+
+  .catalog-empty { text-align: center; padding: 2rem 1.5rem; color: var(--cc-text-secondary); font-size: 0.9rem; background: #F8F9FA; border: 1px dashed var(--cc-border); border-radius: var(--cc-radius-sm); }
+
+  @media (max-width: 480px) {
+    .category-filter__chip { padding: 0.35rem 0.75rem; font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Card de Catálogo e Agrupamento por Categoria</h1>
+  <p>Card para listagens públicas filtráveis (produtos, artigos, skills) + chips de filtro funcionais</p>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-title">Variante Produto — com filtro por tipo</div>
+    <p class="section-desc">
+      Ver <a href="../02-Componentes/15-Cards-Catalogo.md">02-Componentes/15-Cards-Catalogo.md</a>
+      e <a href="../03-Layout/04-Agrupamento-Filtro.md">03-Layout/04-Agrupamento-Filtro.md</a>.
+      Clique nos chips abaixo — o filtro é gerado e aplicado pelo <code>catalog-filter.js</code> ao final desta página, sem nenhum framework.
+    </p>
+
+    <div data-catalog data-catalog-categories='[
+      {"key":"ferramenta","label":"Ferramenta"},
+      {"key":"treinamento","label":"Treinamento"}
+    ]'>
+      <div class="catalog-grid" data-catalog-grid>
+
+        <article class="catalog-card catalog-card--product" data-category="ferramenta">
+          <div class="catalog-card__header">
+            <div class="catalog-card__icon">🛡️</div>
+            <div>
+              <h3 class="catalog-card__title">Exemplo Ferramenta A</h3>
+              <p class="catalog-card__tagline">Analisador de qualidade fictício</p>
+            </div>
+          </div>
+          <div class="catalog-card__body">
+            <p class="catalog-card__desc">Descrição curta de exemplo — este card pertence à categoria "Ferramenta".</p>
+          </div>
+          <div class="catalog-card__footer">
+            <span class="catalog-card__status catalog-card__status--active">Disponível</span>
+          </div>
+        </article>
+
+        <article class="catalog-card catalog-card--product" data-category="ferramenta">
+          <div class="catalog-card__header">
+            <div class="catalog-card__icon">⚙️</div>
+            <div>
+              <h3 class="catalog-card__title">Exemplo Ferramenta B</h3>
+              <p class="catalog-card__tagline">Outro exemplo de ferramenta</p>
+            </div>
+          </div>
+          <div class="catalog-card__body">
+            <p class="catalog-card__desc">Segundo card de exemplo, também na categoria "Ferramenta".</p>
+          </div>
+          <div class="catalog-card__footer">
+            <span class="catalog-card__status catalog-card__status--dev">Em desenvolvimento</span>
+          </div>
+        </article>
+
+        <article class="catalog-card catalog-card--product" data-category="treinamento">
+          <div class="catalog-card__header">
+            <div class="catalog-card__icon">🧠</div>
+            <div>
+              <h3 class="catalog-card__title">Exemplo Treinamento A</h3>
+              <p class="catalog-card__tagline">Curso fictício de exemplo</p>
+            </div>
+          </div>
+          <div class="catalog-card__body">
+            <p class="catalog-card__desc">Card de exemplo na categoria "Treinamento" — note que "Design" (abaixo) fica com 0 itens de propósito, para demonstrar o estado vazio.</p>
+          </div>
+          <div class="catalog-card__footer">
+            <span class="catalog-card__status catalog-card__status--active">Disponível</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Variante Artigo — lista compacta filtrável</div>
+    <p class="section-desc">Mesmo mecanismo de filtro, aplicado à variante horizontal/compacta usada para listagens textuais.</p>
+
+    <div data-catalog data-catalog-categories='[
+      {"key":"tecnico","label":"Técnico"},
+      {"key":"processo","label":"Processo"},
+      {"key":"design","label":"Design"}
+    ]'>
+      <div class="catalog-grid" data-catalog-grid style="grid-template-columns: 1fr;">
+
+        <a href="#" class="catalog-card catalog-card--article" data-category="tecnico" onclick="return false;">
+          <div class="catalog-card__icon">💻</div>
+          <div>
+            <div class="catalog-card__title">Exemplo de artigo técnico</div>
+            <div class="catalog-card__desc">Resumo de exemplo do artigo — categoria "Técnico".</div>
+            <div class="catalog-card__meta">Exemplo · Técnico</div>
+          </div>
+        </a>
+
+        <a href="#" class="catalog-card catalog-card--article" data-category="processo" onclick="return false;">
+          <div class="catalog-card__icon">📋</div>
+          <div>
+            <div class="catalog-card__title">Exemplo de artigo sobre processo</div>
+            <div class="catalog-card__desc">Resumo de exemplo do artigo — categoria "Processo".</div>
+            <div class="catalog-card__meta">Exemplo · Processo</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+    <p class="section-desc" style="margin-top:10px;">
+      Clique em "Design" acima — categoria declarada sem nenhum artigo, demonstra o estado vazio (<code>data-catalog-empty</code>).
+    </p>
+  </div>
+
+</div>
+
+<script>
+/**
+ * Cópia local (exemplo autocontido) de site/js/catalog-filter.js —
+ * ver 03-Layout/04-Agrupamento-Filtro.md para o contrato completo.
+ */
+(function () {
+  'use strict';
+
+  function getDirectCards(grid) {
+    var all = grid.querySelectorAll('[data-category]');
+    var result = [];
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].parentElement === grid) {
+        result.push(all[i]);
+      }
+    }
+    return result;
+  }
+
+  function countByKey(cards, key) {
+    if (key === 'all') { return cards.length; }
+    var count = 0;
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].getAttribute('data-category') === key) { count += 1; }
+    }
+    return count;
+  }
+
+  function applyFilter(cards, key, emptyEl) {
+    var visible = 0;
+    cards.forEach(function (card) {
+      var matches = key === 'all' || card.getAttribute('data-category') === key;
+      if (matches) { card.removeAttribute('hidden'); visible += 1; }
+      else { card.setAttribute('hidden', ''); }
+    });
+    if (emptyEl) {
+      if (visible === 0) { emptyEl.removeAttribute('hidden'); }
+      else { emptyEl.setAttribute('hidden', ''); }
+    }
+  }
+
+  function buildChip(key, label, count, isActive) {
+    var chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'category-filter__chip' + (isActive ? ' is-active' : '');
+    chip.setAttribute('data-filter-key', key);
+    chip.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    chip.appendChild(document.createTextNode(label + ' '));
+    var countSpan = document.createElement('span');
+    countSpan.className = 'category-filter__count';
+    countSpan.textContent = '(' + count + ')';
+    chip.appendChild(countSpan);
+    return chip;
+  }
+
+  function initCatalog(catalogEl) {
+    var grid = catalogEl.querySelector('[data-catalog-grid]');
+    if (!grid) { return; }
+
+    var categories;
+    try {
+      categories = JSON.parse(catalogEl.getAttribute('data-catalog-categories'));
+    } catch (e) {
+      console.warn('catalog-filter: data-catalog-categories inválido.', e);
+      return;
+    }
+    if (!Array.isArray(categories) || categories.length === 0) { return; }
+
+    var cards = getDirectCards(grid);
+
+    var filterContainer = catalogEl.querySelector('[data-catalog-filter]');
+    if (!filterContainer) {
+      filterContainer = document.createElement('div');
+      filterContainer.setAttribute('data-catalog-filter', '');
+      grid.parentNode.insertBefore(filterContainer, grid);
+    }
+    filterContainer.classList.add('category-filter');
+    filterContainer.setAttribute('role', 'group');
+    filterContainer.setAttribute('aria-label', 'Filtrar por categoria');
+
+    var emptyEl = catalogEl.querySelector('[data-catalog-empty]');
+    if (!emptyEl) {
+      emptyEl = document.createElement('p');
+      emptyEl.setAttribute('data-catalog-empty', '');
+      grid.parentNode.insertBefore(emptyEl, grid.nextSibling);
+    }
+    emptyEl.classList.add('catalog-empty');
+    if (!emptyEl.textContent.trim()) { emptyEl.textContent = 'Nenhum item nesta categoria ainda.'; }
+    emptyEl.setAttribute('hidden', '');
+
+    var allChip = buildChip('all', 'Todos', countByKey(cards, 'all'), true);
+    filterContainer.appendChild(allChip);
+    categories.forEach(function (category) {
+      filterContainer.appendChild(buildChip(category.key, category.label, countByKey(cards, category.key), false));
+    });
+
+    filterContainer.addEventListener('click', function (event) {
+      var chip = event.target.closest('.category-filter__chip');
+      if (!chip || !filterContainer.contains(chip)) { return; }
+      filterContainer.querySelectorAll('.category-filter__chip').forEach(function (c) {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      applyFilter(cards, chip.getAttribute('data-filter-key'), emptyEl);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-catalog]').forEach(initCatalog);
+  });
+})();
+</script>
+
+</body>
+</html>

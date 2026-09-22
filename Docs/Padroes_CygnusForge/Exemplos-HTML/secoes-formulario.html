@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seções de Formulário — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  .spec-tag { display: inline-block; background: #e9ecef; border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #495057; margin: 2px; }
+  .icon { font-family: 'Segoe MDL2 Assets', 'Segoe UI Symbol', sans-serif; }
+
+  /* ─── CAMPOS ───────────────────────────────── */
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 12px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.03em; }
+  .field-label .req { color: #dc3545; margin-left: 2px; }
+  .field-input { height: 34px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 11px; font-size: 14px; color: #333; font-family: inherit; transition: border-color 0.15s; }
+  .field-input:focus { outline: none; border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(147,197,253,0.2); }
+  .field-input.disabled { background: #f8f9fa; color: #adb5bd; cursor: not-allowed; }
+  .field-select { height: 34px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 11px; font-size: 14px; color: #333; font-family: inherit; background: white; cursor: pointer; }
+  .field-textarea { border: 1px solid #dee2e6; border-radius: 6px; padding: 8px 11px; font-size: 14px; color: #333; font-family: inherit; min-height: 72px; resize: vertical; }
+  .field-textarea:focus { outline: none; border-color: #93c5fd; }
+  .field-help { font-size: 11px; color: #adb5bd; }
+
+  /* ─── GRIDS ────────────────────────────────── */
+  .fg1 { display: flex; flex-direction: column; gap: 16px; }
+  .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .fg-auto { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  .col-span-full { grid-column: 1 / -1; }
+
+  /* ─── SEÇÃO PADRÃO (separador + título) ─────── */
+  .form-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e9ecef;
+  }
+  .form-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .form-section-header { margin-bottom: 18px; }
+  .form-section-title {
+    font-size: 14px; font-weight: 600; color: #212529;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .form-section-subtitle { font-size: 12px; color: #6c757d; margin-top: 3px; }
+
+  /* ─── SEÇÃO COM FUNDO ────────────────────────── */
+  .form-section-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .form-section-card .form-section-title { color: #184194; }
+
+  /* ─── SEÇÃO COM ÍCONE + NÚMERO ──────────────── */
+  .form-section-numbered { display: flex; gap: 14px; }
+  .form-section-num {
+    width: 26px; height: 26px; border-radius: 50%; background: #184194;
+    color: white; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .form-section-num.secondary { background: #6c757d; }
+  .form-section-num.success { background: #28a745; }
+  .form-section-body { flex: 1; }
+
+  /* ─── SEPARADOR SIMPLES ─────────────────────── */
+  .divider { border: none; border-top: 1px solid #e9ecef; margin: 24px 0; }
+  .divider-label {
+    position: relative; text-align: center; margin: 24px 0;
+  }
+  .divider-label::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e9ecef;
+  }
+  .divider-label span {
+    position: relative; background: white; padding: 0 12px;
+    font-size: 11px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ─── FORM CARD ─────────────────────────────── */
+  .form-card {
+    background: white; border: 1px solid #dee2e6; border-radius: 10px; overflow: hidden;
+  }
+  .form-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .form-card-title { font-size: 15px; font-weight: 600; color: #212529; display: flex; align-items: center; gap: 8px; }
+  .form-card-body { padding: 20px; }
+  .form-card-footer {
+    padding: 14px 20px; border-top: 1px solid #dee2e6;
+    display: flex; justify-content: flex-end; gap: 8px;
+    background: #fafbfc;
+  }
+
+  /* ─── BOTÕES ────────────────────────────────── */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; height: 34px; border: none; border-radius: 6px; font-size: 13px; font-family: inherit; cursor: pointer; font-weight: 500; }
+  .btn-primary { background: #184194; color: white; }
+  .btn-secondary { background: transparent; color: #495057; border: 1px solid #dee2e6; }
+  .btn-ghost { background: transparent; color: #184194; }
+
+  /* ─── BADGE ─────────────────────────────────── */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-primary { background: #dbe7ff; color: #184194; }
+  .badge-required { background: #fce8ea; color: #dc3545; }
+
+  /* ─── EXEMPLO COMPLETO ──────────────────────── */
+  .full-form-wrapper { border: 1px solid #dee2e6; border-radius: 10px; overflow: hidden; }
+  .full-form-header { background: #184194; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  .full-form-header-title { font-size: 15px; font-weight: 600; }
+  .full-form-body { padding: 24px; background: white; }
+  .full-form-footer { padding: 14px 24px; border-top: 1px solid #dee2e6; background: #fafbfc; display: flex; justify-content: flex-end; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Seções de Formulário</h1>
+  <p>Como agrupar campos em grupos lógicos com separadores, títulos e espaçamentos padrão</p>
+</div>
+
+<div class="container">
+
+  <!-- SEÇÃO COM SEPARADOR (PADRÃO) -->
+  <div class="section">
+    <div class="section-title">Seção com Separador — Padrão</div>
+    <p class="section-desc">O padrão mais comum. Cada grupo de campos começa com uma linha divisória e um título de seção. Margem de 28px acima do separador, 18px abaixo do título.</p>
+
+    <div class="form-card">
+      <div class="form-card-header">
+        <div class="form-card-title"><span class="icon" style="font-size:15px; color:#184194;">&#xE77B;</span> Cadastro de Trabalhador</div>
+      </div>
+      <div class="form-card-body">
+
+        <!-- Seção 1 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">
+              <span class="icon" style="font-size:14px; color:#6c757d;">&#xE77B;</span>
+              Dados Pessoais
+            </div>
+            <div class="form-section-subtitle">Informações de identificação do trabalhador</div>
+          </div>
+          <div class="fg2">
+            <div class="field col-span-2">
+              <label class="field-label">Nome Completo <span class="req">*</span></label>
+              <input class="field-input" type="text" value="João Carlos da Silva">
+            </div>
+            <div class="field">
+              <label class="field-label">CPF <span class="req">*</span></label>
+              <input class="field-input" type="text" value="123.456.789-00">
+            </div>
+            <div class="field">
+              <label class="field-label">Data de Nascimento</label>
+              <input class="field-input" type="text" value="15/08/1985">
+            </div>
+            <div class="field">
+              <label class="field-label">Sexo</label>
+              <select class="field-select"><option>Masculino</option><option>Feminino</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Estado Civil</label>
+              <select class="field-select"><option>Casado(a)</option><option>Solteiro(a)</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 2 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">
+              <span class="icon" style="font-size:14px; color:#6c757d;">&#xE9F9;</span>
+              Dados Contratuais
+            </div>
+            <div class="form-section-subtitle">Vínculo empregatício e cargo</div>
+          </div>
+          <div class="fg3">
+            <div class="field">
+              <label class="field-label">Empresa <span class="req">*</span></label>
+              <select class="field-select"><option>001 - Transportes Nordeste</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Matrícula</label>
+              <input class="field-input" type="text" value="00145">
+            </div>
+            <div class="field">
+              <label class="field-label">Data de Admissão <span class="req">*</span></label>
+              <input class="field-input" type="text" value="01/03/2018">
+            </div>
+            <div class="field">
+              <label class="field-label">Cargo</label>
+              <input class="field-input" type="text" value="Motorista">
+            </div>
+            <div class="field">
+              <label class="field-label">Salário Base</label>
+              <input class="field-input" type="text" value="R$ 3.200,00">
+            </div>
+            <div class="field">
+              <label class="field-label">Jornada</label>
+              <select class="field-select"><option>8h CLT — Seg a Sex</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 3 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">
+              <span class="icon" style="font-size:14px; color:#6c757d;">&#xE707;</span>
+              Dados Bancários
+              <span class="badge badge-primary" style="font-size:10px; margin-left:4px;">Opcional</span>
+            </div>
+          </div>
+          <div class="fg3">
+            <div class="field">
+              <label class="field-label">Banco</label>
+              <select class="field-select"><option>237 - Bradesco</option><option>341 - Itaú</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Agência</label>
+              <input class="field-input" type="text" value="1234">
+            </div>
+            <div class="field">
+              <label class="field-label">Conta Corrente</label>
+              <input class="field-input" type="text" value="56789-0">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-card-footer">
+        <button class="btn btn-secondary">Cancelar</button>
+        <button class="btn btn-primary">
+          <span class="icon" style="font-size:11px;">&#xE74E;</span> Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÕES COM CARTÃO (fundo cinza) -->
+  <div class="section">
+    <div class="section-title">Seções em Cartão — Fundo Cinza</div>
+    <p class="section-desc">Cada seção é um card com fundo #F8F9FA e borda. Ideal quando as seções precisam de ainda mais distinção visual.</p>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <div class="form-section-card">
+        <div class="form-section-header" style="margin-bottom:14px;">
+          <div class="form-section-title">
+            <span class="icon" style="font-size:14px;">&#xEA1F;</span>
+            Identificação da Empresa
+          </div>
+        </div>
+        <div class="fg2">
+          <div class="field">
+            <label class="field-label">Razão Social <span class="req">*</span></label>
+            <input class="field-input" value="Transportes Nordeste Ltda">
+          </div>
+          <div class="field">
+            <label class="field-label">CNPJ <span class="req">*</span></label>
+            <input class="field-input" value="12.345.678/0001-90">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card">
+        <div class="form-section-header" style="margin-bottom:14px;">
+          <div class="form-section-title">
+            <span class="icon" style="font-size:14px;">&#xE704;</span>
+            Endereço
+          </div>
+        </div>
+        <div class="fg3">
+          <div class="field col-span-2">
+            <label class="field-label">Logradouro</label>
+            <input class="field-input" value="Av. Paulista, 1000">
+          </div>
+          <div class="field">
+            <label class="field-label">CEP</label>
+            <input class="field-input" value="01310-100">
+          </div>
+          <div class="field">
+            <label class="field-label">Município <span class="req">*</span></label>
+            <input class="field-input" value="São Paulo">
+          </div>
+          <div class="field">
+            <label class="field-label">UF</label>
+            <select class="field-select"><option>SP</option><option>RJ</option><option>MG</option></select>
+          </div>
+          <div class="field">
+            <label class="field-label">Bairro</label>
+            <input class="field-input" value="Bela Vista">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEÇÕES NUMERADAS -->
+  <div class="section">
+    <div class="section-title">Seções Numeradas — Fluxo Passo a Passo</div>
+    <p class="section-desc">Use quando a ordem das seções é importante e o usuário deve preencher em sequência.</p>
+
+    <div style="display:flex; flex-direction:column; gap:24px;">
+
+      <div class="form-section-numbered">
+        <div class="form-section-num">1</div>
+        <div class="form-section-body">
+          <div class="form-section-header">
+            <div class="form-section-title">Seleção de Empresa</div>
+            <div class="form-section-subtitle">Qual empresa vai emitir este documento?</div>
+          </div>
+          <div class="fg2">
+            <div class="field">
+              <label class="field-label">Empresa <span class="req">*</span></label>
+              <select class="field-select"><option>001 - Transportes Nordeste Ltda</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Competência <span class="req">*</span></label>
+              <input class="field-input" value="03/2026">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-numbered">
+        <div class="form-section-num">2</div>
+        <div class="form-section-body">
+          <div class="form-section-header">
+            <div class="form-section-title">Seleção de Template</div>
+            <div class="form-section-subtitle">Qual modelo de documento será gerado?</div>
+          </div>
+          <div class="fg2">
+            <div class="field">
+              <label class="field-label">Template <span class="req">*</span></label>
+              <select class="field-select"><option>Holerite — Padrão CLT</option><option>Acordo Compensação</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Modo de Geração</label>
+              <select class="field-select"><option>Individual (1 arquivo/trabalhador)</option><option>Unificado (1 arquivo)</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-numbered">
+        <div class="form-section-num secondary">3</div>
+        <div class="form-section-body">
+          <div class="form-section-header">
+            <div class="form-section-title" style="color:#6c757d;">Confirmação</div>
+            <div class="form-section-subtitle">Revisão antes de gerar</div>
+          </div>
+          <div style="background:#f8f9fa; border-radius:6px; padding:12px; font-size:13px; color:#6c757d;">
+            Preencha as etapas anteriores para habilitar esta seção.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEPARADORES -->
+  <div class="section">
+    <div class="section-title">Separadores</div>
+    <p class="section-desc">Dois tipos de separador: linha simples e linha com rótulo.</p>
+
+    <div style="font-size:13px; color:#6c757d; margin-bottom:8px;">Linha simples — separação sutil entre blocos de campos</div>
+    <hr class="divider">
+    <div class="fg2" style="margin-bottom:24px;">
+      <div class="field"><label class="field-label">Campo A</label><input class="field-input" type="text" value="..."></div>
+      <div class="field"><label class="field-label">Campo B</label><input class="field-input" type="text" value="..."></div>
+    </div>
+
+    <div style="font-size:13px; color:#6c757d; margin-bottom:8px;">Linha com rótulo — quando a seção precisa de um nome mas sem o peso de um título</div>
+    <div class="divider-label"><span>Informações Adicionais</span></div>
+    <div class="fg2">
+      <div class="field"><label class="field-label">Campo C</label><input class="field-input" type="text" value="..."></div>
+      <div class="field"><label class="field-label">Campo D</label><input class="field-input" type="text" value="..."></div>
+    </div>
+  </div>
+
+  <!-- ESPAÇAMENTOS -->
+  <div class="section">
+    <div class="section-title">Referência de Espaçamentos</div>
+    <div style="font-size:13px; line-height:1; display:flex; flex-direction:column; gap:0;">
+
+      <div style="border:2px dashed #184194; padding:24px; border-radius:6px; position:relative; margin-bottom:4px;">
+        <div style="position:absolute; top:-9px; left:12px; background:white; padding:0 6px; font-size:11px; font-weight:600; color:#184194;">Entre seções: 28px (margin-top da .form-section)</div>
+        <div style="background:#dbe7ff; border-radius:4px; padding:10px; text-align:center; font-size:12px; color:#184194; font-weight:600;">Seção A — Dados Pessoais</div>
+      </div>
+
+      <div style="border:2px dashed #6c757d; padding:18px; border-radius:6px; position:relative; margin-bottom:4px;">
+        <div style="position:absolute; top:-9px; left:12px; background:white; padding:0 6px; font-size:11px; font-weight:600; color:#6c757d;">Título + grid de campos: 18px entre título e campos</div>
+        <div style="background:#e9ecef; border-radius:4px; padding:6px; text-align:center; font-size:12px; color:#495057;">Título da Seção</div>
+        <div style="margin-top:6px; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="background:#f8f9fa; border-radius:4px; padding:8px; text-align:center; font-size:11px; color:#6c757d;">Campo 1</div>
+          <div style="background:#f8f9fa; border-radius:4px; padding:8px; text-align:center; font-size:11px; color:#6c757d;">Campo 2</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px; color:#6c757d; margin-top:12px;">
+        <strong>Resumo:</strong> Gap entre campos: 16px · Padding do card: 20px · Entre seções: 28px · Padding do formulário completo: 24px
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULÁRIO COMPLETO REAL -->
+  <div class="section">
+    <div class="section-title">Exemplo Completo — Cadastro de Template</div>
+
+    <div class="full-form-wrapper">
+      <div class="full-form-header">
+        <span class="icon" style="font-size:18px;">&#xE8F4;</span>
+        <div class="full-form-header-title">Novo Template de Documento</div>
+      </div>
+      <div class="full-form-body">
+
+        <!-- Seção 1 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">Identificação</div>
+            <div class="form-section-subtitle">Nome e tipo do template</div>
+          </div>
+          <div class="fg2">
+            <div class="field col-span-2">
+              <label class="field-label">Nome do Template <span class="req">*</span></label>
+              <input class="field-input" value="Holerite — Padrão CLT">
+            </div>
+            <div class="field">
+              <label class="field-label">Tipo de Arquivo <span class="req">*</span></label>
+              <select class="field-select"><option>Word (.docx)</option><option>Excel (.xlsx)</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Categoria</label>
+              <select class="field-select"><option>Remuneração</option><option>Rescisão</option><option>Férias</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 2 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">Disponibilidade</div>
+            <div class="form-section-subtitle">Quais empresas podem usar este template?</div>
+          </div>
+          <div class="fg2">
+            <div class="field">
+              <label class="field-label">Escopo <span class="req">*</span></label>
+              <select class="field-select"><option>Global — Todas as empresas</option><option>Empresas específicas</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Situação</label>
+              <select class="field-select"><option>Ativo</option><option>Inativo</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 3 -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div class="form-section-title">
+              Descrição e Observações
+              <span class="badge" style="background:#e9ecef; color:#6c757d; font-size:10px; margin-left:6px;">Opcional</span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Descrição</label>
+            <textarea class="field-textarea">Template padrão para geração de holerite conforme CLT.</textarea>
+            <span class="field-help">Máx. 500 caracteres. Visível apenas para administradores.</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="full-form-footer">
+        <button class="btn btn-secondary">Cancelar</button>
+        <button class="btn btn-ghost">Salvar Rascunho</button>
+        <button class="btn btn-primary">
+          <span class="icon" style="font-size:11px;">&#xE74E;</span> Salvar Template
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

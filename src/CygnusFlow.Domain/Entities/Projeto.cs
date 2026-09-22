@@ -25,7 +25,7 @@ namespace CygnusFlow.Domain.Entities
         [StringLength(1000, ErrorMessage = "Descrição deve ter no máximo 1000 caracteres")]
         public string? Descricao { get; set; }
 
-        public int ModuloId { get; private set; }
+        public int ModuloId { get; set; }
         public virtual ModuloSistema Modulo { get; set; } = null!;
         public int CriticidadeId { get; set; }
         public virtual Criticidade Criticidade { get; set; } = null!;

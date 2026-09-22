@@ -1,0 +1,132 @@
+{
+  "version": "2.0",
+  "harness_version": "2.0.0",
+  "_comment": "Config do Claude Harness (thresholds, quality gates, knowledge_capture, persona_agent_map). Mora em .claude/ - lida pelas skills E pelos MCP servers do harness, registrados globalmente em escopo user. Os MCP servers exigem Python 3.11+ e 'pip install mcp[cli]'. Ver docs/ do cygnus-harness.",
+  "components": {
+    "quality_reporting": true,
+    "retrospective": true,
+    "tech_debt_detector": true,
+    "review_validation": true,
+    "multi_agent_orchestration": true,
+    "critique_agent": true,
+    "module_quality_gate": true
+  },
+  "thresholds": {
+    "quality_score_verde": 90,
+    "quality_score_amarelo": 75,
+    "completude_minima": 80,
+    "scope_creep_alerta": 20,
+    "precisao_planejamento_alerta": 70,
+    "tech_debt_critica_tasks": 3,
+    "tech_debt_critica_reviews": 3
+  },
+  "quality": {
+    "_comment": "Thresholds de cobertura por camada (P1.5) - defaults da skill testing-standards. Cobrado por implementation-validation (dotnet test --collect:\"XPlat Code Coverage\" / npm run test:coverage) e verificado pelo bootstrap (coverlet.collector / script test:coverage presentes).",
+    "coverage_thresholds": {
+      "domain": 95,
+      "application": 80,
+      "infrastructure": 60,
+      "presentation": 70
+    }
+  },
+  "coverage": {
+    "_comment": "required=true: todo projeto bootstrapped precisa de testes com cobertura medida (P1.5) - ausencia de tooling (coverlet/test:coverage) e pendencia bloqueante no bootstrap, nunca 'sem dados = aprovado' (GAP-10).",
+    "required": true
+  },
+  "multi_agent": {
+    "_comment_max_quality_retries": "Teto de tentativas do ciclo Implement->Quality por task (orchestration-multiagent passo 9 / orchestration-legacy passo Quality). Ao exaurir, a orquestração chama escalate_to_human (MCP) ou para e apresenta o resumo das tentativas ao usuário. Default 3 se a chave estiver ausente.",
+    "enabled": true,
+    "max_refinement_cycles": 2,
+    "max_quality_retries": 3,
+    "assertiveness_threshold": 85,
+    "report_format": "markdown",
+    "agents_enabled": [
+      "Analista_PO",
+      "Arquiteto",
+      "Desenvolvedor",
+      "DesenvolvedorReact",
+      "Testes",
+      "PO_Final"
+    ],
+    "orchestration_modes": {
+      "implementation": "strict",
+      "bugfix": "strict",
+      "review": "balanced",
+      "refactor": "balanced",
+      "docs": "advisory",
+      "analysis": "advisory",
+      "planning": "advisory"
+    },
+    "mode_thresholds": {
+      "strict": {
+        "correctness": 85,
+        "completeness": 85,
+        "architecture": 85,
+        "quality": 80,
+        "evidence": 90,
+        "total": 85
+      },
+      "balanced": {
+        "correctness": 75,
+        "completeness": 75,
+        "architecture": 70,
+        "quality": 70,
+        "evidence": 75,
+        "total": 75
+      },
+      "advisory": {
+        "block_on_failure": false,
+        "total": 60
+      }
+    },
+    "score_weights": {
+      "correctness": 0.30,
+      "completeness": 0.30,
+      "architecture": 0.20,
+      "quality": 0.10,
+      "evidence": 0.10
+    },
+    "evidence_required": {
+      "strict": true,
+      "balanced": false,
+      "advisory": false
+    },
+    "critique_agent": {
+      "enabled": true,
+      "max_cycles_per_phase": 2,
+      "phases": ["escopo", "design", "implementacao"],
+      "escalate_after_max_cycles": true
+    },
+    "custom_sequences": {},
+    "escalation_mode": "interactive"
+  },
+  "claude_harness": {
+    "_comment": "Secao ignorada pelas MCP tools (nao faz parte do schema delas) - usada pelas skills deste harness para mapear persona Kiro -> subagente Claude Code.",
+    "persona_agent_map": {
+      "Analista_PO": "business-analyst-po",
+      "Arquiteto": "solutions-architect",
+      "Desenvolvedor": "senior-backend-developer-csharp",
+      "DesenvolvedorReact": "senior-frontend-developer-web",
+      "Testes": "qa-tester-engineer",
+      "PO_Final": "business-analyst-po",
+      "Critique": "critique-agent"
+    }
+  },
+  "knowledge_capture": {
+    "_comment": "Secao ignorada pelas MCP tools. Politica de auto-aprimoramento do Claude Harness - ver .claude/steering/knowledge-base.md. mode: auto|propose|off. store: markdown|memory|knowledge-graph. markdown e sempre a fonte da verdade. store 'knowledge-graph' = grafo proprio do Claude, leve e derivado do markdown, via scripts/knowledge-graph.ps1 (NAO o MCP do kiro).",
+    "enabled": true,
+    "global_dir": "~/.claude/knowledge",
+    "project_dir": ".claude/knowledge",
+    "repeat_error_alert": 2,
+    "types": {
+      "ask_first":    { "mode": "auto",    "store": "markdown", "file": "ask-first.md" },
+      "gate_pattern": { "mode": "auto",    "store": "markdown", "file": "pitfalls.md" },
+      "pitfall":      { "mode": "propose", "store": "markdown", "file": "pitfalls.md" },
+      "decision":     { "mode": "propose", "store": "markdown", "file": "decisions.md" },
+      "convention":   { "mode": "propose", "store": "markdown", "file": "conventions.md" },
+      "glossary":     { "mode": "propose", "store": "markdown", "file": "glossary.md" },
+      "preference":   { "mode": "propose", "store": "memory" },
+      "relationship": { "mode": "propose", "store": "knowledge-graph" }
+    }
+  }
+}

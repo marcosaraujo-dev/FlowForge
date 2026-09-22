@@ -55,9 +55,6 @@ namespace CygnusFlow.App
             services.AddDbContext<CygnusFlowContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            // AutoMapper
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             // Repositories
             services.AddScoped<IProjetoRepository, ProjetoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();

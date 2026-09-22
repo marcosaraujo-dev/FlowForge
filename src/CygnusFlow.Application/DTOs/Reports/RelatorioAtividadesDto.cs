@@ -6,7 +6,7 @@ namespace CygnusFlow.Application.DTOs.Reports
 {
     public class RelatorioAtividadesDto
     {
-        public List<AtividadeResponseDto> Atividades { get; set; } = new();
+        public List<AtividadeResponseDTO> Atividades { get; set; } = new();
         public int TotalAtividades { get; set; }
         public int AtividadesAtrasadas { get; set; }
         public int AtividadesConcluidas { get; set; }

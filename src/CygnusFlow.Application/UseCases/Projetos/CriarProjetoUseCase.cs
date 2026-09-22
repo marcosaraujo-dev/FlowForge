@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using CygnusFlow.Application.DTOs.Projeto;
 using CygnusFlow.Domain.Entities;
 using CygnusFlow.Domain.Interfaces.Repositories;
@@ -11,18 +10,17 @@ namespace CygnusFlow.Application.UseCases.Projetos
     public class CriarProjetoUseCase
     {
         private readonly IProjetoRepository _projetoRepository;
-        private readonly IMapper _mapper;
 
-        public CriarProjetoUseCase(IProjetoRepository projetoRepository, IMapper mapper)
+        public CriarProjetoUseCase(IProjetoRepository projetoRepository)
         {
             _projetoRepository = projetoRepository;
-            _mapper = mapper;
         }
 
         public async Task<Result<ProjetoResponseDto>> ExecuteAsync(CreateProjetoDto dto)
         {
-            // 1. Mapear DTO para Entity
-            var projeto = _mapper.Map<Projeto>(dto);
+            // 1. Criar entidade a partir do DTO (código definitivo é gerado abaixo)
+            var projeto = new Projeto(string.Empty, dto.Nome, dto.ModuloId, (int)dto.CriticidadeId,
+                dto.DataInicioPO, dto.DataFimPO, dto.EstimativaHoras);
 
             // 2. Gerar próximo código
             var proximoNumeroResult = await _projetoRepository.GetProximoNumeroAsync();
@@ -46,12 +44,15 @@ namespace CygnusFlow.Application.UseCases.Projetos
             }
 
             projeto.AlterarCodigo(codigoResult.Data.Value);
-        
+
             // 4. Validar entidade
             var validationResult = projeto.Validate();
             if (!validationResult.IsValid)
                 return Result<ProjetoResponseDto>.Failure(validationResult);
-
+            // Validar prazos
+            var prazoValidationResult = projeto.ValidarPrazos();
+            if (!prazoValidationResult.IsValid)
+                return Result<ProjetoResponseDto>.Failure(prazoValidationResult);
 
             // 5. Salvar no repositório
             var saveResult = await _projetoRepository.CreateAsync(projeto);
@@ -59,7 +60,7 @@ namespace CygnusFlow.Application.UseCases.Projetos
                 return Result<ProjetoResponseDto>.Failure(saveResult.Notifications);
 
             // 6. Retornar DTO de resposta
-            var responseDto = _mapper.Map<ProjetoResponseDto>(saveResult.Data);
+            var responseDto = ProjetoDtoMapper.ToResponseDto(saveResult.Data);
             return Result<ProjetoResponseDto>.Success(responseDto);
         }
     }

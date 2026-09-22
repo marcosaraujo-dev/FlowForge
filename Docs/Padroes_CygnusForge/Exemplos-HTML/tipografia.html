@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipografia — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #184194; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+  .type-row:last-child { border-bottom: none; }
+  .type-meta { width: 200px; flex-shrink: 0; }
+  .type-token { font-size: 12px; font-weight: 600; color: #184194; font-family: 'Consolas', monospace; }
+  .type-spec { font-size: 11px; color: #6c757d; margin-top: 2px; }
+  .type-sample { flex: 1; color: #495057; }
+  .scale-table { width: 100%; border-collapse: collapse; }
+  .scale-table th { text-align: left; padding: 8px 12px; background: #f8f9fa; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; border-bottom: 2px solid #dee2e6; }
+  .scale-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  .scale-table tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: #e9ecef; color: #495057; font-family: monospace; }
+  .hierarchy-demo { padding: 24px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; }
+  .form-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 13px; font-weight: 600; color: #495057; }
+  .field-input { height: 34px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 10px; font-size: 14px; color: #333; background: white; }
+  .field-caption { font-size: 12px; color: #adb5bd; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Tipografia</h1>
+  <p>Escala de tamanhos, estilos de texto e hierarquia visual</p>
+</div>
+
+<div class="container">
+
+  <!-- ESCALA DE TAMANHOS -->
+  <div class="section">
+    <div class="section-title">Escala de Tamanhos — Tokens</div>
+    <table class="scale-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Tamanho</th>
+          <th>Amostra</th>
+          <th>Uso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag">AppFont3XLarge</span></td>
+          <td>24px</td>
+          <td style="font-size:24px; font-weight:600;">Titulo da Pagina</td>
+          <td style="font-size:12px; color:#6c757d;">Titulo de pagina (1x por pagina)</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontXXLarge</span></td>
+          <td>22px</td>
+          <td style="font-size:22px; font-weight:600;">Titulo Importante</td>
+          <td style="font-size:12px; color:#6c757d;">H2, titulos de destaque</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontXLarge</span></td>
+          <td>20px</td>
+          <td style="font-size:20px; font-weight:600;">Titulo de Secao</td>
+          <td style="font-size:12px; color:#6c757d;">Cabecalho de cards e grupos</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontLarge</span></td>
+          <td>18px</td>
+          <td style="font-size:18px; font-weight:600;">Subtitulo de Secao</td>
+          <td style="font-size:12px; color:#6c757d;">H3, titulos menores</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontMedium</span></td>
+          <td>16px</td>
+          <td style="font-size:16px; font-weight:600;">Subtitulo</td>
+          <td style="font-size:12px; color:#6c757d;">Destaques, subtitulos</td>
+        </tr>
+        <tr style="background:#f0f5ff;">
+          <td><span class="tag">AppFontNormal</span></td>
+          <td><strong>14px</strong></td>
+          <td style="font-size:14px;">Texto padrao da interface</td>
+          <td style="font-size:12px; color:#6c757d;"><strong>Padrao — corpo de texto, botoes</strong></td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontCaption</span></td>
+          <td>13px</td>
+          <td style="font-size:13px;">Labels de campo e texto de suporte</td>
+          <td style="font-size:12px; color:#6c757d;">FieldLabel, texto secundario</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontSmall</span></td>
+          <td>12px</td>
+          <td style="font-size:12px; color:#6c757d;">Texto auxiliar, legendas, captions</td>
+          <td style="font-size:12px; color:#6c757d;">CaptionText, ajuda, H5</td>
+        </tr>
+        <tr>
+          <td><span class="tag">AppFontXSmall</span></td>
+          <td>10px</td>
+          <td style="font-size:10px; color:#adb5bd;">Texto muito pequeno (uso restrito)</td>
+          <td style="font-size:12px; color:#6c757d;">Rodapes, metadados minimos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ESTILOS DE TEXTO -->
+  <div class="section">
+    <div class="section-title">Estilos Predefinidos</div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">PageTitle</div><div class="type-spec">24px · SemiBold · Text Primary</div></div>
+      <div class="type-sample" style="font-size:24px; font-weight:600;">Gerenciamento de Funcionarios</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">SectionTitle</div><div class="type-spec">20px · SemiBold · Text Primary</div></div>
+      <div class="type-sample" style="font-size:20px; font-weight:600;">Dados Pessoais</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">H3TextStyle</div><div class="type-spec">18px · SemiBold · Text Primary</div></div>
+      <div class="type-sample" style="font-size:18px; font-weight:600;">Informacoes de Contato</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">Subtitle</div><div class="type-spec">14px · Bold · Text Primary</div></div>
+      <div class="type-sample" style="font-size:14px; font-weight:700;">Subtitulo do conteudo</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">BodyText</div><div class="type-spec">14px · Normal · Text Primary</div></div>
+      <div class="type-sample" style="font-size:14px;">Este e o texto padrao de corpo. Usado para descricoes, valores e conteudo principal da interface.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">SecondaryText</div><div class="type-spec">13px · Normal · Text Secondary</div></div>
+      <div class="type-sample" style="font-size:13px; color:#6c757d;">Texto secundario para informacoes complementares e metadados</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">FieldLabel</div><div class="type-spec">13px · SemiBold · Text Primary</div></div>
+      <div class="type-sample" style="font-size:13px; font-weight:600;">Nome Completo</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">CaptionText</div><div class="type-spec">12px · Normal · Text Light</div></div>
+      <div class="type-sample" style="font-size:12px; color:#adb5bd;">Texto de ajuda e legendas de campo</div>
+    </div>
+  </div>
+
+  <!-- HIERARQUIA NA PRATICA -->
+  <div class="section">
+    <div class="section-title">Hierarquia na Pratica</div>
+    <div class="hierarchy-demo">
+      <div style="font-size:24px; font-weight:600; color:#495057; margin-bottom:4px;">Cadastro de Funcionario</div>
+      <div style="font-size:14px; color:#6c757d; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #dee2e6;">Preencha os dados abaixo para cadastrar um novo funcionario</div>
+
+      <div style="font-size:20px; font-weight:600; color:#495057; margin-bottom:16px;">Dados Pessoais</div>
+      <div class="form-demo">
+        <div class="form-field">
+          <div class="field-label">Nome Completo</div>
+          <input class="field-input" type="text" placeholder="Ex: Joao da Silva" readonly>
+          <div class="field-caption">Conforme documento oficial</div>
+        </div>
+        <div class="form-field">
+          <div class="field-label">CPF</div>
+          <input class="field-input" type="text" placeholder="000.000.000-00" readonly>
+        </div>
+      </div>
+
+      <div style="font-size:18px; font-weight:600; color:#495057; margin-top:24px; margin-bottom:16px;">Contato</div>
+      <div class="form-demo">
+        <div class="form-field">
+          <div class="field-label">E-mail</div>
+          <input class="field-input" type="text" placeholder="email@empresa.com" readonly>
+        </div>
+        <div class="form-field">
+          <div class="field-label">Telefone</div>
+          <input class="field-input" type="text" placeholder="(00) 00000-0000" readonly>
+          <div class="field-caption">Com DDD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

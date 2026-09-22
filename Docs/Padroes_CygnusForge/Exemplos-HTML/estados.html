@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estados de Interacao — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #184194; margin-bottom: 6px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+  /* State showcase */
+  .state-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 12px; }
+  .state-col-label { font-size: 10px; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.3px; text-align: center; padding-bottom: 8px; border-bottom: 1px solid #e9ecef; }
+  .state-cell { display: flex; align-items: center; justify-content: center; min-height: 50px; }
+  /* Buttons in states */
+  .s-btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-family: inherit; border: none; font-weight: 500; cursor: default; }
+  /* Inputs in states */
+  .s-input { padding: 6px 10px; border-radius: 5px; font-size: 13px; font-family: inherit; width: 100%; outline: none; }
+  /* Component row label */
+  .component-section { margin-bottom: 40px; }
+  .component-header { font-size: 16px; font-weight: 600; color: #495057; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .component-header::after { content: ''; flex: 1; height: 1px; background: #e9ecef; }
+  /* Color swatch */
+  .color-swatch-small { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); vertical-align: middle; margin-right: 4px; }
+  /* State legend */
+  .state-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; font-size: 12px; }
+  .state-legend-item { display: flex; align-items: center; gap: 4px; }
+  .state-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  /* Table states */
+  .state-table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .state-table th { background: #f8f9fa; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; color: #6c757d; border-bottom: 1px solid #dee2e6; }
+  .state-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+  /* Checkbox states */
+  .s-checkbox { width: 18px; height: 18px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-family: 'Segoe MDL2 Assets'; font-size: 12px; }
+  /* Tab states */
+  .s-tab { padding: 8px 16px; font-size: 13px; display: inline-block; border-bottom: 2px solid transparent; cursor: default; }
+  /* Link states */
+  .s-link { font-size: 13px; cursor: default; }
+  /* Menu item states */
+  .s-menu-item { padding: 8px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; border-radius: 4px; cursor: default; }
+  .s-menu-icon { font-family: 'Segoe MDL2 Assets'; font-size: 14px; }
+  /* Priority table */
+  .priority-table { width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; }
+  .priority-table th { background: #f8f9fa; padding: 10px 14px; text-align: left; font-weight: 600; color: #6c757d; border-bottom: 1px solid #dee2e6; }
+  .priority-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+  .priority-num { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: #184194; color: white; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  /* Cursor demo */
+  .cursor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .cursor-demo { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; text-align: center; min-height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .cursor-name { font-size: 12px; font-weight: 600; color: #495057; }
+  .cursor-desc { font-size: 10px; color: #adb5bd; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Estados de Interacao</h1>
+  <p>Os 6 estados visuais de cada componente interativo — Normal, Hover, Focus, Active, Disabled, Loading</p>
+</div>
+
+<div class="container">
+
+  <!-- LEGENDA -->
+  <div class="state-legend">
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#495057;"></div> Normal</div>
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#0f2d6b;"></div> Hover</div>
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#93c5fd;"></div> Focus</div>
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#0a1f4a;"></div> Active</div>
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#adb5bd;"></div> Disabled</div>
+    <div class="state-legend-item"><div class="state-legend-dot" style="background:#184194; opacity:0.6;"></div> Loading</div>
+  </div>
+
+  <!-- BOTAO PRIMARY -->
+  <div class="component-section">
+    <div class="component-header">Botao Primary</div>
+    <div class="state-grid">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Active</div>
+      <div class="state-col-label">Disabled</div>
+      <div class="state-col-label">Loading</div>
+    </div>
+    <div class="state-grid">
+      <div class="state-cell"><button class="s-btn" style="background:#184194; color:white;">Salvar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#0f2d6b; color:white;">Salvar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#184194; color:white; outline:2px solid #93c5fd; outline-offset:2px;">Salvar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#0a1f4a; color:white; transform:scale(0.98);">Salvar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#184194; color:white; opacity:0.5; cursor:not-allowed;">Salvar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#184194; color:white; position:relative; overflow:hidden;"><span style="opacity:0;">Salvar</span><span style="position:absolute; width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:white; border-radius:50%; animation:spin 800ms linear infinite;"></span></button></div>
+    </div>
+    <div style="margin-top:8px; display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; font-size:10px; font-family:'Consolas', monospace; color:#6c757d; text-align:center;">
+      <div>#184194</div><div>#0F2D6B</div><div>#184194 + outline</div><div>#0A1F4A</div><div>opacity: 0.5</div><div>spinner</div>
+    </div>
+  </div>
+
+  <!-- BOTAO OUTLINE -->
+  <div class="component-section">
+    <div class="component-header">Botao Outline / Ghost</div>
+    <div class="state-grid">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Active</div>
+      <div class="state-col-label">Disabled</div>
+      <div class="state-col-label">Loading</div>
+    </div>
+    <div class="state-grid">
+      <div class="state-cell"><button class="s-btn" style="background:transparent; color:#495057; border:1px solid #dee2e6;">Cancelar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#f5f8ff; color:#184194; border:1px solid #184194;">Cancelar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:transparent; color:#495057; border:1px solid #dee2e6; outline:2px solid #93c5fd; outline-offset:2px;">Cancelar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#e3efff; color:#184194; border:1px solid #184194;">Cancelar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:transparent; color:#adb5bd; border:1px solid #e9ecef; opacity:0.5; cursor:not-allowed;">Cancelar</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:transparent; border:1px solid #dee2e6; position:relative;"><span style="opacity:0;">Cancelar</span><span style="position:absolute; width:14px; height:14px; border:2px solid #e9ecef; border-top-color:#184194; border-radius:50%; animation:spin 800ms linear infinite;"></span></button></div>
+    </div>
+  </div>
+
+  <!-- BOTAO DANGER -->
+  <div class="component-section">
+    <div class="component-header">Botao Danger</div>
+    <div class="state-grid">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Active</div>
+      <div class="state-col-label">Disabled</div>
+      <div class="state-col-label">—</div>
+    </div>
+    <div class="state-grid">
+      <div class="state-cell"><button class="s-btn" style="background:#dc3545; color:white;">Excluir</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#c82333; color:white;">Excluir</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#dc3545; color:white; outline:2px solid #93c5fd; outline-offset:2px;">Excluir</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#a71d2a; color:white;">Excluir</button></div>
+      <div class="state-cell"><button class="s-btn" style="background:#dc3545; color:white; opacity:0.5; cursor:not-allowed;">Excluir</button></div>
+      <div class="state-cell" style="font-size:10px; color:#adb5bd;">—</div>
+    </div>
+  </div>
+
+  <!-- INPUT / TEXTBOX -->
+  <div class="component-section">
+    <div class="component-header">Input / TextBox</div>
+    <div class="state-grid">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Erro</div>
+      <div class="state-col-label">Disabled</div>
+      <div class="state-col-label">Read-only</div>
+    </div>
+    <div class="state-grid">
+      <div class="state-cell"><input class="s-input" style="border:1px solid #dee2e6; background:white;" value="Joao Silva" readonly></div>
+      <div class="state-cell"><input class="s-input" style="border:1px solid #cbd5e1; background:white;" value="Joao Silva" readonly></div>
+      <div class="state-cell"><input class="s-input" style="border:2px solid #93c5fd; background:white;" value="Joao Silva" readonly></div>
+      <div class="state-cell">
+        <div style="width:100%;">
+          <input class="s-input" style="border:2px solid #dc3545; background:white;" value="123" readonly>
+          <div style="font-size:10px; color:#dc3545; margin-top:3px;">CPF invalido</div>
+        </div>
+      </div>
+      <div class="state-cell"><input class="s-input" style="border:1px solid #e9ecef; background:#f5f5f5; color:#adb5bd; cursor:not-allowed;" value="Desabilitado" readonly></div>
+      <div class="state-cell"><input class="s-input" style="border:1px solid #dee2e6; background:#f5f5f5; color:#495057; cursor:default;" value="Somente leitura" readonly></div>
+    </div>
+  </div>
+
+  <!-- CHECKBOX -->
+  <div class="component-section">
+    <div class="component-header">Checkbox</div>
+    <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:12px;">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Checked</div>
+      <div class="state-col-label">Disabled</div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:12px;">
+      <div class="state-cell"><div class="s-checkbox" style="border:1px solid #dee2e6; background:white;"></div></div>
+      <div class="state-cell"><div class="s-checkbox" style="border:1px solid #184194; background:white;"></div></div>
+      <div class="state-cell"><div class="s-checkbox" style="border:1px solid #dee2e6; background:white; outline:2px solid #93c5fd; outline-offset:2px;"></div></div>
+      <div class="state-cell"><div class="s-checkbox" style="border:1px solid #184194; background:#184194; color:white;">&#xE73E;</div></div>
+      <div class="state-cell"><div class="s-checkbox" style="border:1px solid #e9ecef; background:#f5f5f5; opacity:0.5;"></div></div>
+    </div>
+  </div>
+
+  <!-- LINHAS DE TABELA -->
+  <div class="component-section">
+    <div class="component-header">Linhas de Tabela — 4 estados obrigatorios</div>
+    <p class="section-desc">Os 4 estados de cor de linha sao obrigatorios em toda tabela interativa.</p>
+
+    <table class="state-table" style="max-width:700px;">
+      <thead><tr><th>Estado</th><th>Nome</th><th>Cor</th></tr></thead>
+      <tbody>
+        <tr style="background:#ffffff;">
+          <td><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#ffffff; border:1px solid #dee2e6; margin-right:4px;"></span> Normal</td>
+          <td>Ana Paula Ferreira</td>
+          <td><span class="color-swatch-small" style="background:#ffffff;"></span><code>#FFFFFF</code></td>
+        </tr>
+        <tr style="background:#f5f8ff;">
+          <td><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#f5f8ff; border:1px solid #dee2e6; margin-right:4px;"></span> Hover</td>
+          <td>Carlos Eduardo Souza</td>
+          <td><span class="color-swatch-small" style="background:#f5f8ff;"></span><code>#F5F8FF</code></td>
+        </tr>
+        <tr style="background:#e3efff;">
+          <td><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#e3efff; margin-right:4px;"></span> Selecionada</td>
+          <td>Maria Santos Lima</td>
+          <td><span class="color-swatch-small" style="background:#e3efff;"></span><code>#E3EFFF</code></td>
+        </tr>
+        <tr style="background:#d6e8ff;">
+          <td><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#d6e8ff; margin-right:4px;"></span> Hover + Selecionada</td>
+          <td>Joao Carlos da Silva</td>
+          <td><span class="color-swatch-small" style="background:#d6e8ff;"></span><code>#D6E8FF</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TABS -->
+  <div class="component-section">
+    <div class="component-header">Tabs</div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Ativa</div>
+      <div class="state-col-label">Disabled</div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; background:white; border:1px solid #dee2e6; border-radius:8px; padding:12px;">
+      <div class="state-cell"><span class="s-tab" style="color:#6c757d;">Documentos</span></div>
+      <div class="state-cell"><span class="s-tab" style="color:#184194;">Documentos</span></div>
+      <div class="state-cell"><span class="s-tab" style="color:#184194; font-weight:600; border-bottom-color:#184194;">Documentos</span></div>
+      <div class="state-cell"><span class="s-tab" style="color:#adb5bd; cursor:not-allowed;">Documentos</span></div>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="component-section">
+    <div class="component-header">Links</div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Focus</div>
+      <div class="state-col-label">Active</div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; background:white; border:1px solid #dee2e6; border-radius:8px; padding:16px;">
+      <div class="state-cell"><span class="s-link" style="color:#184194;">Ver detalhes</span></div>
+      <div class="state-cell"><span class="s-link" style="color:#0f2d6b; text-decoration:underline;">Ver detalhes</span></div>
+      <div class="state-cell"><span class="s-link" style="color:#184194; outline:2px solid #93c5fd; outline-offset:2px; border-radius:2px;">Ver detalhes</span></div>
+      <div class="state-cell"><span class="s-link" style="color:#0a1f4a;">Ver detalhes</span></div>
+    </div>
+  </div>
+
+  <!-- MENU LATERAL -->
+  <div class="component-section">
+    <div class="component-header">Itens do Menu Lateral</div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+      <div class="state-col-label">Normal</div>
+      <div class="state-col-label">Hover</div>
+      <div class="state-col-label">Ativo</div>
+      <div class="state-col-label">Focus</div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; background:#1e2d5a; border-radius:8px; padding:12px;">
+      <div class="state-cell">
+        <div class="s-menu-item" style="color:rgba(255,255,255,0.5);">
+          <span class="s-menu-icon">&#xE80F;</span> Dashboard
+        </div>
+      </div>
+      <div class="state-cell">
+        <div class="s-menu-item" style="color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.05);">
+          <span class="s-menu-icon">&#xE80F;</span> Dashboard
+        </div>
+      </div>
+      <div class="state-cell">
+        <div class="s-menu-item" style="color:white; background:rgba(255,255,255,0.1); border-left:3px solid #4d8bff;">
+          <span class="s-menu-icon">&#xE80F;</span> Dashboard
+        </div>
+      </div>
+      <div class="state-cell">
+        <div class="s-menu-item" style="color:rgba(255,255,255,0.5); outline:2px solid rgba(147,197,253,0.6); outline-offset:-2px;">
+          <span class="s-menu-icon">&#xE80F;</span> Dashboard
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIORIDADE DE ESTADOS -->
+  <div class="section">
+    <div class="section-title">Prioridade de Estados Compostos</div>
+    <p class="section-desc">Quando um elemento esta em mais de um estado, a prioridade visual define qual aparencia prevalece.</p>
+
+    <table class="priority-table" style="max-width:600px;">
+      <thead><tr><th>Prioridade</th><th>Estado</th><th>Comportamento</th></tr></thead>
+      <tbody>
+        <tr><td><span class="priority-num">1</span></td><td><strong>Disabled</strong></td><td>Sobrescreve tudo — sem hover, sem focus</td></tr>
+        <tr><td><span class="priority-num">2</span></td><td><strong>Loading</strong></td><td>Bloqueia interacoes, mostra spinner</td></tr>
+        <tr><td><span class="priority-num">3</span></td><td><strong>Error</strong></td><td>Borda vermelha permanece durante hover e focus</td></tr>
+        <tr><td><span class="priority-num">4</span></td><td><strong>Active</strong></td><td>Momentaneo — mousedown</td></tr>
+        <tr><td><span class="priority-num">5</span></td><td><strong>Focus</strong></td><td>Borda de foco permanece durante hover</td></tr>
+        <tr><td><span class="priority-num">6</span></td><td><strong>Hover</strong></td><td>Efeito mais sutil</td></tr>
+        <tr><td><span class="priority-num">7</span></td><td><strong>Normal</strong></td><td>Estado base, em repouso</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CURSORES -->
+  <div class="section">
+    <div class="section-title">Cursores Semanticos</div>
+    <p class="section-desc">O cursor comunica ao usuario o que acontecera ao clicar.</p>
+
+    <div class="cursor-grid">
+      <div class="cursor-demo" style="cursor:pointer;">
+        <div class="cursor-name">pointer</div>
+        <div class="cursor-desc">Botao, link, card clicavel</div>
+      </div>
+      <div class="cursor-demo" style="cursor:text;">
+        <div class="cursor-name">text</div>
+        <div class="cursor-desc">Input editavel</div>
+      </div>
+      <div class="cursor-demo" style="cursor:default;">
+        <div class="cursor-name">default</div>
+        <div class="cursor-desc">Read-only, area neutra</div>
+      </div>
+      <div class="cursor-demo" style="cursor:not-allowed;">
+        <div class="cursor-name">not-allowed</div>
+        <div class="cursor-desc">Elemento disabled</div>
+      </div>
+      <div class="cursor-demo" style="cursor:wait;">
+        <div class="cursor-name">wait</div>
+        <div class="cursor-desc">Carregando (area toda)</div>
+      </div>
+      <div class="cursor-demo" style="cursor:grab;">
+        <div class="cursor-name">grab</div>
+        <div class="cursor-desc">Arrastar elemento</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:#184194; color:rgba(255,255,255,0.6); padding:20px 40px; text-align:center; font-size:12px; margin-top:40px;">
+  Design System da Empresa · <a href="../01-Fundamentos/10-Estados-Interacao.md" style="color:rgba(255,255,255,0.8);">Documentacao completa: 10-Estados-Interacao.md</a>
+</div>
+
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+
+</body>
+</html>

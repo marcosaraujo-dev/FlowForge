@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formularios — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  /* Field */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field-label { font-size: 13px; font-weight: 600; color: #495057; }
+  .field-label .required { color: #dc3545; margin-left: 2px; }
+  .field-input { height: 34px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 10px; font-size: 14px; color: #333; font-family: inherit; transition: border-color 0.15s; }
+  .field-input:focus { outline: none; border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(147,197,253,0.25); }
+  .field-input:hover { border-color: #cbd5e1; }
+  .field-input.error { border-color: #dc3545; }
+  .field-input.disabled { background: #f5f5f5; color: #94a3b8; border-color: #e9ecef; cursor: not-allowed; }
+  .field-help { font-size: 12px; color: #adb5bd; }
+  .field-error { font-size: 12px; color: #dc3545; }
+  .field-input-select { height: 34px; border: 1px solid #dee2e6; border-radius: 6px; padding: 0 10px; font-size: 14px; color: #333; font-family: inherit; background: white; cursor: pointer; }
+  .field-textarea { border: 1px solid #dee2e6; border-radius: 6px; padding: 8px 10px; font-size: 14px; color: #333; font-family: inherit; min-height: 80px; resize: vertical; }
+  .field-textarea:focus { outline: none; border-color: #93c5fd; }
+  /* Checkbox / Radio */
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+  .check-item input { width: 16px; height: 16px; cursor: pointer; accent-color: #184194; }
+  /* Grids */
+  .form-grid-1 { display: flex; flex-direction: column; gap: 16px; }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  /* Section divider */
+  .form-section-title { font-size: 16px; font-weight: 600; color: #495057; padding-bottom: 8px; border-bottom: 1px solid #e9ecef; margin-bottom: 16px; margin-top: 8px; }
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; height: 34px; border: none; border-radius: 6px; font-size: 14px; font-family: inherit; cursor: pointer; }
+  .btn-primary { background: #184194; color: white; }
+  .btn-secondary { background: #6c757d; color: white; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 16px; border-top: 1px solid #e9ecef; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Formularios e Campos</h1>
+  <p>Estados, layouts e tipos de campo para entrada de dados</p>
+</div>
+
+<div class="container">
+
+  <!-- ESTADOS DOS CAMPOS -->
+  <div class="section">
+    <div class="section-title">Estados dos Campos</div>
+    <div class="form-grid-2">
+      <div class="field">
+        <label class="field-label">Normal</label>
+        <input class="field-input" type="text" placeholder="Placeholder...">
+        <span class="field-help">Texto de ajuda opcional</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Preenchido</label>
+        <input class="field-input" type="text" value="Joao Carlos da Silva">
+      </div>
+      <div class="field">
+        <label class="field-label">Com Erro</label>
+        <input class="field-input error" type="text" value="cpf invalido">
+        <span class="field-error">CPF deve estar no formato 000.000.000-00</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Desabilitado</label>
+        <input class="field-input disabled" type="text" value="Nao editavel" disabled>
+        <span class="field-help">Este campo nao pode ser alterado</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Obrigatorio <span class="required">*</span></label>
+        <input class="field-input" type="text" placeholder="Campo obrigatorio">
+      </div>
+      <div class="field">
+        <label class="field-label">Selecao (Combobox)</label>
+        <select class="field-input-select">
+          <option value="">Selecione...</option>
+          <option>Analista</option>
+          <option selected>Desenvolvedor</option>
+          <option>Gerente</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPOS DE CAMPO -->
+  <div class="section">
+    <div class="section-title">Tipos de Campo</div>
+    <div class="form-grid-2">
+      <div class="field">
+        <label class="field-label">Texto</label>
+        <input class="field-input" type="text" value="Texto simples">
+      </div>
+      <div class="field">
+        <label class="field-label">Senha</label>
+        <input class="field-input" type="password" value="senha123">
+      </div>
+      <div class="field">
+        <label class="field-label">Data</label>
+        <input class="field-input" type="text" value="15/03/1990" placeholder="DD/MM/AAAA">
+      </div>
+      <div class="field">
+        <label class="field-label">Valor Monetario</label>
+        <input class="field-input" type="text" value="R$ 4.250,00" style="text-align:right;">
+      </div>
+      <div class="field col-span-2">
+        <label class="field-label">Observacoes</label>
+        <textarea class="field-textarea" placeholder="Digite uma observacao..."></textarea>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <div class="form-section-title">Checkbox e Radio</div>
+      <div style="display:flex; gap:40px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#6c757d; margin-bottom:10px;">CHECKBOX (multipla selecao)</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <label class="check-item"><input type="checkbox" checked> Ferias</label>
+            <label class="check-item"><input type="checkbox"> Decimo Terceiro</label>
+            <label class="check-item"><input type="checkbox" checked> Adiantamento</label>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#6c757d; margin-bottom:10px;">RADIO BUTTON (selecao unica)</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <label class="check-item"><input type="radio" name="tipo" checked> CLT</label>
+            <label class="check-item"><input type="radio" name="tipo"> PJ</label>
+            <label class="check-item"><input type="radio" name="tipo"> Estagio</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT 2 COLUNAS -->
+  <div class="section">
+    <div class="section-title">Formulario Completo — 2 Colunas</div>
+    <p class="section-desc">Layout padrao para formularios de cadastro. <span style="color:#dc3545;">*</span> Campos obrigatorios</p>
+
+    <div class="form-section-title">Dados Pessoais</div>
+    <div class="form-grid-2">
+      <div class="field">
+        <label class="field-label">Nome Completo <span class="required">*</span></label>
+        <input class="field-input" type="text" placeholder="Nome como no documento oficial">
+      </div>
+      <div class="field">
+        <label class="field-label">CPF <span class="required">*</span></label>
+        <input class="field-input" type="text" placeholder="000.000.000-00">
+      </div>
+      <div class="field">
+        <label class="field-label">Data de Nascimento</label>
+        <input class="field-input" type="text" placeholder="DD/MM/AAAA">
+      </div>
+      <div class="field">
+        <label class="field-label">Sexo</label>
+        <select class="field-input-select">
+          <option value="">Selecione...</option>
+          <option>Masculino</option>
+          <option>Feminino</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section-title" style="margin-top:20px;">Dados de Contato</div>
+    <div class="form-grid-2">
+      <div class="field">
+        <label class="field-label">E-mail</label>
+        <input class="field-input" type="text" placeholder="email@empresa.com">
+      </div>
+      <div class="field">
+        <label class="field-label">Telefone</label>
+        <input class="field-input" type="text" placeholder="(00) 00000-0000">
+        <span class="field-help">Com DDD</span>
+      </div>
+      <div class="field col-span-2">
+        <label class="field-label">Observacoes</label>
+        <textarea class="field-textarea" placeholder="Informacoes adicionais..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-secondary">Cancelar</button>
+      <button class="btn btn-primary">Salvar Cadastro</button>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialogs e Modais — Design System da Empresa</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #495057; }
+  .page-header { background: #184194; color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; opacity: 0.85; }
+  .nav-back { display: inline-block; margin-bottom: 16px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; }
+  .nav-back:hover { color: white; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px; }
+  .section { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; color: #184194; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; margin-bottom: 20px; }
+  .section-desc { font-size: 13px; color: #6c757d; margin-bottom: 20px; margin-top: -12px; }
+  .icon { font-family: 'Segoe MDL2 Assets', 'Segoe UI Symbol', sans-serif; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; height: 34px; border: none; border-radius: 6px; font-size: 13px; font-family: inherit; cursor: pointer; font-weight: 500; }
+  .btn-primary { background: #184194; color: white; }
+  .btn-primary:hover { background: #0d2d6e; }
+  .btn-secondary { background: transparent; color: #495057; border: 1px solid #dee2e6; }
+  .btn-secondary:hover { background: #f8f9fa; }
+  .btn-danger { background: #dc3545; color: white; }
+  .btn-danger:hover { background: #b02a37; }
+  .btn-ghost { background: transparent; color: #184194; border: 1px solid #184194; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field-label { font-size: 12px; font-weight: 600; color: #6c757d; }
+  .field-input { height: 32px; border: 1px solid #dee2e6; border-radius: 5px; padding: 0 10px; font-size: 13px; color: #333; font-family: inherit; }
+  .field-input:focus { outline: none; border-color: #93c5fd; }
+  .field-select { height: 32px; border: 1px solid #dee2e6; border-radius: 5px; padding: 0 10px; font-size: 13px; color: #333; font-family: inherit; background: white; }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ─── OVERLAY ───────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  /* ─── DIALOG ────────────────────────────────── */
+  .modal {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    display: flex; flex-direction: column;
+    max-height: 90vh;
+    transform: scale(0.96) translateY(-8px);
+    transition: transform 0.2s;
+    width: 100%;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-sm { max-width: 420px; }
+  .modal-md { max-width: 560px; }
+  .modal-lg { max-width: 720px; }
+
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  .modal-header-title { font-size: 15px; font-weight: 600; color: #212529; display: flex; align-items: center; gap: 10px; }
+  .modal-header-icon { font-size: 18px; }
+  .modal-close { background: none; border: none; cursor: pointer; color: #6c757d; font-size: 18px; padding: 4px; border-radius: 4px; font-family: 'Segoe MDL2 Assets', sans-serif; }
+  .modal-close:hover { background: #f8f9fa; color: #212529; }
+
+  .modal-body { padding: 20px 20px; flex: 1; overflow-y: auto; }
+  .modal-body p { font-size: 14px; line-height: 1.6; color: #495057; }
+
+  .modal-footer {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding: 14px 20px;
+    border-top: 1px solid #dee2e6;
+  }
+
+  /* ─── ABERTURA SIMULADA ─────────────────────── */
+  .demo-area { border: 1px dashed #dee2e6; border-radius: 8px; padding: 24px; text-align: center; }
+  .demo-area-title { font-size: 12px; font-weight: 600; color: #6c757d; margin-bottom: 12px; text-transform: uppercase; }
+  .trigger-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+  /* ─── INLINE PREVIEW ────────────────────────── */
+  .dialog-preview {
+    border: 1px solid #dee2e6; border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    background: white;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ─── WIZARD ────────────────────────────────── */
+  .wizard-steps { display: flex; gap: 0; margin-bottom: 20px; }
+  .wizard-step { display: flex; align-items: center; flex: 1; }
+  .wizard-step-circle {
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .wizard-step-circle.done { background: #28a745; color: white; }
+  .wizard-step-circle.active { background: #184194; color: white; }
+  .wizard-step-circle.pending { background: #e9ecef; color: #6c757d; }
+  .wizard-step-label { font-size: 11px; margin-left: 6px; }
+  .wizard-step-label .step-title { font-weight: 600; color: #212529; }
+  .wizard-step-label .step-sub { color: #6c757d; }
+  .wizard-line { height: 2px; flex: 1; margin: 0 8px; }
+  .wizard-line.done { background: #28a745; }
+  .wizard-line.pending { background: #dee2e6; }
+
+  /* ─── TAMANHOS ──────────────────────────────── */
+  .sizes-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+  .size-card { text-align: center; }
+  .size-bar { background: #e8effc; border: 2px solid #184194; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #184194; font-weight: 600; margin: 0 auto 6px; height: 50px; }
+  .size-label { font-size: 11px; color: #6c757d; }
+  .size-label strong { display: block; color: #212529; }
+
+  /* ─── DANGER DESTAQUE ────────────────────────── */
+  .danger-icon-wrap { width: 52px; height: 52px; border-radius: 50%; background: #fce8ea; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+  .danger-icon-wrap .icon { font-size: 24px; color: #dc3545; }
+</style>
+</head>
+<body>
+
+<!-- ── OVERLAY CONFIRMAÇÃO ── -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span class="icon modal-header-icon" style="color:#dc3545;">&#xE74D;</span>
+        Excluir registro
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-confirm')">&#xE8BB;</button>
+    </div>
+    <div class="modal-body" style="text-align:center; padding:28px 24px;">
+      <div class="danger-icon-wrap"><span class="icon">&#xE74D;</span></div>
+      <p style="font-size:14px; font-weight:600; color:#212529; margin-bottom:8px;">Tem certeza que deseja excluir?</p>
+      <p style="font-size:13px; color:#6c757d;">O template "Acordo Compensação 2024" será removido permanentemente. Esta ação não pode ser desfeita.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn btn-danger" onclick="closeModal('modal-confirm')">
+        <span class="icon" style="font-size:12px;">&#xE74D;</span> Excluir
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── OVERLAY FORMULÁRIO ── -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span class="icon modal-header-icon" style="color:#184194;">&#xE70F;</span>
+        Editar Template
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-form')">&#xE8BB;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="form-grid-2">
+          <div class="field" style="grid-column:span 2;">
+            <label class="field-label">NOME DO TEMPLATE <span style="color:#dc3545;">*</span></label>
+            <input class="field-input" value="Acordo Compensação de Horas">
+          </div>
+          <div class="field">
+            <label class="field-label">TIPO</label>
+            <select class="field-select"><option>Word (.docx)</option><option>Excel (.xlsx)</option></select>
+          </div>
+          <div class="field">
+            <label class="field-label">DISPONIBILIDADE</label>
+            <select class="field-select"><option>Global</option><option>Empresas específicas</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">DESCRIÇÃO</label>
+          <textarea style="border:1px solid #dee2e6; border-radius:5px; padding:8px 10px; font-size:13px; font-family:inherit; min-height:68px; resize:vertical; color:#495057;">Template padrão para acordo de compensação conforme art. 59 CLT.</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-form')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-form')">
+        <span class="icon" style="font-size:12px;">&#xE74E;</span> Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── OVERLAY INFORMATIVO ── -->
+<div class="modal-overlay" id="modal-info">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span class="icon modal-header-icon" style="color:#17a2b8;">&#xE946;</span>
+        Documento Gerado com Sucesso
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-info')">&#xE8BB;</button>
+    </div>
+    <div class="modal-body">
+      <p>O documento <strong>"Holerite — João Carlos — 03/2026"</strong> foi gerado e salvo em:</p>
+      <div style="background:#f8f9fa; border-radius:6px; padding:10px 12px; margin-top:12px; font-size:12px; color:#495057; font-family:monospace;">
+        C:\Documentos\Gerados\Holerites\2026\
+      </div>
+      <p style="margin-top:12px; font-size:12px; color:#6c757d;">Deseja abrir o arquivo agora?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-info')">Fechar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-info')">
+        <span class="icon" style="font-size:12px;">&#xE8A7;</span> Abrir Arquivo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── OVERLAY WIZARD ── -->
+<div class="modal-overlay" id="modal-wizard">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-header-title">Assistente de Geração de Documentos</div>
+      <button class="modal-close" onclick="closeModal('modal-wizard')">&#xE8BB;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Steps -->
+      <div class="wizard-steps">
+        <div class="wizard-step">
+          <div class="wizard-step-circle done"><span class="icon" style="font-size:10px;">&#xE73E;</span></div>
+          <div class="wizard-step-label"><div class="step-title">Empresa</div><div class="step-sub">Concluído</div></div>
+        </div>
+        <div class="wizard-line done"></div>
+        <div class="wizard-step">
+          <div class="wizard-step-circle active">2</div>
+          <div class="wizard-step-label"><div class="step-title" style="color:#184194;">Trabalhadores</div><div class="step-sub">Em andamento</div></div>
+        </div>
+        <div class="wizard-line pending"></div>
+        <div class="wizard-step">
+          <div class="wizard-step-circle pending">3</div>
+          <div class="wizard-step-label"><div class="step-title" style="color:#6c757d;">Templates</div><div class="step-sub">Aguardando</div></div>
+        </div>
+        <div class="wizard-line pending"></div>
+        <div class="wizard-step">
+          <div class="wizard-step-circle pending">4</div>
+          <div class="wizard-step-label"><div class="step-title" style="color:#6c757d;">Confirmar</div><div class="step-sub">Aguardando</div></div>
+        </div>
+      </div>
+      <!-- Step content -->
+      <div style="border:1px solid #dee2e6; border-radius:8px; padding:16px; min-height:120px;">
+        <div style="font-size:13px; font-weight:600; color:#212529; margin-bottom:8px;">Selecione os trabalhadores</div>
+        <div style="font-size:13px; color:#6c757d;">Escolha os trabalhadores para os quais os documentos serão gerados. Você pode selecionar todos ou uma lista específica.</div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button class="btn btn-secondary" onclick="closeModal('modal-wizard')">
+        <span class="icon" style="font-size:11px;">&#xE76B;</span> Voltar
+      </button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-secondary" onclick="closeModal('modal-wizard')">Cancelar</button>
+        <button class="btn btn-primary">
+          Próximo <span class="icon" style="font-size:11px;">&#xE76C;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PÁGINA ── -->
+<div class="page-header">
+  <a href="index.html" class="nav-back">← Voltar ao portal</a>
+  <h1>Dialogs e Modais</h1>
+  <p>Quatro tipos de dialog: confirmação, formulário, informativo e wizard</p>
+</div>
+
+<div class="container">
+
+  <!-- TIPOS -->
+  <div class="section">
+    <div class="section-title">Tipos de Dialog — Clique para abrir</div>
+    <p class="section-desc">Todos os dialogs têm overlay escuro, são centralizados, têm botão X e suportam fechar com ESC.</p>
+
+    <div class="trigger-btns">
+      <button class="btn btn-danger" onclick="openModal('modal-confirm')">
+        <span class="icon" style="font-size:12px;">&#xE74D;</span> Confirmação (Danger)
+      </button>
+      <button class="btn btn-primary" onclick="openModal('modal-form')">
+        <span class="icon" style="font-size:12px;">&#xE70F;</span> Formulário
+      </button>
+      <button class="btn" style="background:#17a2b8; color:white;" onclick="openModal('modal-info')">
+        <span class="icon" style="font-size:12px;">&#xE946;</span> Informativo
+      </button>
+      <button class="btn btn-ghost" onclick="openModal('modal-wizard')">
+        <span class="icon" style="font-size:12px;">&#xE76C;</span> Wizard (Passo a passo)
+      </button>
+    </div>
+  </div>
+
+  <!-- ANATOMIA -->
+  <div class="section">
+    <div class="section-title">Anatomia do Dialog</div>
+    <div class="dialog-preview">
+      <div class="modal-header" style="background:#f8f9fa;">
+        <div class="modal-header-title" style="font-size:13px;">
+          <span style="width:28px; height:28px; background:#e8effc; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; color:#184194;" class="icon">&#xE70F;</span>
+          Título do Dialog
+        </div>
+        <button class="modal-close" style="cursor:default;">&#xE8BB;</button>
+      </div>
+      <div style="padding:4px 0;">
+        <div style="padding: 6px 20px; font-size:10px; color:#6c757d; font-weight:600; text-transform:uppercase; border-bottom:1px dashed #dee2e6;">Header — Título + ícone contextual + botão X</div>
+        <div style="padding:16px 20px; font-size:12px; color:#495057; border-bottom:1px dashed #dee2e6; background:#fafcff;">
+          <strong>Body</strong> — Conteúdo principal: texto, formulário, lista. Padding 20px. Overflow-y auto se o conteúdo for longo.
+        </div>
+        <div style="padding: 6px 20px; font-size:10px; color:#6c757d; font-weight:600; text-transform:uppercase; border-bottom:1px dashed #dee2e6;">Footer — Ações alinhadas à direita: [Cancelar] [Ação Principal]</div>
+      </div>
+      <div class="modal-footer" style="background:#f8f9fa;">
+        <button class="btn btn-secondary" style="font-size:12px; height:30px; cursor:default;">Cancelar</button>
+        <button class="btn btn-primary" style="font-size:12px; height:30px; cursor:default;">Ação Principal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAMANHOS -->
+  <div class="section">
+    <div class="section-title">Tamanhos</div>
+    <div class="sizes-row">
+      <div class="size-card">
+        <div class="size-bar" style="width:420px; max-width:100%;">400px</div>
+        <div class="size-label"><strong>Small</strong>Confirmação simples</div>
+      </div>
+    </div>
+    <div class="sizes-row" style="margin-top:12px;">
+      <div class="size-card">
+        <div class="size-bar" style="width:560px; max-width:100%;">560px</div>
+        <div class="size-label"><strong>Medium (padrão)</strong>Formulário com poucos campos</div>
+      </div>
+    </div>
+    <div class="sizes-row" style="margin-top:12px;">
+      <div class="size-card">
+        <div class="size-bar" style="width:720px; max-width:100%;">720px</div>
+        <div class="size-label"><strong>Large</strong>Formulário extenso, visualização de detalhe</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGRAS -->
+  <div class="section">
+    <div class="section-title">Regras de Uso</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:13px;">
+      <div style="background:#f0fff4; border:1px solid #d4edda; border-radius:6px; padding:14px;">
+        <div style="font-weight:600; color:#155724; margin-bottom:8px;">✓ Use dialogs para</div>
+        <ul style="padding-left:18px; color:#2d6a40; line-height:1.9;">
+          <li>Confirmação antes de ações destrutivas</li>
+          <li>Edições rápidas sem trocar de página</li>
+          <li>Exibir detalhes sem perder contexto da lista</li>
+          <li>Fluxos curtos em até 4 etapas (wizard)</li>
+        </ul>
+      </div>
+      <div style="background:#fff8f8; border:1px solid #f5c6cb; border-radius:6px; padding:14px;">
+        <div style="font-weight:600; color:#721c24; margin-bottom:8px;">✗ Evite dialogs para</div>
+        <ul style="padding-left:18px; color:#9e4c50; line-height:1.9;">
+          <li>Fluxos complexos com muitas etapas</li>
+          <li>Grandes quantidades de dados</li>
+          <li>Dialogs dentro de dialogs</li>
+          <li>Abrir automaticamente sem interação do usuário</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if(e.target === this) closeModal(this.id);
+  });
+});
+document.addEventListener('keydown', function(e) {
+  if(e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+  }
+});
+</script>
+</body>
+</html>
